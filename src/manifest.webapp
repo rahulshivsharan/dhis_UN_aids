@@ -1,24 +1,21 @@
 {
-   "name" : "HIV-Spectrum Bootstrap",
+   "name" : "spectrum",
    "description" : "threebund",
    "version" : "0.0.1",
-   "developer" : {
-      "email" : "me@mjamo.com,
-      "name" : "MJ"
-   },
-   "launch_path" : "index.html",
-   "icons" : {
-      "128" : null,
-      "16" : null,
-      "48" : null
-   },
-   "default_locale" : "en",
-   "installs_allowed_from" : [
-      "*"
-   ],
-   "activities" : {
-      "dhis" : {
-         "href" : "*"
-      }
-   }
+    "icons": {
+        "48": "img/icon.png"
+    },
+    "developer": {
+        "name": "MJ",
+        "company": null,
+        "email": null
+    },
+    "permissions": null,
+    "activities": {
+        "dhis": {
+            "href": "*"
+        }
+    },
+    "launch_path": "index.html",
+    "default_locale": "en"
 }

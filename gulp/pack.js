@@ -5,8 +5,8 @@ var git = require('git-rev')
 
 gulp.task('pack', function() {
   git.short(function(str) {
-    return gulp.src('dist/*')
-      .pipe(zip('threebund-'+ str +'.zip'))
+    return gulp.src('dist/**/*')
+      .pipe(zip('spectrum-'+ str +'.zip'))
       .pipe(gulp.dest('target'));
   });
 });
