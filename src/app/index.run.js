@@ -5,7 +5,7 @@
     .module('threebund')
     .run(runBlock).factory('authInterceptor', intercept).config(function($httpProvider) {
       $httpProvider.interceptors.push('authInterceptor');
-    })
+    });
 
   function runBlock($log) {
     $log.debug('runBlock end');
@@ -20,6 +20,6 @@
         return config;
       }
     };
-  };
+  }
 
 })();

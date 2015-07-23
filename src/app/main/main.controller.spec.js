@@ -1,15 +1,22 @@
 (function() {
   'use strict';
 
-  describe('controllers', function(){
+  describe('controllers', function() {
 
     beforeEach(module('threebund'));
 
-    it('should define more than 5 awesome things', inject(function($controller) {
-      var vm = $controller('MainController');
-
-      expect(angular.isArray(vm.awesomeThings)).toBeTruthy();
-      expect(vm.awesomeThings.length > 5).toBeTruthy();
+    it('should set the title', inject(function($controller, $rootScope, $q) {
+      var $scope = $rootScope.$new();
+      var titleDeferred = $q.defer();
+      var mockDhis = jasmine.createSpyObj('dhis', ['getApplicationTitle']);
+      mockDhis.getApplicationTitle.and.returnValue(titleDeferred.promise);
+      var vm = $controller('MainController', {
+        $scope: $scope,
+        dhis: mockDhis
+      });
+      titleDeferred.resolve('super title');
+      $scope.$apply();
+      expect($scope.title).toBe('super title');
     }));
   });
 })();
