@@ -1,6 +1,6 @@
 {
    "name" : "spectrum",
-   "description" : "threebund",
+   "description" : "HIV-Spectrum Bootstrap",
    "version" : "0.0.1",
     "icons": {
         "48": "img/icon.png"
