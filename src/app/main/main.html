@@ -23,6 +23,8 @@
         </ul>
 
         <div class="panel">
+        {{result}}
+          <a class="btn btn-primary" ng-click="import(resource.path)" ng-repeat="resource in resources">{{resource.name}}</a>
         </div>
     </div>
 </div>

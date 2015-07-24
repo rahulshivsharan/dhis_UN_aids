@@ -1,18 +1,46 @@
-angular
-  .module('threebund').service('dhis', ['$http', 'AUTH', '$q',
-
-    function($http, authHeader, $q) {
-
-      this.getApplicationTitle = function() {
+(function () {
+  'use strict';
+  angular.module('threebund').service('dhis', ['$http', 'AUTH', '$q',
+    function ($http, authHeader, $q) {
+      var getApplicationTitle = function () {
         var titleDeferred = $q.defer();
         var promise = $http.get('/api/systemSettings.json');
-        var getTitle = function(response) {
+        var parseTitle = function (response) {
           var title = response.data.applicationTitle;
           titleDeferred.resolve(title);
         };
-        promise.then(getTitle)
+        promise.then(parseTitle);
         return titleDeferred.promise;
       };
-
+      var loadResource = function (path) {
+        var resourceDeferred = $q.defer();
+        var parseResource = function (response) {
+          resourceDeferred.resolve(response.data);
+        };
+        $http.get(path).then(parseResource);
+        return resourceDeferred.promise;
+      };
+      var uploadResource = function (path) {
+        var resourceDeferred = $q.defer();
+        var parseImportResponse = function (response) {
+          resourceDeferred.resolve(response.data);
+        };
+        loadResource(path).then(function (resource) {
+          $http({
+            method: 'POST',
+            url: '/api/metaData',
+            data: resource,
+            headers: {
+              "Content-Type": 'application/xml'
+            }
+          }).then(parseImportResponse);
+        });
+        return resourceDeferred.promise;
+      };
+      return {
+        "uploadResource": uploadResource,
+        "getApplicationTitle": getApplicationTitle
+      };
     }
   ]);
+})();
