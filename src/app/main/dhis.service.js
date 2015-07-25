@@ -17,7 +17,7 @@
         var parseResource = function (response) {
           resourceDeferred.resolve(response.data);
         };
-        $http.get(serverPath + path).then(parseResource);
+        $http.get(path).then(parseResource);
         return resourceDeferred.promise;
       };
       var uploadResource = function (path) {

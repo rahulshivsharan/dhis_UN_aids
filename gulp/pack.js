@@ -16,10 +16,9 @@ gulp.task('deploy', ['pack'], function () {
   ]));
 });
 gulp.task('config', function () {
-  var serverPath = argv.srv_path || '/';
+  var serverPath = argv.srv_path || '';
   gulp.src('gulp/config.json').pipe(ngConstant({
-    name: 'threebund',
-    deps: ['ngAnimate'],
+    name: 'threebund.config',
     constants: {
       'serverPath': serverPath
     }

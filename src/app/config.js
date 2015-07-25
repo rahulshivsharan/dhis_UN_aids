@@ -1,5 +1,5 @@
-angular.module("threebund", ["ngAnimate"])
+angular.module("threebund.config", [])
 
-.constant("serverPath", "/")
+.constant("serverPath", "")
 
 ;
