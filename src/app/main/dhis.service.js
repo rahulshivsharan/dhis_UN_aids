@@ -1,10 +1,10 @@
 (function () {
   'use strict';
-  angular.module('threebund').service('dhis', ['$http', 'AUTH', '$q',
-    function ($http, authHeader, $q) {
+  angular.module('threebund').service('dhis', ['$http', 'AUTH', '$q', 'serverPath',
+    function ($http, authHeader, $q, serverPath) {
       var getApplicationTitle = function () {
         var titleDeferred = $q.defer();
-        var promise = $http.get('/api/systemSettings.json');
+        var promise = $http.get(serverPath + '/api/systemSettings.json');
         var parseTitle = function (response) {
           var title = response.data.applicationTitle;
           titleDeferred.resolve(title);
@@ -17,7 +17,7 @@
         var parseResource = function (response) {
           resourceDeferred.resolve(response.data);
         };
-        $http.get(path).then(parseResource);
+        $http.get(serverPath + path).then(parseResource);
         return resourceDeferred.promise;
       };
       var uploadResource = function (path) {
@@ -28,7 +28,7 @@
         loadResource(path).then(function (resource) {
           $http({
             method: 'POST',
-            url: '/api/metaData',
+            url: serverPath + '/api/metaData',
             data: resource,
             headers: {
               "Content-Type": 'application/xml'
