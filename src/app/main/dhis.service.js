@@ -6,9 +6,9 @@
             var stateSetting = 'spectrumImportState';
 
             var initialConfig = {
-                indicatorFile: '/resources/data_elements_v001.xml',
-                dataElementFile: '/resources/indicators_v001.xml',
-                dashboardFile: '/resources/dashboard_v001.xml',
+                indicatorFile: '/api/apps/spectrum/resources/data_elements_v001.xml',
+                dataElementFile: '/api/apps/spectrum/resources/indicators_v001.xml',
+                dashboardFile: '/api/apps/spectrum/resources/dashboard_v001.xml',
             };
 
             var initialState = {
@@ -17,21 +17,37 @@
                 dashboard: false,
             };
             var buildUrl = function(path) {
-                return serverPath + path;
+                var def = $q.defer();
+                if (path.indexOf('http') > 0) {
+                    def.resolve(path);
+                }
+                $http.get('manifest.webapp').then(function(response) {
+                    var endpoint = response.data.activities.dhis.href;
+                    if (endpoint === "*") {
+                        endpoint = '';
+                    }
+                    var url = endpoint + path;
+                    def.resolve(url);
+                });
+                return def.promise;
             };
 
             var getSetting = function(key) {
-                return $http.get(buildUrl('/api/systemSettings/' + key));
+                return buildUrl('/api/systemSettings/' + key).then(function(url) {
+                    return $http.get(url);
+                });
             };
 
             var putSetting = function(key, value) {
-                return $http({
-                    method: 'POST',
-                    url: buildUrl('/api/systemSettings/' + key),
-                    data: value,
-                    headers: {
-                        "Content-Type": 'text/plain'
-                    }
+                return buildUrl('/api/systemSettings/' + key).then(function(url) {
+                    return $http({
+                        method: 'POST',
+                        url: url,
+                        data: value,
+                        headers: {
+                            "Content-Type": 'text/plain'
+                        }
+                    });
                 });
 
             };
@@ -100,8 +116,10 @@
                 var parseResource = function(response) {
                     resourceDeferred.resolve(response.data);
                 };
-                $http.get(path).then(parseResource, function(data, status) {
-                    resourceDeferred.reject(data, status);
+                buildUrl(path).then(function(url) {
+                    $http.get(url).then(parseResource, function(data, status) {
+                        resourceDeferred.reject(data, status);
+                    });
                 });
                 return resourceDeferred.promise;
             };
@@ -113,15 +131,17 @@
                     resourceDeferred.resolve(data);
                 };
                 loadResource(path).then(function(resource) {
-                    $http({
-                        method: 'POST',
-                        url: buildUrl('/api/metaData'),
-                        data: resource,
-                        headers: {
-                            "Content-Type": 'application/xml'
-                        }
-                    }).then(parseImportResponse, function(data, status) {
-                        resourceDeferred.reject(data, status);
+                    buildUrl('/api/metaData').then(function(url) {
+                        $http({
+                            method: 'POST',
+                            url: url,
+                            data: resource,
+                            headers: {
+                                "Content-Type": 'application/xml'
+                            }
+                        }).then(parseImportResponse, function(data, status) {
+                            resourceDeferred.reject(data, status);
+                        });
                     });
                 }, function(data, status) {
                     resourceDeferred.reject(data, status);

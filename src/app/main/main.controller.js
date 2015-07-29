@@ -24,6 +24,7 @@
                 };
             };
             $scope.summaries = [];
+            $scope.loading = true;
             var setupState = function() {
                 dhis.getState().then(function(state) {
                     if (state.dataElement) {
