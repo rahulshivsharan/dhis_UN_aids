@@ -1,9 +1,9 @@
 {
-   "name" : "spectrum",
+   "name" : "HIV-Spectrum Bootstrap",
    "description" : "HIV-Spectrum Bootstrap",
    "version" : "0.0.1",
     "icons": {
-        "48": "img/icon.png"
+        "48": "assets/images/unaids.png"
     },
     "developer": {
         "name": "MJ",
