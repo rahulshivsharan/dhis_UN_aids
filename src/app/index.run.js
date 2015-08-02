@@ -3,9 +3,9 @@
 
     angular
         .module('threebund')
-    // .factory('authInterceptor', intercept).config(function($httpProvider) {
-    //     $httpProvider.interceptors.push('authInterceptor');
-    // });
+        .factory('authInterceptor', intercept).config(function($httpProvider) {
+            $httpProvider.interceptors.push('authInterceptor');
+        });
 
     function intercept($location, $q, $window, AUTH) {
         return {
