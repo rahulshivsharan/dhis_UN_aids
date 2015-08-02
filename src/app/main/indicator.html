@@ -1,3 +1,5 @@
-<h4>Setup Indicators</h4>
-<a ng-show="!loading" on-confirm="loadIndicators()" mwl-confirm title="Import Indicators" message="Are you sure you want to import the spectrum indicators into this Instance ?" class="btn btn-primary">Load Indicators</a>
+<h4 ng-show="!loading">Setup Indicators</h4>
+<a ng-show="!loading" on-confirm="loadItem()" mwl-confirm title="Import Indicators" message="Are you sure you want to import the spectrum indicators?" class="btn btn-primary">Load Indicators</a>
 <span us-spinner ng-show="loading"></span>
+<h5 ng-show="loading" class="text-center  loading-text"> Importing Indicators </h5>
+

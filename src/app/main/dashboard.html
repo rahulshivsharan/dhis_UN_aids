@@ -1,3 +1,4 @@
-<h4>Setup Dashboards</h4>
-<a ng-show="!loading" on-confirm="loadDashboards()" mwl-confirm title="Import Indicators" message="Are you sure you want to import the spectrum dashboards into this Instance ?" class="btn btn-primary">Load Dashboards</a>
+<h4 ng-show="!loading">Setup Dashboards and Documentation</h4>
+<a ng-show="!loading" on-confirm="loadItem()" mwl-confirm title="Import Indicators" message="Are you sure you want to import the spectrum dashboards ?" class="btn btn-primary">Load Dashboards</a>
 <span us-spinner ng-show="loading"></span>
+<h5 ng-show="loading" class="text-center  loading-text"> Importing Dashboards </h5>

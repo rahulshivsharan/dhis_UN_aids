@@ -12,14 +12,23 @@
                 </div>
                 <div class="step-content">
                     <div class="step-pane sample-pane alert active" data-step="{{step}}">
-                        <div ng-include="tab"></div>
+                        <div ng-include="template"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-show="hasConflicts">
+    <div class="col-md-12">
+        <h5>Errors</h5>
+        <div class="alert alert-danger" ng-repeat="conflict in conflicts">
+            <h6>{{conflict._object}}</h6>
+            <h6>{{conflict._value}}</h6>
+        </div>
+    </div>
+</div>
+<div class="row" ng-show="summaries.length">
     <div class="col-md-12">
         <div class="alert alert-info" ng-repeat="summary in summaries">
           <h5>{{summary.name}} Import Summary</h5>
@@ -32,9 +41,9 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-show="hasError">
     <div class="col-md-12">
-        <div class="alert alert-danger" ng-show="hasError">
+        <div class="alert alert-danger" >
             <h5>An error occured.</h5>
             <h5>{{statusCode}}</h5> {{error}}
         </div>

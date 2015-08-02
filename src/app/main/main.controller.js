@@ -8,15 +8,18 @@
                 $scope.tabs = {
                     'dataElement': {
                         'template': 'app/main/data-element.html',
-                        'resource': config.dataElementFile
+                        'resource': config.dataElementFile,
+                        'name': 'Data Elements'
                     },
                     'indicator': {
                         'template': 'app/main/indicator.html',
-                        'resource': config.indicatorFile
+                        'resource': config.indicatorFile,
+                        'name': 'Indicators'
                     },
                     'dashboard': {
                         'template': 'app/main/dashboard.html',
-                        'resource': config.dashboardFile
+                        'resource': config.dashboardFile,
+                        'name': 'Dashboards'
                     },
                     'complete': {
                         'template': 'app/main/done.html'
@@ -45,8 +48,10 @@
 
             $scope.$watch('page', function(page) {
                 if (page) {
-                    $scope.tab = $scope.tabs[$scope.page].template;
+                    $scope.tab = $scope.tabs[$scope.page];
+                    $scope.template = $scope.tab.template;
                     $scope.loading = false;
+                    $scope.hasConflicts = false;
                 }
             }, true);
 
@@ -63,41 +68,31 @@
             $scope.import = function(path) {
                 return dhis.uploadResource(path);
             };
-
-            $scope.loadDataElements = function() {
-                var resource = $scope.tabs.dataElement.resource;
-                $scope.loading = true;
-                dhis.uploadResource(resource).then(function(data) {
-                    $scope.summaries.push({
-                        name: 'Data Elements',
-                        data: data.importSummary.importCount
-                    });
-                    dhis.updateState('dataElement', true).then(setupState);
-
-                }, handleError);
-            };
-            $scope.loadIndicators = function() {
-                var resource = $scope.tabs.indicator.resource;
-                $scope.loading = true;
-                dhis.uploadResource(resource).then(function(data) {
-                    $scope.summaries.push({
-                        name: 'Indicators',
-                        data: data.importSummary.importCount
-                    });
-                    dhis.updateState('indicator', true).then(setupState);
-                }, handleError);
+            var importWasSuccess = function(importCount) {
+                return (importCount._updated + importCount._imported) > 0 && importCount._ignored == 0;
             };
 
-            $scope.loadDashboards = function() {
-                var resource = $scope.tabs.dashboard.resource;
+            var showResponse = function(state, name) {
+                return function(data) {
+                    if (importWasSuccess(data.importSummary.importCount)) {
+                        $scope.summaries = [];
+                        $scope.summaries.push({
+                            name: name,
+                            data: data.importSummary.importCount
+                        });
+                        dhis.updateState(state, true).then(setupState);
+                    } else {
+                        $scope.conflicts = data.importSummary.typeSummaries.typeSummary.conflicts.conflict;
+                        $scope.loading = false;
+                        $scope.hasConflicts = true;
+                    }
+                }
+            }
+
+            $scope.loadItem = function() {
+                var resource = $scope.tab.resource;
                 $scope.loading = true;
-                dhis.uploadResource(resource).then(function(data) {
-                    $scope.summaries.push({
-                        name: 'Dashboards',
-                        data: data.importSummary.importCount
-                    });
-                    dhis.updateState('dashboard', true).then(setupState);
-                }, handleError);
+                dhis.uploadResource(resource).then(showResponse($scope.page, $scope.tab.name), handleError);
             };
         }
     ]);

@@ -1,6 +1,7 @@
-<h4>Setup Data Elements</h4>
-<a ng-show="!loading"  on-confirm="loadDataElements()" mwl-confirm
+<h4 ng-show="!loading">Setup Data Elements</h4>
+<a ng-show="!loading"  on-confirm="loadItem()" mwl-confirm
   title="Import Data Elements"
-  message="Are you sure you want to import the spectrum data elements into this instance ?" class="btn btn-primary">Load Data Elements</a>
+  message="Are you sure you want to import the spectrum data elements ?" class="btn btn-primary">Load Data Elements</a>
 
 <span us-spinner ng-show="loading"></span>
+<h5 ng-show="loading" class="text-center loading-text"> Importing Data Elements </h5>

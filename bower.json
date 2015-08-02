@@ -17,7 +17,8 @@
     "fuelux": "~3.10.0",
     "angular-bootstrap-confirm": "~0.2.0",
     "angular-loading-bar": "~0.8.0",
-    "angular-spinner": "~0.6.2"
+    "angular-spinner": "~0.6.2",
+    "lodash": "~3.10.0"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0"
