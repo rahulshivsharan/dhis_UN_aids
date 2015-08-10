@@ -6,8 +6,8 @@
             var stateSetting = 'spectrumImportState';
 
             var initialConfig = {
-                dataElementFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_DataElements_O-D_v002.xml',
-                indicatorFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Indicators_O-D_v002.xml',
+                dataElementFile: 'http://dir.eshift.org/dhis-unaids/spectrum/data_elements_v001.xml',
+                indicatorFile: 'http://dir.eshift.org/dhis-unaids/spectrum/indicators_v001.xml',
                 dashboardFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Documents_O-D_V002.xml'
             };
 
@@ -133,7 +133,7 @@
                     resourceDeferred.resolve(data);
                 };
                 loadResource(path).then(function(resource) {
-                    buildUrl('/api/metaData?mergeStrategy=REPLACE&strategy=CREATE_AND_UPDATE ').then(function(url) {
+                    buildUrl('/api/metaData?strategy=CREATE_AND_UPDATE ').then(function(url) {
                         $http({
                             method: 'POST',
                             url: url,
