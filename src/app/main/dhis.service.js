@@ -6,9 +6,9 @@
             var stateSetting = 'spectrumImportState';
 
             var initialConfig = {
-                indicatorFile: '/api/apps/spectrum/resources/data_elements_v001.xml',
-                dataElementFile: '/api/apps/spectrum/resources/indicators_v001.xml',
-                dashboardFile: '/api/apps/spectrum/resources/dashboard_v001.xml',
+                dataElementFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_DataElements_O-D_v002.xml',
+                indicatorFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Indicators_O-D_v002.xml',
+                dashboardFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Documents_O-D_V002.xml'
             };
 
             var initialState = {
@@ -131,7 +131,7 @@
                     resourceDeferred.resolve(data);
                 };
                 loadResource(path).then(function(resource) {
-                    buildUrl('/api/metaData').then(function(url) {
+                    buildUrl('/api/metaData?mergeStrategy=REPLACE&strategy=CREATE_AND_UPDATE ').then(function(url) {
                         $http({
                             method: 'POST',
                             url: url,
