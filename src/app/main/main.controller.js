@@ -69,7 +69,7 @@
                 return dhis.uploadResource(path);
             };
             var importWasSuccess = function(importCount) {
-                return (importCount._updated + importCount._imported) > 0 && importCount._ignored == 0;
+                return (importCount._updated + importCount._imported) > 0 && importCount._ignored === 0;
             };
 
             var showResponse = function(state, name) {
@@ -86,8 +86,8 @@
                         $scope.loading = false;
                         $scope.hasConflicts = true;
                     }
-                }
-            }
+                };
+            };
 
             $scope.loadItem = function() {
                 var resource = $scope.tab.resource;

@@ -18,7 +18,7 @@
             };
             var buildUrl = function(path) {
                 var def = $q.defer();
-                if (path.indexOf('http') > 0) {
+                if (path.indexOf('http') > -1) {
                     def.resolve(path);
                 }
                 $http.get('manifest.webapp').then(function(response) {
