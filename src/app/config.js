@@ -1,5 +1,5 @@
 angular.module("threebund.config", [])
 
-.constant("serverPath", "/trainingland1/")
+.constant("serverPath", "")
 
 ;

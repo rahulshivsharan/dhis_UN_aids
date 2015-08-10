@@ -51,7 +51,9 @@
                 });
 
             };
-
+            var resetSettings = function() {
+                return putSetting(fileSetting, initialConfig);
+            };
             var getState = function() {
                 var settingDeferred = $q.defer();
                 var promise = getSetting(stateSetting);
@@ -157,7 +159,8 @@
                 "updateConfig": updateConfig,
                 "getState": getState,
                 "putState": putState,
-                "updateState": updateState
+                "updateState": updateState,
+                "resetSettings": resetSettings
             };
         }
     ]);

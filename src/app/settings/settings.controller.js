@@ -23,6 +23,16 @@
                 });
             };
 
+            $scope.resetConfig = function() {
+                $scope.loading = true;
+                dhis.resetSettings().then(function() {
+                    dhis.getConfig().then(function(config) {
+                        $scope.loading = false;
+                        $scope.config = config;
+                    });
+                });
+            };
+
         }
     ]);
 })();
