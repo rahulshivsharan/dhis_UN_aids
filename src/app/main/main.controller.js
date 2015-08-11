@@ -69,7 +69,6 @@
                 return dhis.uploadResource(path);
             };
             var importWasSuccess = function(importCount) {
-                console.log(importCount);
                 return (parseInt(importCount._updated) + parseInt(importCount._imported)) > 0 && parseInt(importCount._ignored) === 0;
             };
 
