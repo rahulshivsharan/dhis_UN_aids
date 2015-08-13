@@ -6,8 +6,8 @@
             var stateSetting = 'spectrumImportState';
 
             var initialConfig = {
-                dataElementFile: 'http://dir.eshift.org/dhis-unaids/spectrum/data_elements_v001.xml',
-                indicatorFile: 'http://dir.eshift.org/dhis-unaids/spectrum/indicators_v001.xml',
+                dataElementFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_DataElements_O-D_v002.xml',
+                indicatorFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Indicators_O-D_v002.xml',
                 dashboardFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Documents_O-D_V002.xml'
             };
 
@@ -150,6 +150,21 @@
                 });
                 return resourceDeferred.promise;
             };
+
+            var documentsLike = function(name) {
+                var documentsDeferred = $q.defer();
+
+                buildUrl('/api/documents.json?filter=name:like:' + name + '&fields=name,url').then(function(url) {
+                    $http.get(url).then(function(response) {
+                        documentsDeferred.resolve(response.data);
+                    }, function(data, status) {
+                        documentsDeferred.reject(data, status);
+                    });
+                });
+
+                return documentsDeferred.promise;
+            };
+
             return {
                 "uploadResource": uploadResource,
                 "getApplicationTitle": getApplicationTitle,
@@ -160,7 +175,9 @@
                 "getState": getState,
                 "putState": putState,
                 "updateState": updateState,
-                "resetSettings": resetSettings
+                "resetSettings": resetSettings,
+                "dhisUrl": buildUrl,
+                "documentsLike": documentsLike
             };
         }
     ]);

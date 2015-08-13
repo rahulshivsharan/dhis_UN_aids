@@ -28,12 +28,18 @@
             };
             $scope.summaries = [];
             $scope.loading = true;
+            var setupDocuments = function() {
+                dhis.documentsLike('Spec').then(function(data) {
+                    $scope.documents = data.documents;
+                });
+            };
             var setupState = function() {
                 dhis.getState().then(function(state) {
                     if (state.dataElement) {
                         if (state.indicator) {
                             if (state.dashboard) {
                                 $scope.page = 'complete';
+                                setupDocuments();
                             } else {
                                 $scope.page = 'dashboard';
                             }

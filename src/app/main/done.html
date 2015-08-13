@@ -1,1 +1,9 @@
 <h4>Configuration Complete</h4>
+
+<div ng-show="documents.length">
+  <h5>Download the Guidelines</h5>
+  <ul>
+    <li ng-repeat="doc in documents"><a href="{{doc.url}}">{{doc.name}}</a></li>
+  </ul>
+</div>
+
