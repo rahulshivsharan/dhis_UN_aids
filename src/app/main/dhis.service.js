@@ -1,14 +1,18 @@
 (function() {
     'use strict';
     angular.module('threebund').service('dhis', ['$http', 'AUTH', '$q', 'x2js',
-        function($http, authHeader, $q, serverPath, x2js) {
+        function($http, authHeader, $q, x2js) {
             var fileSetting = 'spectrumConfigFiles';
             var stateSetting = 'spectrumImportState';
 
             var initialConfig = {
                 dataElementFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_DataElements_O-D_v002.xml',
                 indicatorFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Indicators_O-D_v002.xml',
-                dashboardFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Documents_O-D_V002.xml'
+                dashboardFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Documents_O-D_V002.xml',
+                strategy: {
+                    value: 'NEW',
+                    text: 'New Only'
+                }
             };
 
             var initialState = {
@@ -126,14 +130,18 @@
                 return resourceDeferred.promise;
             };
 
-            var uploadResource = function(path) {
+            var uploadResource = function(path, strategy) {
+                strategy = strategy || {
+                    value: 'NEW',
+                    text: 'New Only'
+                };
                 var resourceDeferred = $q.defer();
                 var parseImportResponse = function(response) {
                     var data = x2js.xml_str2json(response.data);
                     resourceDeferred.resolve(data);
                 };
                 loadResource(path).then(function(resource) {
-                    buildUrl('/api/metaData?strategy=CREATE_AND_UPDATE ').then(function(url) {
+                    buildUrl('/api/metaData?importStrategy=' + strategy.value).then(function(url) {
                         $http({
                             method: 'POST',
                             url: url,

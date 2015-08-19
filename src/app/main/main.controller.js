@@ -35,6 +35,7 @@
             };
             var setupState = function() {
                 dhis.getState().then(function(state) {
+                    $scope.strategy = state.strategy;
                     if (state.dataElement) {
                         if (state.indicator) {
                             if (state.dashboard) {
@@ -72,7 +73,7 @@
                 $scope.statusCode = error.status;
             };
             $scope.import = function(path) {
-                return dhis.uploadResource(path);
+                return dhis.uploadResource(path, $scope.strategy);
             };
             var importWasSuccess = function(importCount) {
                 return (parseInt(importCount._updated) + parseInt(importCount._imported)) > 0 && parseInt(importCount._ignored) === 0;
@@ -98,7 +99,7 @@
             $scope.loadItem = function() {
                 var resource = $scope.tab.resource;
                 $scope.loading = true;
-                dhis.uploadResource(resource).then(showResponse($scope.page, $scope.tab.name), handleError);
+                dhis.uploadResource(resource, $scope.strategy).then(showResponse($scope.page, $scope.tab.name), handleError);
             };
         }
     ]);

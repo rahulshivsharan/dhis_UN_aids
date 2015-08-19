@@ -2,7 +2,16 @@
     'use strict';
     angular.module('threebund').controller('SettingsController', ['$scope', 'dhis',
         function($scope, dhis) {
-
+            $scope.strategies = [{
+                value: 'NEW',
+                text: 'New Only'
+            }, {
+                value: 'NEW_AND_UPDATES',
+                text: 'New and Updates'
+            }, {
+                value: 'UPDATES',
+                text: 'Updates Only'
+            }];
             $scope.loading = true;
             dhis.getConfig().then(function(config) {
                 $scope.loading = false;
