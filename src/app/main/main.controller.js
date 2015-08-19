@@ -5,6 +5,7 @@
         function($scope, dhis) {
 
             var setupTabs = function(config) {
+                $scope.strategy = config.strategy;
                 $scope.tabs = {
                     'dataElement': {
                         'template': 'app/main/data-element.html',
@@ -35,7 +36,6 @@
             };
             var setupState = function() {
                 dhis.getState().then(function(state) {
-                    $scope.strategy = state.strategy;
                     if (state.dataElement) {
                         if (state.indicator) {
                             if (state.dashboard) {
