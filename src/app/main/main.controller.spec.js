@@ -23,7 +23,7 @@
                 'strategy': 'WORK'
             });
             $scope.$apply();
-            expect($scope.strategy).toBe('WORK')
+            expect($scope.strategy).toBe('WORK');
         });
     });
 })();
