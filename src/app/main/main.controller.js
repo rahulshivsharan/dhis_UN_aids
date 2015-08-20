@@ -75,13 +75,14 @@
             $scope.import = function(path) {
                 return dhis.uploadResource(path, $scope.strategy);
             };
-            var importWasSuccess = function(importCount) {
-                return (parseInt(importCount._updated) + parseInt(importCount._imported)) > 0 && parseInt(importCount._ignored) === 0;
+
+            var importWasSuccess = function(data) {
+                return !('conflicts' in data.importSummary.typeSummaries.typeSummary);
             };
 
             var showResponse = function(state, name) {
                 return function(data) {
-                    if (importWasSuccess(data.importSummary.importCount)) {
+                    if (importWasSuccess(data)) {
                         $scope.summaries = [];
                         $scope.summaries.push({
                             name: name,
