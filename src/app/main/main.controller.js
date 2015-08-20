@@ -76,24 +76,14 @@
                 return dhis.uploadResource(path, $scope.strategy);
             };
 
-            var importWasSuccess = function(data) {
-                return !('conflicts' in data.importSummary.typeSummaries.typeSummary);
-            };
-
             var showResponse = function(state, name) {
                 return function(data) {
-                    if (importWasSuccess(data)) {
-                        $scope.summaries = [];
-                        $scope.summaries.push({
-                            name: name,
-                            data: data.importSummary.importCount
-                        });
-                        dhis.updateState(state, true).then(setupState);
-                    } else {
-                        $scope.conflicts = data.importSummary.typeSummaries.typeSummary.conflicts.conflict;
-                        $scope.loading = false;
-                        $scope.hasConflicts = true;
-                    }
+                    $scope.summaries = [];
+                    $scope.summaries.push({
+                        name: name,
+                        data: data.importSummary.importCount
+                    });
+                    dhis.updateState(state, true).then(setupState);
                 };
             };
 
