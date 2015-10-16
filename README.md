@@ -34,3 +34,9 @@ To create a zip of the app application
     gulp pack
 
 The zip file should then be available in the folder target.
+
+You can find pre-built releases to DOWNLOAD HERE:
+
+    https://github.com/entuura/dhis2-unaids-eppspectrum/releases/
+
+
