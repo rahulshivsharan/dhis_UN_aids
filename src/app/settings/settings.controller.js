@@ -27,7 +27,7 @@
 
             $scope.resetState = function() {
                 $scope.loading = true;
-                dhis.putState("").then(function() {
+                dhis.putState({}).then(function() {
                     $scope.loading = false;
                 });
             };
