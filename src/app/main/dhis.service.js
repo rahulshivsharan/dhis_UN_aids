@@ -6,9 +6,9 @@
             var stateSetting = 'spectrumImportState';
 
             var initialConfig = {
-                dataElementFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_DataElements_O-D_v002.xml',
-                indicatorFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Indicators_O-D_v002.xml',
-                dashboardFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Documents_O-D_V002.xml',
+                dataElementFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_DataElements_v003.xml',
+                indicatorFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Indicators_v003.xml',
+                dashboardFile: 'http://dir.eshift.org/dhis-unaids/spectrum/UNAIDS_Documents_V003.xml',
                 strategy: {
                     value: 'NEW',
                     text: 'New Only'
