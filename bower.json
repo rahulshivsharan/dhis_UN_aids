@@ -14,7 +14,7 @@
     "animate.css": "~3.3.0",
     "angular": "~1.4.0",
     "angular-xml": "~2.1.1",
-    "fuelux": "~3.10.0",
+    "fuelux": "~3.14.2",
     "angular-bootstrap-confirm": "~0.2.0",
     "angular-loading-bar": "~0.8.0",
     "angular-spinner": "~0.6.2",
@@ -32,7 +32,7 @@
     },
     "fuelux": {
       "main": [
-        "dist/css/fuelux.css"
+        "dist/css/fuelux.min.css"
       ]
     },
     "requirejs": {
