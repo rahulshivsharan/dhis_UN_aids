@@ -58,7 +58,6 @@
                     $scope.tab = $scope.tabs[$scope.page];
                     $scope.template = $scope.tab.template;
                     $scope.loading = false;
-                    $scope.hasConflicts = false;
                 }
             }, true);
 
@@ -81,7 +80,7 @@
                     $scope.summaries = [];
                     $scope.summaries.push({
                         name: name,
-                        data: data.importSummary.importCount
+                        data: data.stats
                     });
                     dhis.updateState(state, true).then(setupState);
                 };

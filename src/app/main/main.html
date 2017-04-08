@@ -19,24 +19,16 @@
         </div>
     </div>
 </div>
-<div class="row" ng-show="hasConflicts">
-    <div class="col-md-12">
-        <h5>Errors</h5>
-        <div class="alert alert-danger" ng-repeat="conflict in conflicts">
-            <h6>{{conflict._object}}</h6>
-            <h6>{{conflict._value}}</h6>
-        </div>
-    </div>
-</div>
 <div class="row" ng-show="summaries.length">
     <div class="col-md-12">
         <div class="alert alert-info" ng-repeat="summary in summaries">
           <h5>{{summary.name}} Import Summary</h5>
           <ul>
-            <li>Imported {{summary.data._imported}}</li>
-            <li>Updated {{summary.data._updated}}</li>
-            <li>Ignored {{summary.data._ignored}}</li>
-            <li>Deleted {{summary.data._deleted}}</li>
+            <li>Created {{summary.data.created}}</li>
+            <li>Updated {{summary.data.updated}}</li>
+            <li>Ignored {{summary.data.ignored}}</li>
+            <li>Deleted {{summary.data.deleted}}</li>
+            <li>Total {{summary.data.total}}</li>
           </ul>
         </div>
     </div>
