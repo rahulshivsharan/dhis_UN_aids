@@ -30,6 +30,13 @@ function browserSyncInit(baseDir, browser) {
   server.middleware = proxyMiddleware('/api', {
     target: 'http://127.0.0.1:8080/'
   });
+
+  /*
+      if you want to change the port of server,
+      than add port in below configuration,
+      as mentioned below link
+      https://stackoverflow.com/questions/36950379/browser-sync-serve-command-with-different-port
+  */
   browserSync.instance = browserSync.init({
     startPath: '/',
     server: server,
