@@ -85,6 +85,7 @@
                 });
             };
             var getConfig = function() {
+                console.log(" Getting Config ");
                 var configDeferred = $q.defer();
                 var promise = getSetting(fileSetting);
                 promise.then(function(response) {
