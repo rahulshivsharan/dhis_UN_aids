@@ -8,7 +8,7 @@
     function routeConfig($stateProvider, $urlRouterProvider) {
         $stateProvider.state('home', {
                 url: '/',
-                templateUrl: 'app/demoApp/home.html',
+                templateUrl: 'app/main/home.html',
                 controller: 'homeController',
                 controllerAs: 'vm'
             });

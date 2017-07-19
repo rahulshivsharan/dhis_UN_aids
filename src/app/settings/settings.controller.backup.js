@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    angular.module('DureDHIS').controller('SettingsController', ['$scope', 'dhis',
+    angular.module('threebund').controller('SettingsController', ['$scope', 'dhis',
         function($scope, dhis) {
             $scope.strategies = [{
                 value: 'NEW',

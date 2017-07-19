@@ -17,15 +17,9 @@
                 templateUrl: 'app/settings/start.html',
                 controller: 'SettingsController',
                 controllerAs: 'SettingsController'
-            })/*.state('home', {
+            }).state('home', {
                 url: '/',
                 templateUrl: 'app/main/home.html',
-                controller: 'HomeController',
-                controllerAs: 'home'
-            })*/
-            .state('home', {
-                url: '/',
-                templateUrl: 'app/demoApp/home.html',
                 controller: 'HomeController',
                 controllerAs: 'home'
             });

@@ -10,7 +10,13 @@ var proxyMiddleware = require('http-proxy-middleware');
 function browserSyncInit(baseDir, browser) {
   browser = browser === undefined ? 'default' : browser;
   var routes = null;
-  if (baseDir === conf.paths.src || (util.isArray(baseDir) && baseDir.indexOf(conf.paths.src) !== -1)) {
+  
+  // Added logs just to check the values of baseDir and conf.paths.src
+  // the reason is after "gulp build",  
+  // when I used to run command "gulp serve:dist" it used to break.
+  console.log(" Base Dir ",baseDir);
+  console.log(" conf.paths.src ",conf.paths.src);
+  if (baseDir === conf.paths.src || (util.isArray(baseDir) && baseDir.indexOf(conf.paths.src) !== -1) || baseDir === "dist") { // added last condition baseDir for value "dist" 
     routes = {
       '/bower_components': 'bower_components'
     };
