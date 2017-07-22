@@ -1,43 +1,32 @@
-<uib-tabset>
-	<uib-tab heading="Organisation Units" active="true">
-		<!-- Tab index 0 Content -->
-		<table ng-init="vm.init()" class="table table-bordered">
-			<caption>Organisation Units</caption>
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="ou in vm.organisationUnits">
-					<td>{{ou.id}}</td>
-					<td>{{ou.displayName}}</td>
-				</tr>
-			</tbody>
-		</table>
-				
-	</uib-tab>
+<div class="progress" ng-show="vm.isLoading">
+	<div 	class="progress-bar progress-bar-striped active" 
+	  		role="progressbar" 
+	  		aria-valuenow="100" 
+	  		aria-valuemin="0" 
+	  		aria-valuemax="100" 
+	  		style="width: 100%">
+	    <span class="sr-only">100% Complete</span>
+	</div>
+</div>
 
-	<uib-tab heading="Data Elements">
-		<!-- Tab index 1 Content -->
-		<table class="table table-bordered">
-			<caption>Data Elements</caption>
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="de in vm.dataElements">
-					<td>{{de.id}}</td>
-					<td>{{de.displayName}}</td>
-				</tr>
-			</tbody>
-		</table>
+<form class="form-horizontal" ng-show="!vm.isLoading" ng-init="vm.init()">
+	<div class="form-group">
+		<label for="files" class="col-md-2 control-label">Select CSV File</label>
+		<div class="col-md-5">
+			<input type="file" class="file-chooser form-control" id="files" name="files[]" />	
+		</div>		
+	</div>	
+</form>
 
-	</uib-tab>	
-</uib-tabset>
+<div ui-grid="gridOptions" ui-grid-importer ng-class="vm.isVisible"></div>	
 
+
+	
+
+
+
+	
+
+
+	
 

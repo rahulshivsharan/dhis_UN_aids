@@ -1,0 +1,9 @@
+.gridHidden {
+  width:100%;
+  visibility: hidden;
+}
+
+.gridVisible {
+  width:100%;
+  visibility: visible;
+}

@@ -1,0 +1,43 @@
+<uib-tabset>
+	<uib-tab heading="Organisation Units" active="true">
+		<!-- Tab index 0 Content -->
+		<table ng-init="vm.init()" class="table table-bordered">
+			<caption>Organisation Units</caption>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="ou in vm.organisationUnits">
+					<td>{{ou.id}}</td>
+					<td>{{ou.displayName}}</td>
+				</tr>
+			</tbody>
+		</table>
+				
+	</uib-tab>
+
+	<uib-tab heading="Data Elements">
+		<!-- Tab index 1 Content -->
+		<table class="table table-bordered">
+			<caption>Data Elements</caption>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="de in vm.dataElements">
+					<td>{{de.id}}</td>
+					<td>{{de.displayName}}</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</uib-tab>	
+</uib-tabset>
+
+
