@@ -1,4 +1,4 @@
-<div class="progress" ng-show="vm.isLoading">
+<div class="progress" ng-show="vm.isLoading" ng-init="vm.init()">
 	<div 	class="progress-bar progress-bar-striped active" 
 	  		role="progressbar" 
 	  		aria-valuenow="100" 
@@ -8,25 +8,3 @@
 	    <span class="sr-only">100% Complete</span>
 	</div>
 </div>
-
-<form class="form-horizontal" ng-show="!vm.isLoading" ng-init="vm.init()">
-	<div class="form-group">
-		<label for="files" class="col-md-2 control-label">Select CSV File</label>
-		<div class="col-md-5">
-			<input type="file" class="file-chooser form-control" id="files" name="files[]" />	
-		</div>		
-	</div>	
-</form>
-
-<div ui-grid="gridOptions" ui-grid-importer ng-class="vm.isVisible"></div>	
-
-
-	
-
-
-
-	
-
-
-	
-

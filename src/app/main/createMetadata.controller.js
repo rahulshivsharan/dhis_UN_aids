@@ -14,6 +14,7 @@
 			success : false,
 			danger : false
 		};
+		vm.isLoading = false;
 
 		// public methods
 		vm.importDataElements = importDataElements;
@@ -23,11 +24,12 @@
 
 		function importDataElements(){
 			console.log(" Import metadata ");
-
+			vm.isLoading = true;
 			var promise = dhisService.createMetadata();
 			promise.then(function(response){ // success callback
 				vm.isAlert.visible = true;
 				vm.isAlert.success = true;
+				vm.isLoading = false;
 				navigateToUploadDataElements();
 			},function(response){ // error callback
 				vm.isAlert.visible = true;
@@ -38,6 +40,7 @@
 		function navigateToUploadDataElements(){	
 			$timeout(function(){
 				console.log("Navigate to Upload Data elements");
+				$state.go("uploadDataElements");
 			},2000);
 		} // end of 'navigateToUploadDataElements'
 

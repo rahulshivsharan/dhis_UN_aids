@@ -1,61 +1,70 @@
 (function() {
     'use strict';
     angular.module('DureDHIS').controller('homeController', homeController);
-    homeController.$inject = ["dhisService","$scope","$state"]
+    homeController.$inject = ["dhisService","$scope","$state","$q"]
 
-    function homeController(dhisService,$scope,$state){
+    function homeController(dhisService,$scope,$state,$q){
     	console.log("Home Controller is intialised");   
-        var vm = this;
-        vm.isVisible = "gridHidden";
+        
+        var vm = this;       
         vm.isLoading = false;
 
-        // private methods
-        var handleFileSelect = handleFileSelect;
+        // private methods        
         var checkIfDataElementsExists = checkIfDataElementsExists;
+        var isCurrentUserAdmin = isCurrentUserAdmin;
 
         // public methods and variables
     	vm.init = init;
-        $scope.data = [];
-
-        $scope.gridOptions = {
-            enableColumnResizing : true,
-            enableGridMenu: false,
-            data: 'data',
-            importerDataAddCallback: function (grid, newObjects){                
-              $scope.data = $scope.data.concat( newObjects );              
-            },
-            onRegisterApi: function(gridApi){
-              $scope.gridApi = gridApi;
-            }
-        }
+        
         
     	function init(){
-    	   vm.isLoading = true; 
-           checkIfDataElementsExists();
+    	   vm.isLoading = true;
+
+           // check if the current user is 
+           // admin user
+           isCurrentUserAdmin().then(function(flag){
+                if(flag === true){
+                    // if current user is admin; then further check
+                    // if are there any data elements present in system
+                    checkIfDataElementsExists();
+                }else{
+                    $state.go("uploadDataElements");
+                } 
+           },function(error){
+
+           }); 
+           
     	} // end of init
 
 
-        var fileChooser = document.querySelectorAll('.file-chooser');
-  
-        if (fileChooser.length !== 1){
-            console.log('Found > 1 or < 1 file choosers within the menu item, error, cannot continue');
-        }else{   
-            fileChooser[0].addEventListener('change', handleFileSelect, false);   
-        }
-
-        function handleFileSelect(event){            
-            var target = event.srcElement || event.target;
-            vm.isVisible = "gridVisible";
+        // this function loaded all the
+        // available userRoles in system,
+        // and compares the userroles with the
+        // current User. If the current user is Admin
+        // it flags it.
+        function isCurrentUserAdmin(){
+            var flag = false,
+                deferred = $q.defer();
+            dhisService.getBasicInfoOfCurrentUser().then(successFn,errorFn);
             
-            if (target && target.files && target.files.length === 1) {
-                
-                var fileObject = target.files[0];              
-                $scope.gridApi.importer.importFile( fileObject );
-                target.form.reset();          
-              
-            }// end of if
-        };
+            return deferred.promise;
 
+            function successFn(response){                
+                if(("admin" in response) && response["code"] === "admin"){
+                    flag = true;
+                }
+                deferred.resolve(flag);                
+            }; // end of successFn
+
+            function errorFn(response){
+                console.log(response);
+                deferred.reject("error");
+            }
+
+        } // end of 'loadAllUserRoles'
+        
+        // are there any data elements 
+        // present in system
         function checkIfDataElementsExists(){
             var promise = dhisService.getDataElements("filter=id:eq:rhXstKVfvvj");
             promise.then(successFn,errorFn);
@@ -65,13 +74,20 @@
                 if(angular.isDefined(response["dataElements"]) 
                         && angular.isArray(response["dataElements"]) 
                         && response["dataElements"].length >= 1){
-                    //$state.go("");
+                    
                     dataElements = response["dataElements"]; 
                     
+                    // if data elements present; then navigate to 
+                    // upload Data elements page
                     if(dataElements[0]["id"] === "rhXstKVfvvj"){
                         vm.isLoading = false;
-                        $state.go("importMetadata");
+                        $state.go("uploadDataElements");
                     }                    
+                }else{
+
+                    // if system doesn't contain data element
+                    // then load upload metadata page
+                    $state.go("importMetadata");
                 }
             }
 
