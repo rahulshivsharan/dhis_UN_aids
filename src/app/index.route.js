@@ -18,10 +18,15 @@
                 controllerAs: 'vm'
         }).state('uploadDataElements', {
                 url: '/uploadDataElements',
+                templateUrl: 'app/main/dataElementsMapping.html',
+                controller: 'dataElementsController',
+                controllerAs: 'vm'
+        })/*.state('uploadDataElements', {
+                url: '/uploadDataElements',
                 templateUrl: 'app/main/uploadDataElements.html',
                 controller: 'uploadDataElementsController',
                 controllerAs: 'vm'
-        });
+        })*/;
 
         $urlRouterProvider.otherwise('/');
     }

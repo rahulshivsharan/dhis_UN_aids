@@ -24,7 +24,7 @@
             enableColumnResizing : true,
             enableGridMenu: false,
             data: 'data',
-            importerDataAddCallback: function (grid, newObjects){                
+            importerDataAddCallback: function (grid, newObjects){
               $scope.data = $scope.data.concat( newObjects );              
             },
             onRegisterApi: function(gridApi){
@@ -48,7 +48,7 @@
             if (target && target.files && target.files.length === 1) {
                 
                 var fileObject = target.files[0];              
-                $scope.gridApi.importer.importFile( fileObject );
+                $scope.gridApi.importer.importFile(fileObject);
                 target.form.reset();          
               
             }// end of if

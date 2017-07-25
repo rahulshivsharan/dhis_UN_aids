@@ -31,7 +31,7 @@
                     $state.go("uploadDataElements");
                 } 
            },function(error){
-
+                // error
            }); 
            
     	} // end of init

@@ -66,7 +66,7 @@
 			var url = DHIS_BACKEND + "/api/24/dataElements.json";
 
 			if(angular.isDefined(queryParameters) && queryParameters !== null && queryParameters.trim() !== ""){
-				url += "?" + queryParameters;
+				url += "?" + queryParameters; // Example /api/24/dataElements.json?filter=id:eq:rhXstKVfvvj
 			}
 
 			var deferred = $q.defer();
