@@ -20,7 +20,8 @@
     "angular-spinner": "~0.6.2",
     "lodash": "~3.10.0",
     "angular-ui-grid": "^4.0.6",
-    "CSV-JS": "csv-js#^1.1.1"
+    "CSV-JS": "csv-js#^1.1.1",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0"

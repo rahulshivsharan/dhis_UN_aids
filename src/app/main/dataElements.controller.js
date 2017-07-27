@@ -16,6 +16,7 @@
         vm.tableRowData = []; // contrains row data i.e. and array of array [[],[]... ]
         vm.dataElements = undefined;
         vm.isEditTable = 1;
+        vm.selectedDataElement = [];
 		
 
 		// private methods
@@ -87,7 +88,8 @@
             var rowData = undefined;
             var rowDataSet = undefined;
             var tableHeaders = [];
-            var tableRowData = []
+            var tableRowData = [];
+            
             for(var index = 0; index < statements.length; index++){
                 rowData = statements[index];    
                 rowDataSet = rowData.split(",");

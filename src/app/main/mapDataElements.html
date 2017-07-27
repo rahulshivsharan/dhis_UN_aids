@@ -1,0 +1,24 @@
+<table class="table" ng-init="vm.init()">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Actual Values</th>
+			<th>Map To</th>
+		</tr>
+	</thead>
+	<tbody>		
+		<tr>
+			<td align="right">Map Data Elements</td>
+			<td>
+				<select class="form-control" ng-model="vm.selectedDataElementId" ng-options="key as key for (key,value) in vm.dataElementIdMap">
+					<option value="">Select</option>
+				</select>
+			</td>
+			<td>
+				<select class="form-control" ng-model="vm.selectedDataElementId" ng-options="key as key for (key,value) in vm.dataElementIdMap">
+					<option value="">Select</option>
+				</select>
+			</td>
+		</tr>			
+	</tbody>	
+</table>

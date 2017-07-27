@@ -8,6 +8,11 @@
 
 		var service = {};
 
+		// 'dataElementObject' object is used in 
+		// holding the values when data-elements from Dhis
+		// comma seperated files is uploaded
+		var dataElementObject = undefined; 
+
 		// public methods
 		service.getOrganisationUnits = getOrganisationUnits;
 		service.getDataElements = getDataElements; 
@@ -15,11 +20,24 @@
 		service.getBasicInfoOfCurrentUser = getBasicInfoOfCurrentUser;
 		service.getUserRoles = getUserRoles;
 
+		service.setDataElementObject = setDataElementObject;
+		service.getDataElementObject = getDataElementObject;
+
 		// private methods
 		var getData = getData;
 
 		return service;
 
+		// getters and setters for property 'dataElementObject'
+		function setDataElementObject(obj){
+			dataElementObject = obj;
+		}
+
+		function getDataElementObject(){
+			return dataElementObject;
+		} 
+
+		// get organisation Unit from server
 		function getOrganisationUnits(){
 			var url = DHIS_BACKEND + "/api/organisationUnits.json";
 			var deferred = $q.defer();

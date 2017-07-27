@@ -16,17 +16,22 @@
                 templateUrl: 'app/main/createMetadata.html',
                 controller: 'createMetadataCtrl',
                 controllerAs: 'vm'
-        }).state('uploadDataElements', {
+        })/*.state('uploadDataElements', {
                 url: '/uploadDataElements',
                 templateUrl: 'app/main/dataElementsMapping.html',
                 controller: 'dataElementsController',
                 controllerAs: 'vm'
-        })/*.state('uploadDataElements', {
+        })*/.state('uploadDataElements', {
                 url: '/uploadDataElements',
                 templateUrl: 'app/main/uploadDataElements.html',
                 controller: 'uploadDataElementsController',
                 controllerAs: 'vm'
-        })*/;
+        }).state('mapDataElements', {
+                url: '/mapDataElements',
+                templateUrl: 'app/main/mapDataElements.html',
+                controller: 'mapDataElementsController',
+                controllerAs: 'vm'
+        });
 
         $urlRouterProvider.otherwise('/');
     }

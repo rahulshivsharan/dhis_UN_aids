@@ -11,5 +11,6 @@
         						'xml',
         						'ui.grid', 
         						'ui.grid.importer',
-        						'ui.grid.resizeColumns']);
+        						'ui.grid.resizeColumns',
+                                'underscore']);
 })();
