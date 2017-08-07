@@ -2,7 +2,7 @@
 	'use strict'
 	angular.module("DureDHIS").factory("dhisService",dhisService);	
 
-	dhisService.$inject = ["DHIS_BACKEND","$http","$q"]
+	dhisService.$inject = ["DHIS_BACKEND","$http","$q"];
 
 	function dhisService(DHIS_BACKEND,$http,$q){
 
@@ -19,14 +19,39 @@
 		service.createMetadata = createMetadata;
 		service.getBasicInfoOfCurrentUser = getBasicInfoOfCurrentUser;
 		service.getUserRoles = getUserRoles;
-
-		service.setDataElementObject = setDataElementObject;
+		service.createOrganisationUnit = createOrganisationUnit;
+		service.setDataElementObject = setDataElementObject;	
 		service.getDataElementObject = getDataElementObject;
 
 		// private methods
 		var getData = getData;
+		var parseResponse = parseResponse;
 
 		return service;
+
+		function parseResponse(response){
+				var jsonString = undefined,
+					jsonResponseObj = undefined;
+
+				// the below condition is added 
+				// to parse the response according to the endpoint configured.
+				// the first condition is for testing (i.e. DHIS_BACKEND pointing to testing or local environment) 
+				// where as the second condition is for production (i.e. DHIS_BACKEND pointing to production;
+				// when deployed in DHIS). 	
+				if("body" in response.data){
+					if(angular.isString(response.data.body)){
+						jsonString = response.data.body;
+						jsonResponseObj = JSON.parse(jsonString);	
+					}else{
+						jsonResponseObj = response.data.body;
+					}					
+						
+				}else{					
+					jsonResponseObj = response.data
+				}
+
+			return 	jsonResponseObj;
+		} // end of parseResponse
 
 		// getters and setters for property 'dataElementObject'
 		function setDataElementObject(obj){
@@ -49,35 +74,44 @@
 
 			return deferred.promise;
 
-			function successFn(response){
-				
-				var jsonString = undefined,
-					jsonResponseObj = undefined;
-
-				// the below condition is added 
-				// to parse the response according to the endpoint configured.
-				// the first condition is for testing (i.e. DHIS_BACKEND pointing to testing or local environment) 
-				// where as the second condition is for production (i.e. DHIS_BACKEND pointing to production;
-				// when deployed in DHIS). 	
-				if("body" in response.data){
-					if(angular.isString(response.data.body)){
-						jsonString = response.data.body;
-						jsonResponseObj = JSON.parse(jsonString);	
-					}else{
-						jsonResponseObj = response.data.body;
-					}					
-						
-				}else{					
-					jsonResponseObj = response.data
-				}	
-				
+			function successFn(response){				
+				var jsonResponseObj = parseResponse(response);				
 				deferred.resolve(jsonResponseObj);
 			} // end of successFn
 
 			function errorFn(response){
-				deferred.reject(response);
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
 			} // end of errorFn
 		} // end of "getOrganisationUnits" 
+
+		function createOrganisationUnit(id,name,shortName,openingDate){
+			var url = DHIS_BACKEND + "/api/organisationUnits.json";
+			var deferred = $q.defer();
+			
+			$http({
+				"method" : "POST",
+				"url" : url,
+				"data" : {
+					"id" : id,
+					"name" : name,
+  					"shortName" : shortName,
+  					"openingDate" : openingDate
+				}
+			}).then(successFn,errorFn);
+
+			return deferred.promise;
+
+			function successFn(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.resolve(jsonResponseObj);
+			} // end of successFn
+
+			function errorFn(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
+			} // end of errorFn
+		}// end of createOrganisationUnit
 
 
 		function getDataElements(queryParameters){
@@ -97,27 +131,13 @@
 			return deferred.promise;
 
 			function successFn(response){
-				
-				var jsonString = undefined,
-					jsonResponseObj = undefined;
-
-				// the below condition is added 
-				// to parse the response according to the endpoint configured.
-				// the first condition is for testing (i.e. DHIS_BACKEND pointing to testing or local environment) 
-				// where as the second condition is for production (i.e. DHIS_BACKEND pointing to production;
-				// when deployed in DHIS). 	
-				if("body" in response.data){					
-					jsonString = response.data.body;
-					jsonResponseObj = JSON.parse(jsonString);	
-				}else{					
-					jsonResponseObj = response.data
-				}	
-				
-				deferred.resolve(jsonResponseObj);
+				var jsonResponseObj = parseResponse(response);				
+				deferred.resolve(jsonResponseObj);			
 			} // end of successFn
 
 			function errorFn(response){
-				deferred.reject(response);
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
 			} // end of errorFn
 		} // end of "getOrganisationUnits"
 
@@ -134,29 +154,13 @@
 			return deferred.promise;
 
 			function successFn(response){
-				var jsonString = undefined,
-					jsonResponseObj = undefined;
-
-				// the below condition is added 
-				// to parse the response according to the endpoint configured.
-				// the first condition is for testing (i.e. DHIS_BACKEND pointing to testing or local environment) 
-				// where as the second condition is for production (i.e. DHIS_BACKEND pointing to production;
-				// when deployed in DHIS). 	
-				if("body" in response.data){					
-					if(angular.isString(response.data.body)){
-						jsonString = response.data.body;
-						jsonResponseObj = JSON.parse(jsonString);	
-					}else{
-						jsonResponseObj = response.data.body;
-					}		
-				}else{					
-					jsonResponseObj = response.data
-				}
+				var jsonResponseObj = parseResponse(response);
 				deferred.resolve(jsonResponseObj);
 			}// end of successFn
 
 			function errorFn(response){
-				deferred.reject(response);
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
 			}
 
 		} // end of 'createMetadata'
@@ -172,28 +176,14 @@
 
 			return deferred.promise;
 
-			function successFn(response){
-				
-				var jsonString = undefined,
-					jsonResponseObj = undefined;
-
-				// the below condition is added 
-				// to parse the response according to the endpoint configured.
-				// the first condition is for testing (i.e. DHIS_BACKEND pointing to testing or local environment) 
-				// where as the second condition is for production (i.e. DHIS_BACKEND pointing to production;
-				// when deployed in DHIS). 	
-				if("body" in response.data){					
-					jsonString = response.data.body;
-					jsonResponseObj = JSON.parse(jsonString);	
-				}else{					
-					jsonResponseObj = response.data
-				}	
-				
+			function successFn(response){				
+				var jsonResponseObj = parseResponse(response);				
 				deferred.resolve(jsonResponseObj);
 			} // end of successFn
 
 			function errorFn(response){
-				deferred.reject(response);
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
 			} // end of errorFn
 			 
 		} // end of 'getBasicInfoOfCurrentUser'
@@ -211,27 +201,13 @@
 			return deferred.promise;
 
 			function successFn(response){
-				
-				var jsonString = undefined,
-					jsonResponseObj = undefined;
-
-				// the below condition is added 
-				// to parse the response according to the endpoint configured.
-				// the first condition is for testing (i.e. DHIS_BACKEND pointing to testing or local environment) 
-				// where as the second condition is for production (i.e. DHIS_BACKEND pointing to production;
-				// when deployed in DHIS). 	
-				if("body" in response.data){					
-					jsonString = response.data.body;
-					jsonResponseObj = JSON.parse(jsonString);	
-				}else{					
-					jsonResponseObj = response.data
-				}	
-				
-				deferred.resolve(jsonResponseObj);
+				var jsonResponseObj = parseResponse(response);				
+				deferred.resolve(jsonResponseObj);				
 			} // end of successFn
 
 			function errorFn(response){
-				deferred.reject(response);
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
 			} // end of errorFn
 		}// end of function 'getUserRoles'
 

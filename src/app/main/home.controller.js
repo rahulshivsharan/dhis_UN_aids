@@ -49,8 +49,9 @@
             
             return deferred.promise;
 
-            function successFn(response){                
-                if(("admin" in response) && response["code"] === "admin"){
+            function successFn(response){  
+                             
+                if(response["code"] === "admin"){
                     flag = true;
                 }
                 deferred.resolve(flag);                

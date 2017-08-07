@@ -7,3 +7,7 @@
   width:100%;
   visibility: visible;
 }
+
+.form-error{
+	color:red;
+}

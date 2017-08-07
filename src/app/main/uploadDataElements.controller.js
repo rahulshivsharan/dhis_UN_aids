@@ -3,26 +3,30 @@
 
 	angular.module('DureDHIS').controller("uploadDataElementsController",uploadDataElementsController);
 
-	uploadDataElementsController.$inject = ["$scope","dhisService","$state"];
+	uploadDataElementsController.$inject = ["$scope","dhisService","$state","$uibModal"];
 
-	function uploadDataElementsController($scope,dhisService,$state){
+	function uploadDataElementsController($scope,dhisService,$state,$uibModal){
 		console.log("'uploadDataElementsController' is initialised");
 		var vm = this;		
 
-		// private methods
-        var handleFileSelect = handleFileSelect;
-        var processFileContentForDisplay = processFileContentForDisplay;
+        // public variables
+        $scope.data = [];
+        vm.isVisible = "gridHidden";
+        vm.isLoading = false;
 
         // private variables
         var fileContent = undefined;
 		
-		// public methods and variables
-    	vm.init = init;
-        $scope.data = [];
-        vm.isVisible = "gridHidden";
-        vm.isLoading = false;
+        // public methods 
+        vm.init = init;
         vm.navigateToMapDataElements = navigateToMapDataElements;
+        vm.openCreateOrgUnitModal = openCreateOrgUnitModal;
 
+        // private methods
+        var handleFileSelect = handleFileSelect;
+        var processFileContentForDisplay = processFileContentForDisplay;
+
+        
         $scope.gridOptions = {
             enableColumnResizing : true,
             enableGridMenu: false,
@@ -110,6 +114,30 @@
         function navigateToMapDataElements(){
             $state.go("mapDataElements");
         }
+
+
+        function openCreateOrgUnitModal(){
+            console.log("Opening Create Organisation Unit Modal");
+
+            var modalInstance = $uibModal.open({
+                "animation" : true,
+                "ariaLabelledBy" : "modal-title",
+                "ariaDescribedBy" : "modal-body",
+                "templateUrl" : "app/main/modal.createOrgUnit.html",
+                "controller" : "createOrgUnitController",
+                "controllerAs" : "vm"                
+            });
+
+            modalInstance.result.then(success,error);
+
+            function success(response){
+                console.log(response);
+            }
+
+            function error(response){
+                console.log(response);
+            }
+        } // end of openCreateOrgUnitModal
 
 	} // end of 'uploadDataElementsController'
 })();

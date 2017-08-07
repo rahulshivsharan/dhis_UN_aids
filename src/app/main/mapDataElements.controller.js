@@ -54,7 +54,7 @@
 
 			dhisService.getDataElements().then(function(response){ // error
 				vm.data_element_list = response["dataElements"];
-				console.log(vm.data_element_list);
+				//console.log(vm.data_element_list);
 			},function(response){ // error
 				console.log(response);
 			});			
@@ -105,6 +105,6 @@
 				}				
 			} 
 		} // groupByAttributeOptionCombo
-		
+
 	}// end of 'mapDataElementsController'
 })();

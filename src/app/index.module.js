@@ -12,5 +12,6 @@
         						'ui.grid', 
         						'ui.grid.importer',
         						'ui.grid.resizeColumns',
-                                'underscore']);
+                                'underscore',
+                                'angularMoment']);
 })();
