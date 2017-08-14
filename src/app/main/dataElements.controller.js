@@ -3,32 +3,31 @@
 
 	angular.module('DureDHIS').controller("dataElementsController",dataElementsController);
 
-	dataElementsController.$inject = ["$scope","dhisService"];
+	dataElementsController.$inject = ["$scope","dhisService","$state"];
 
-	function dataElementsController($scope,dhisService){
+	function dataElementsController($scope,dhisService,$state){
 		console.log("'dataElementsController' is initialised");
 
 		var vm = this;
         vm.data = [];
-		vm.isVisible = "gridHidden";
-		vm.isLoading = false;
+		vm.isVisible = "gridHidden";		
+        vm.isLoading = "hideContent";
         vm.tableHeaders = []; // contains table headers
-        vm.tableRowData = []; // contrains row data i.e. and array of array [[],[]... ]
-        vm.dataElements = undefined;
+        vm.tableRowData = []; // contains row data i.e. and array of array [[],[]... ]        
         vm.isEditTable = 1;
         vm.selectedDataElement = [];
-		
+		vm.navigateToMapDataElements = navigateToMapDataElements;
 
 		// private methods
         var handleFileSelect = handleFileSelect;
         var processFileContentForDisplay = processFileContentForDisplay;
-        var loadDataElements = loadDataElements;
+        
 
         // private variables
         var fileContent = undefined;
+        var dataElementMap = undefined;
 		
-		// public methods and variables
-    	vm.init = init;        
+		// public methods and variables    	      
         vm.editMapping = editMapping;
 
         
@@ -42,11 +41,15 @@
             fileChooser[0].addEventListener('change', handleFileSelect, false);   
         }
 
-        function handleFileSelect(event){            
+        function handleFileSelect(event){
             var target = event.srcElement || event.target;
             var reader = new FileReader();
-            vm.isVisible = "gridVisible";
             
+            
+            $scope.$apply(function(){                
+                vm.isLoading = "showContent";
+                console.log("Display loading image ",vm.isLoading);
+            }); 
 
 
             if (target && target.files && target.files.length === 1) {                
@@ -61,35 +64,19 @@
             reader.readAsText(fileObject);    
         }; // end of 'handleFileSelect'
 
-        function init(){
-        	loadDataElements();   
-        }
-
-        // fetch data elements to be shown in table
-        function loadDataElements(){
-            dhisService.getDataElements().then(successFn,errorFn);
-
-            function successFn(response){
-                console.log(" DataElements loaded ",response);
-                vm.dataElements = response["dataElements"]
-            }
-
-            function errorFn(response){
-                console.log(response);
-            }
-        } // end of loadDataElements
 
         function editMapping(){
             vm.isEditTable = 0;
         } // end of editMapping
 
-        function processFileContentForDisplay(){
+        function processFileContentForDisplay(){               
             var statements = fileContent.split("\n");
             var rowData = undefined;
             var rowDataSet = undefined;
             var tableHeaders = [];
             var tableRowData = [];
-            
+            var $key = undefined, $value = undefined;
+            dataElementMap = {};
             for(var index = 0; index < statements.length; index++){
                 rowData = statements[index];    
                 rowDataSet = rowData.split(",");
@@ -99,15 +86,28 @@
                         tableHeaders.push(value); // data to be shown in table header
                     });
                 }else{
-                    tableRowData.push(rowDataSet); // data to be shown in table row
+                    tableRowData.push(rowDataSet); // data to be shown in table row                    
+                    $key = rowDataSet[1];
+                    $value = rowDataSet[0];
+                    
+                    if(angular.isDefined(rowDataSet[1]) && angular.isDefined(rowDataSet[0])){
+                        dataElementMap[$key] = $value;    
+                    }                    
                 }                
             } // end of for
 
             $scope.$apply(function(){
                 vm.tableHeaders = tableHeaders;
                 vm.tableRowData = tableRowData;
+                vm.isLoading = "hideContent";
+                vm.isVisible = "gridVisible";
+                dhisService.setDataElementObject(dataElementMap);
             });
         }// end of processFileContentForDisplay
 
-	} // end of 'uploadDataElementsController'
+        function navigateToMapDataElements(){
+            $state.go("mapDataElements");
+        }
+
+	} // end of 'dataElementsController'
 })();

@@ -1,63 +1,16 @@
 <table class="table table-stripped" ng-init="vm.init()">
+	<caption>Data Elements</caption>
 	<thead>
-		<tr>
-			<th></th>
+		<tr>			
 			<th>Actual Values</th>
 			<th>Map To</th>
 		</tr>
 	</thead>
 	<tbody>		
-		<tr>
-			<td align="right" valign="center">Data Elements</td>
-			<td>
-				<select class="form-control" ng-model="vm.selectedDataElementId" ng-options="dataElements as dataElements for dataElements in vm.dataElementIdMap">
-					<option value="">Select</option>
-				</select>
-			</td>
-			<td>
-				<select class="form-control" ng-model="vm.mapValueSelectedDataElementId" ng-options="de.id as de.displayName for de in vm.data_element_list">
-					<option value="">Select</option>
-				</select>
-			</td>
+		<tr ng-repeat="(k,v) in vm.dataElementsMap">			
+			<td>{{v}}</td>
+			<td></td>
 		</tr>
-		<tr>
-			<td align="right" valign="center">Organisation Unit</td>
-			<td>
-				<select class="form-control" ng-model="vm.selectedOrgUnitId" ng-options="ou as ou for ou in vm.orgUnitMap">
-					<option value="">Select</option>
-				</select>
-			</td>
-			<td>
-				<select class="form-control" ng-model="vm.mapValueSelectedOrgUnitId" ng-options="de.id as de.displayName for de in vm.data_element_list">
-					<option value="">Select</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" valign="center">Category Option Combo</td>
-			<td>
-				<select class="form-control" ng-model="vm.selectedCategoryOptionId" ng-options="co as co for co in vm.categoryOptionComboMap">
-					<option value="">Select</option>
-				</select>
-			</td>
-			<td>
-				<select class="form-control" ng-model="vm.mapValueSelectedCategoryOptionId" ng-options="de.id as de.displayName for de in vm.data_element_list">
-					<option value="">Select</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" valign="center">Attribute Option Combo</td>
-			<td>
-				<select class="form-control" ng-model="vm.selectedAttrOptionId" ng-options="ao as ao for ao in vm.attributeOptionComboMap">
-					<option value="">Select</option>
-				</select>
-			</td>
-			<td>
-				<select class="form-control" ng-model="vm.mapValueSelectedAttrOptionId" ng-options="de.id as de.displayName for de in vm.data_element_list">
-					<option value="">Select</option>
-				</select>
-			</td>
-		</tr>			
+					
 	</tbody>	
 </table>

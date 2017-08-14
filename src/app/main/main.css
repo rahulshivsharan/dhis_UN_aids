@@ -11,3 +11,11 @@
 .form-error{
 	color:red;
 }
+
+.showContent {
+	visibility: visible;
+}
+
+.hideContent {
+	visibility: hidden;
+}
