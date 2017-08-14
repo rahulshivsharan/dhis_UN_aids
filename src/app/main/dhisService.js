@@ -22,6 +22,7 @@
 		service.createOrganisationUnit = createOrganisationUnit;
 		service.setDataElementObject = setDataElementObject;	
 		service.getDataElementObject = getDataElementObject;
+		service.getMetaDataFile = getMetaDataFile;
 
 		// private methods
 		var getData = getData;
@@ -40,7 +41,7 @@
 				// when deployed in DHIS). 	
 				if("body" in response.data){
 					if(angular.isString(response.data.body)){
-						jsonString = response.data.body;
+						jsonString = response.data.body;						
 						jsonResponseObj = JSON.parse(jsonString);	
 					}else{
 						jsonResponseObj = response.data.body;
@@ -103,7 +104,20 @@
 			return deferred.promise;
 
 			function successFn(response){
-				var jsonResponseObj = parseResponse(response);
+				var jsonResponseObj = undefined;
+
+				if("body" in response.data){
+					if(angular.isString(response.data.body)){
+						jsonString = response.data.body;						
+						jsonResponseObj = JSON.parse(jsonString);	
+					}else{
+						jsonResponseObj = response.data.body;
+					}					
+						
+				}else{					
+					jsonResponseObj = response.data
+				}
+				
 				deferred.resolve(jsonResponseObj);
 			} // end of successFn
 
@@ -141,14 +155,17 @@
 			} // end of errorFn
 		} // end of "getOrganisationUnits"
 
-		function createMetadata(){
-			var url = DHIS_BACKEND + "/api/metadata.json";
+		function createMetadata(xmlData){
+			var url = DHIS_BACKEND + "/api/metadata";
 			var deferred = $q.defer();
 
 			$http({
 				"method" : "POST",
 				"url" : url,
-				"data" : getData()
+				"header" : {
+					"Content-type" : "application/xml",
+				},
+				"data" : xmlData
 			}).then(successFn,errorFn);
 
 			return deferred.promise;
@@ -315,6 +332,29 @@
 			return data;
 		} // end of getData
 
+		function getMetaDataFile(){
+		var url = "app/main/UNAIDS_metadata.xml";
+		var deferred = $q.defer();
+		var success = success, error = error;
+
+		$http({
+			"method" : "GET",
+			"url" : url
+		}).then(success,error);
+
+		return deferred.promise;
+
+		function success(response){
+			deferred.resolve(response);
+		}
+
+		function error(response){
+			deferred.reject(response);
+		}
+	}// end of getMetaDataFile
+
 	} // end of dhisService
+
+
 
 })();

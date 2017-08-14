@@ -8,6 +8,10 @@
 		console.log("create metadata Controller is intialised");
 		var vm = this;
 
+		// private variables
+		var xmlMetadata = undefined;
+		var xmlData = undefined;
+
 		// public variables
 		vm.isAlert = {
 			visible : false,
@@ -17,15 +21,16 @@
 		vm.isLoading = false;
 
 		// public methods
+		vm.init = init;
 		vm.importDataElements = importDataElements;
 
 		// private methods
 		var navigateToUploadDataElements = navigateToUploadDataElements;
 
 		function importDataElements(){
-			console.log(" Import metadata ");
+			//console.log(" Import metadata ",xmlMetadata);
 			vm.isLoading = true;
-			var promise = dhisService.createMetadata();
+			var promise = dhisService.createMetadata(xmlData);
 			promise.then(function(response){ // success callback
 				vm.isAlert.visible = true;
 				vm.isAlert.success = true;
@@ -44,6 +49,18 @@
 			},1000);
 		} // end of 'navigateToUploadDataElements'
 
+		function init(){
+			var promise = dhisService.getMetaDataFile();
+			promise.then(function(response){ // success
+								
+				//var parser = new DOMParser();
+				//xmlMetadata = parser.parseFromString(response["data"],"text/xml");
+				xmlData = response["data"];
+				//console.log(xmlData);
+			},function(response){ // error
+				console.log(response);
+			});
+		} // end of init
 
 	}// end of createMetadataCtrl	
 })();

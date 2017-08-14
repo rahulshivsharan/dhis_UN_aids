@@ -22,18 +22,11 @@
 <div class="container" ng-class="vm.isVisible">
 	<input type="button" class="btn btn-primary" value="Edit" ng-click="vm.editMapping()"/>
 	<br/><br/>
-	<table class="table table-bordered">
+	<table class="table">
 		<thead>
 			<tr>
-				<th ng-repeat="header in vm.tableHeaders">{{header}}</th>
-			</tr>
-			<tr ng-if="!vm.isEditTable">
-				<th ng-repeat="header in vm.tableHeaders track by $index">
-					<select ng-model="vm.selectedDataElement[$index]" ng-options="de.id as de.displayName for de in vm.dataElements" class="form-control">
-						<option value="">Select</option>
-					</select>
-				</th>
-			</tr>
+				<th ng-repeat="header in vm.tableHeaders track by $index">{{header}}</th>
+			</tr>			
 		</thead>
 		<tbody>
 			<tr ng-repeat="rowDataSet in vm.tableRowData">
