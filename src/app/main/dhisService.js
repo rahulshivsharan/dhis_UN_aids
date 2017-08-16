@@ -23,6 +23,7 @@
 		service.setDataElementObject = setDataElementObject;	
 		service.getDataElementObject = getDataElementObject;
 		service.getMetaDataFile = getMetaDataFile;
+		service.getCategoryOptionCombos = getCategoryOptionCombos;
 
 		// private methods
 		var getData = getData;
@@ -117,7 +118,7 @@
 				}else{					
 					jsonResponseObj = response.data
 				}
-				
+
 				deferred.resolve(jsonResponseObj);
 			} // end of successFn
 
@@ -333,28 +334,50 @@
 		} // end of getData
 
 		function getMetaDataFile(){
-		var url = "app/main/UNAIDS_metadata.xml";
-		var deferred = $q.defer();
-		var success = success, error = error;
+			var url = "app/main/UNAIDS_metadata.xml";
+			var deferred = $q.defer();
+			var success = success, error = error;
 
-		$http({
-			"method" : "GET",
-			"url" : url
-		}).then(success,error);
+			$http({
+				"method" : "GET",
+				"url" : url
+			}).then(success,error);
 
-		return deferred.promise;
+			return deferred.promise;
 
-		function success(response){
-			deferred.resolve(response);
-		}
+			function success(response){
+				deferred.resolve(response);
+			}
 
-		function error(response){
-			deferred.reject(response);
-		}
-	}// end of getMetaDataFile
+			function error(response){
+				deferred.reject(response);
+			}
+
+		}// end of getMetaDataFile
+
+		function getCategoryOptionCombos(){
+			var url = DHIS_BACKEND + "/api/categoryOptionCombos.json";
+			var deferred = $q.defer();
+			var success = success, error = error;
+
+			$http({
+				"method" : "GET",
+				"url" : url
+			}).then(success,error);
+
+			return deferred.promise;
+
+			function success(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.resolve(jsonResponseObj);
+			}
+
+			function error(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
+			}
+		} // end of getCategoryOptionCombos
 
 	} // end of dhisService
-
-
 
 })();
