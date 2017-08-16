@@ -11,7 +11,9 @@
 		// 'dataElementObject' object is used in 
 		// holding the values when data-elements from Dhis
 		// comma seperated files is uploaded
-		var dataElementObject = undefined; 
+		var dataElementObject = undefined;
+		var tableRowData = undefined; // contains row data i.e. and array of array [[],[]... ]    
+		var ou = undefined;
 
 		// public methods
 		service.getOrganisationUnits = getOrganisationUnits;
@@ -24,9 +26,13 @@
 		service.getDataElementObject = getDataElementObject;
 		service.getMetaDataFile = getMetaDataFile;
 		service.getCategoryOptionCombos = getCategoryOptionCombos;
+		service.setTableRowData = setTableRowData;
+		service.getTableRowData = getTableRowData;
+		service.setOU = setOU;
+		service.getOU = getOU;
+		service.resetValues = resetValues;
 
-		// private methods
-		var getData = getData;
+		// private methods		
 		var parseResponse = parseResponse;
 
 		return service;
@@ -55,6 +61,15 @@
 			return 	jsonResponseObj;
 		} // end of parseResponse
 
+		// getters and setters for property 'tableRowData'
+		function setTableRowData(tData){
+			tableRowData = tData;
+		}
+
+		function getTableRowData(){
+			return tableRowData;
+		}
+
 		// getters and setters for property 'dataElementObject'
 		function setDataElementObject(obj){
 			dataElementObject = obj;
@@ -63,6 +78,21 @@
 		function getDataElementObject(){
 			return dataElementObject;
 		} 
+
+		// getters and setters for property 'OU'(Organisation Unit)
+		function setOU(obj){
+			ou = obj;
+		}
+
+		function getOU(){
+			return ou;
+		} 
+
+		function resetValues(){
+			dataElementObject = undefined;
+			tableRowData = undefined;
+			ou = undefined;
+		}
 
 		// get organisation Unit from server
 		function getOrganisationUnits(){
@@ -229,109 +259,6 @@
 			} // end of errorFn
 		}// end of function 'getUserRoles'
 
-		function getData(){
-			var data = {
-				"system": {
-					"id": "eed3d451-4ff5-4193-b951-ffcc68954299",
-					"rev": "78cffad",
-					"version": "2.27",
-					"date": "2017-07-03T12:18:42.935"
-				},
-				"dataSets": [
-
-					{
-						"lastUpdated": "2017-07-03T12:30:50.022",
-						"id": "SwOdzq5MuZh",
-						"created": "2017-07-03T11:04:33.437",
-						"name": "Data trial set",
-						"shortName": "Data trial set",
-						"validCompleteOnly": false,
-						"dataElementDecoration": false,
-						"publicAccess": "rw------",
-						"notifyCompletingUser": false,
-						"noValueRequiresComment": false,
-						"skipOffline": false,
-						"fieldCombinationRequired": false,
-						"renderHorizontally": false,
-						"renderAsTabs": false,
-						"mobile": false,
-						"version": 1,
-						"timelyDays": 15,
-						"periodType": "Monthly",
-						"openFuturePeriods": 0,
-						"expiryDays": 0,
-						"categoryCombo": {
-							"id": "p0KPaWEg3cf"
-						},
-						"lastUpdatedBy": {
-							"id": "M5zQapPyTZI"
-						},
-						"user": {
-							"id": "M5zQapPyTZI"
-						},
-						"dataSetElements": [
-							{
-								"categoryCombo": {
-									"id": "qI5bEmuW1bi"
-								},
-								"dataElement": {
-									"id": "rhXstKVfvvj"
-								},
-								"dataSet": {
-									"id": "SwOdzq5MuZh"
-								}
-							}
-						],
-						"compulsoryDataElementOperands": [],
-						"translations": [],
-						"dataInputPeriods": [],
-						"organisationUnits": [						
-							{
-								"id": "ZwVNnjED1Dh"
-							}
-						],
-						"userGroupAccesses": [],
-						"attributeValues": [],
-						"indicators": [],
-						"userAccesses": [],
-						"legendSets": []
-					}
-				],
-				"dataElements": [
-					{
-						"code": "Population1524",
-						"lastUpdated": "2017-07-03T12:17:11.901",
-						"id": "rhXstKVfvvj",
-						"created": "2017-07-03T12:17:11.901",
-						"name": "Population aged 15-24",
-						"shortName": "Population aged 15-24",
-						"aggregationType": "SUM",
-						"domainType": "AGGREGATE",
-						"publicAccess": "rw------",
-						"description": "Population aged 15-24",
-						"valueType": "NUMBER",
-						"zeroIsSignificant": false,
-						"categoryCombo": {
-							"id": "qI5bEmuW1bi"
-						},
-						"lastUpdatedBy": {
-							"id": "M5zQapPyTZI"
-						},
-						"user": {
-							"id": "M5zQapPyTZI"
-						},
-						"translations": [],
-						"userGroupAccesses": [],
-						"attributeValues": [],
-						"userAccesses": [],
-						"legendSets": [],
-						"aggregationLevels": []
-					}
-				]
-			}// data
-
-			return data;
-		} // end of getData
 
 		function getMetaDataFile(){
 			var url = "app/main/UNAIDS_metadata.xml";

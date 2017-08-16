@@ -31,6 +31,11 @@
                 templateUrl: 'app/main/mapDataElements.html',
                 controller: 'mapDataElementsController',
                 controllerAs: 'vm'
+        }).state('mapOrgUnits', {
+                url: '/mapOrgUnits',
+                templateUrl: 'app/main/mapOrgUnits.html',
+                controller: 'mapOrgUnitsController',
+                controllerAs: 'vm'
         });
 
         $urlRouterProvider.otherwise('/');

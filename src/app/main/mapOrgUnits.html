@@ -1,0 +1,17 @@
+<div class="container" ng-init="vm.init()">
+	<table class="table">
+		<caption>Data Elements</caption>
+		<thead>
+			<tr>			
+				<th>Actual Values</th>
+				<th>Map To</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="(key,value) in vm.oldOrgUnits">
+				<td>{{key}}</td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

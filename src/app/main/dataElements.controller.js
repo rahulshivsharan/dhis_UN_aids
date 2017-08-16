@@ -17,6 +17,7 @@
         vm.isEditTable = 1;
         vm.selectedDataElement = [];
 		vm.navigateToMapDataElements = navigateToMapDataElements;
+        vm.init = init;
 
 		// private methods
         var handleFileSelect = handleFileSelect;
@@ -30,7 +31,9 @@
 		// public methods and variables    	      
         vm.editMapping = editMapping;
 
-        
+        function init(){
+            dhisService.resetValues();
+        }
 
 
         var fileChooser = document.querySelectorAll('.file-chooser');
@@ -75,7 +78,11 @@
             var rowDataSet = undefined;
             var tableHeaders = [];
             var tableRowData = [];
-            var $key = undefined, $value = undefined;
+            var $key = undefined;
+            var $value = undefined;
+            var orgUnits = {}; // create set of organisationUnits so that it holds unique organisationUnit names
+            var ou_Name = "";
+
             dataElementMap = {};
             for(var index = 0; index < statements.length; index++){
                 rowData = statements[index];    
@@ -86,9 +93,16 @@
                         tableHeaders.push(value); // data to be shown in table header
                     });
                 }else{
-                    tableRowData.push(rowDataSet); // data to be shown in table row                    
+                    tableRowData.push(rowDataSet); // data to be shown in table row
+                                        
                     $key = rowDataSet[1];
                     $value = rowDataSet[0];
+                    
+                    if(angular.isDefined(rowDataSet[3])){
+                        ou_Name = rowDataSet[3];
+                        ou_Name =  ou_Name.trim();
+                        orgUnits[ou_Name] = ou_Name;    
+                    }
                     
                     if(angular.isDefined(rowDataSet[1]) && angular.isDefined(rowDataSet[0])){
                         dataElementMap[$key] = $value;    
@@ -102,6 +116,8 @@
                 vm.isLoading = "hideContent";
                 vm.isVisible = "gridVisible";
                 dhisService.setDataElementObject(dataElementMap);
+                dhisService.setTableRowData(vm.tableRowData);
+                dhisService.setOU(orgUnits);
             });
         }// end of processFileContentForDisplay
 

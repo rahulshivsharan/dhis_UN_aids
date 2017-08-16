@@ -82,7 +82,7 @@
                     // upload Data elements page
                     if(dataElements[0]["id"] === "rhXstKVfvvj"){
                         vm.isLoading = false;
-                        $state.go("uploadDataElements");
+                        $state.go("uploadDataElements");                        
                     }                    
                 }else{
 
@@ -90,7 +90,7 @@
                     // then load upload metadata page
                     $state.go("importMetadata");
                 }
-            }
+            } // end of successFn
 
             function errorFn(response){
                 console.log(response);

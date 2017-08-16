@@ -3,9 +3,9 @@
 
 	angular.module("DureDHIS").controller("mapDataElementsController",mapDataElementsController);
 
-	mapDataElementsController.$inject = ["$scope","dhisService","_","$q"];
+	mapDataElementsController.$inject = ["$scope","dhisService","_","$q","$state"];
 
-	function mapDataElementsController($scope,dhisService,_,$q){
+	function mapDataElementsController($scope,dhisService,_,$q,$state){
 		var vm = this;
 
 		console.log("'mapDataElementsController' is initialised..");
@@ -13,6 +13,8 @@
 		// public variables
 		vm.dataElementsMap = undefined;
 		vm.mapDE_COC = undefined; // map of DataElements(DE) and CategoryOptionCombo (COC)
+		//vm.tableRowData = undefined;
+		vm.isVisible = "gridHidden";
 
 		// this is key value where key is "(DE)Id_(COC)Id" and value is boolean flag
 		// this map will be used to disable option while selection 
@@ -24,19 +26,28 @@
 		// public methods
 		vm.init = init;
 		vm.disableDE_COC_Options = disableDE_COC_Options;
+		vm.remapDataElements = remapDataElements;
 
 		// private methods
 		var loadCategoryOptionCombos = loadCategoryOptionCombos;
 		var createDE_COC_Map = createDE_COC_Map;
+
+		// private variables
+		var oldNew_DE_Map = {};
+
 		
 
 		function init(){			
+			console.log("in init function");
 			vm.dataElementsMap = dhisService.getDataElementObject();
 			vm.selectedValueList = [];
 			for(var prop in vm.dataElementsMap){
 				vm.selectedValueList.push("");
 			}
+
+			console.log("loading combos");
 			loadCategoryOptionCombos();
+			//vm.tableRowData = dhisService.getTableRowData();
 		}
 
 		function loadCategoryOptionCombos(){
@@ -64,7 +75,9 @@
 
 		} // end of loadCategoryOptionCombos
 
-		function createDE_COC_Map(deList,cocList){
+		// this method creates a key-Value pair where 
+		// key is (DE)Id_(COC)Id and value is Label(DE)_Label(COC)
+ 		function createDE_COC_Map(deList,cocList){
 			var index1 = 0, index2 = 0, de = undefined, coc = undefined, key = undefined, value = undefined;
 
 			vm.mapDE_COC = {};
@@ -82,11 +95,37 @@
 			} 
 		} // end of createDE_COC_Map
 
-		function disableDE_COC_Options(idx){
-			console.log("Selected Value ",vm.selectedValueList[idx]);
-			var selectedValue = vm.selectedValueList[idx];
+		// this method is invoked on change event of selection box
+		// present in mapDataElements.html
+		function disableDE_COC_Options(idx,oldDataElementId){
+			//console.log("Selected Value ",vm.selectedValueList[idx]);
+			var selectedValue = vm.selectedValueList[idx], 
+				index = 0,
+				key = undefined,
+				prop = undefined;
+
 			vm.mapSelectionFlag[selectedValue] = true;
+			oldNew_DE_Map[oldDataElementId] = selectedValue;
+
+			for(prop in vm.mapSelectionFlag){
+				if(!_.contains(vm.selectedValueList,prop)){
+					vm.mapSelectionFlag[prop] = false;
+				}
+			} // end of for
 		} // end of disableDE_COC_Options
+
+
+		function remapDataElements(){
+			/*
+			angular.forEach(vm.tableRowData,function(rowData,index){
+				var oldDEId = rowData[1];
+				var new_de_coc_value = oldNew_DE_Map[oldDEId];
+				rowData[0] = vm.mapDE_COC[new_de_coc_value];				
+			});
+			*/
+			//vm.isVisible = "gridVisible";
+			$state.go("mapOrgUnits");
+		} // end of remapData
 		
 	}// end of 'mapDataElementsController'
 })();
