@@ -1,17 +1,41 @@
 <div class="container" ng-init="vm.init()">
-	<table class="table">
-		<caption>Data Elements</caption>
-		<thead>
-			<tr>			
-				<th>Actual Values</th>
-				<th>Map To</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="(key,value) in vm.oldOrgUnits">
-				<td>{{key}}</td>
-				<td></td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="row">
+		<div class="col-md-3 col-md-offset-6">
+			<p class="pull-right">Select Organisation Levels</p>
+		</div>
+		<div class="col-md-3">			
+			<select ng-model="vm.selectedOULevel" 
+					class="form-control"
+					ng-change="vm.loadAnOuLevel()" 
+					ng-options="ouLevel.id as ouLevel.displayName for ouLevel in vm.ouLevelList">
+				<option value="">Select</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table">
+				<caption>Organisation Units</caption>
+				<thead>
+					<tr>			
+						<th align="right">Actual Values</th>
+						<th>Map To</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(key,value) in vm.oldOrgUnits track by $index">
+						<td align="right">{{key}}</td>
+						<td>
+							<input 	type="text" 
+									class="form-control" 
+									ng-model="vm.mappedOrgUnits[key]['label']"
+									uib-typeahead="ou.n as ou.n for ou in vm.filteredOuList" 
+									typeahead-on-select="vm.mapOuId($item, $model, $label, $event,key)">
+						</td>
+					</tr>
+				</tbody>
+			</table>		
+		</div>
+	</div>
+	
 </div>
