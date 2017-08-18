@@ -1,0 +1,23 @@
+<div class="container" ng-init="vm.init()">
+	<div class="row">
+		<div class="col-md-2 col-md-offset-10">
+			<button class="btn btn-primary" ng-click="vm.importData()">Import</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table">
+				<thead>
+					<tr>
+						<th ng-repeat="header in vm.tableHeaders track by $index">{{header}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="rowDataSet in vm.tableRowData">
+						<td ng-repeat="r in rowDataSet track by $index">{{ ($index === 3) ? vm.mappedOrgUnits[r]["label"] : ($index === 4) ? r['label'] : r}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

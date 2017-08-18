@@ -92,6 +92,7 @@
                     angular.forEach(rowDataSet,function(value,idx){
                         tableHeaders.push(value); // data to be shown in table header
                     });
+                    dhisService.tableHeaders = tableHeaders; // set table headers in controller
                 }else{
                     tableRowData.push(rowDataSet); // data to be shown in table row
                                         

@@ -3,9 +3,9 @@
 
 	angular.module("DureDHIS").controller("mapOrgUnitsController",mapOrgUnitsController);
 
-	mapOrgUnitsController.$inject = ["$scope","dhisService","_"];
+	mapOrgUnitsController.$inject = ["$scope","dhisService","_","$state"];
 
-	function mapOrgUnitsController($scope,dhisService,_){
+	function mapOrgUnitsController($scope,dhisService,_,$state){
 		console.log("Controller \"mapOrgUnitsController\" initialised ");
 		var vm = this;
 
@@ -13,6 +13,7 @@
 		vm.init = init;
 		vm.loadAnOuLevel = loadAnOuLevel; // fetches a perticular OU Level object 
 		vm.mapOuId = mapOuId; // this method is invoked on typeAhead select
+		vm.goToRemapData = goToRemapData;
 
 		// public variables
 		vm.oldOrgUnits = undefined; // organisationUnits to be replaced (key,value)		
@@ -97,7 +98,7 @@
 			function success(response){
 				selectedLevelNo = response["level"];
 				var filteredOuList = _.where(completelistOfOU,{ "l" : selectedLevelNo });
-				console.log(filteredOuList);
+				//console.log(filteredOuList);
 				vm.filteredOuList = filteredOuList;				
 			}
 
@@ -117,6 +118,15 @@
 		function mapOuId($item, $model, $label, $event,key){
 			vm.mappedOrgUnits[key]["value"] = $item["id"];			
 		}
+
+		// this will be invoked on click of 'next' button,
+		// navigate  to next page to display
+		// the newly mapped dataelements and orgUnits
+		function goToRemapData(){
+			//console.log("Navigate to next page");
+			dhisService.setUpdatedOU(vm.mappedOrgUnits); 
+			$state.go("confirmMappedValues");
+		} // end of goToRemapData
 
 	} // end of mapOrgUnitsController
 })();

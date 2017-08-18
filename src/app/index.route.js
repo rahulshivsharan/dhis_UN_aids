@@ -36,6 +36,11 @@
                 templateUrl: 'app/main/mapOrgUnits.html',
                 controller: 'mapOrgUnitsController',
                 controllerAs: 'vm'
+        }).state('confirmMappedValues', {
+                url: '/confirmMappedValues',
+                templateUrl: 'app/main/confirmMappedValues.html',
+                controller: 'mappedValuesController',
+                controllerAs: 'vm'
         });
 
         $urlRouterProvider.otherwise('/');

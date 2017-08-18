@@ -13,7 +13,8 @@
 		// comma seperated files is uploaded
 		var dataElementObject = undefined;
 		var tableRowData = undefined; // contains row data i.e. and array of array [[],[]... ]    
-		var ou = undefined;
+		var ou = undefined; // holds organisationUnit key-value,
+		var ouUpdatedValues = undefined; // holds key-value for organisation Units where 'key' is old value and 'value' is newly mapped value 
 
 		// public methods
 		service.getOrganisationUnits = getOrganisationUnits;
@@ -26,14 +27,20 @@
 		service.getDataElementObject = getDataElementObject;
 		service.getMetaDataFile = getMetaDataFile;
 		service.getCategoryOptionCombos = getCategoryOptionCombos;
+
+		service.getOrgUnitLevels = getOrgUnitLevels;
+		service.getAnOrgUnitLevel = getAnOrgUnitLevel;
+		service.getOrgUnitsTree = getOrgUnitsTree;
+		service.importDataElements = importDataElements;
+
 		service.setTableRowData = setTableRowData;
 		service.getTableRowData = getTableRowData;
 		service.setOU = setOU;
 		service.getOU = getOU;
+		service.setUpdatedOU = setUpdatedOU;
+		service.getUpdatedOU = getUpdatedOU;
 		service.resetValues = resetValues;
-		service.getOrgUnitLevels = getOrgUnitLevels;
-		service.getAnOrgUnitLevel = getAnOrgUnitLevel;
-		service.getOrgUnitsTree = getOrgUnitsTree;
+		service.tableHeaders = undefined; // no getter-setters
 
 
 		// private methods		
@@ -118,6 +125,15 @@
 		function getOU(){
 			return ou;
 		} 
+
+		// getters and setters for property 'ouUpdatedValues' (Organisation Unit)
+		function setUpdatedOU(obj){
+			ouUpdatedValues = obj;
+		}
+
+		function getUpdatedOU(){
+			return ouUpdatedValues;
+		}
 
 		function resetValues(){
 			dataElementObject = undefined;
@@ -407,6 +423,29 @@
 			} // end of errorFn
 
 		} // end of getAnOrgUnitLevel
+
+		function importDataElements(dataObj){
+			var url = DHIS_BACKEND + "/api/24/dataValueSets";
+			var deferred = $q.defer();
+
+			$http({
+				"method" : "POST",
+				"url" : url,
+				"data" : dataObj
+			}).then(successFn,errorFn);
+
+			return deferred.promise;
+
+			function successFn(response){				
+				var jsonResponseObj = parseResponse(response);				
+				deferred.resolve(jsonResponseObj);
+			} // end of successFn
+
+			function errorFn(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
+			} // end of errorFn
+		} // importDataElements
 
 	} // end of dhisService
 

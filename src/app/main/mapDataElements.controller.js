@@ -13,7 +13,7 @@
 		// public variables
 		vm.dataElementsMap = undefined;
 		vm.mapDE_COC = undefined; // map of DataElements(DE) and CategoryOptionCombo (COC)
-		//vm.tableRowData = undefined;
+		vm.tableRowData = undefined;
 		vm.isVisible = "gridHidden";
 
 		// this is key value where key is "(DE)Id_(COC)Id" and value is boolean flag
@@ -47,7 +47,7 @@
 
 			console.log("loading combos");
 			loadCategoryOptionCombos();
-			//vm.tableRowData = dhisService.getTableRowData();
+			vm.tableRowData = dhisService.getTableRowData();
 		}
 
 		function loadCategoryOptionCombos(){
@@ -116,13 +116,32 @@
 
 
 		function remapDataElements(){
-			/*
+			//console.log("oldNew_DE_Map ",oldNew_DE_Map);
+			//console.log("vm.mapDE_COC ",vm.mapDE_COC);
+			
 			angular.forEach(vm.tableRowData,function(rowData,index){
 				var oldDEId = rowData[1];
 				var new_de_coc_value = oldNew_DE_Map[oldDEId];
-				rowData[0] = vm.mapDE_COC[new_de_coc_value];				
+				var new_COC_ID = undefined;
+				rowData[0] = vm.mapDE_COC[new_de_coc_value];
+
+				if(angular.isDefined(new_de_coc_value)){ //DEID_COCID 
+					rowData[1] = new_de_coc_value.split("_")[0]; // DEID 
+					new_COC_ID = new_de_coc_value.split("_")[1]; // COCID	
+				}
+				
+				
+				if(angular.isDefined(rowData[0]) && angular.isDefined(new_COC_ID)){
+					rowData[4] = {
+						"label" : rowData[0].split("_")[1],
+						"value" : new_COC_ID
+					};	// COC_label
+				}				
+								
 			});
-			*/
+			
+			dhisService.setTableRowData(vm.tableRowData);
+			
 			//vm.isVisible = "gridVisible";
 			$state.go("mapOrgUnits");
 		} // end of remapData
