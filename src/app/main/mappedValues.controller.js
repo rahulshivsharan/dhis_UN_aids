@@ -18,6 +18,9 @@
 		vm.tableHeaders = dhisService.tableHeaders;
 		vm.tableRowData = dhisService.getTableRowData();
 		vm.mappedOrgUnits = dhisService.getUpdatedOU();
+		vm.responseObject = undefined; // to be display in UI once data is imported
+		vm.isDataImported = false; // this flag is used to hide and show table data
+		vm.isLoading = false; // this flag is used to display loading image
 
 		// private methods
 		var processData = processData;
@@ -27,6 +30,8 @@
 		}
 
 		function importData(){
+			vm.isDataImported = false;
+			vm.isLoading = true; // show loading image
 			//console.log("Import data");
 			var data = processData();
 			var success = success, error = error;
@@ -35,7 +40,12 @@
 			dhisService.importDataElements(data).then(success,error);
 
 			function success(response){
-				console.log(response);
+				//console.log(response);
+				vm.responseObject = {};
+				vm.isDataImported = true;
+				vm.isLoading = false;
+				vm.responseObject["status"] = response["status"];
+				vm.responseObject["importCount"] = response["importCount"];
 			}
 
 			function error(response){
@@ -74,7 +84,7 @@
 				}
 				
 				if(angular.isDefined(rowData[6])){
-					dataValueObject["value"] = rowData[6];	
+					dataValueObject["value"] = parseInt(rowData[6]);	
 				}
 				
 				data.dataValues.push(dataValueObject);

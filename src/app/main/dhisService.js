@@ -425,7 +425,7 @@
 		} // end of getAnOrgUnitLevel
 
 		function importDataElements(dataObj){
-			var url = DHIS_BACKEND + "/api/24/dataValueSets";
+			var url = DHIS_BACKEND + "/api/24/dataValueSets?importStrategy=CREATE_AND_UPDATE";
 			var deferred = $q.defer();
 
 			$http({
