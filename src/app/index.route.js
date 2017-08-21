@@ -16,31 +16,28 @@
                 templateUrl: 'app/main/createMetadata.html',
                 controller: 'createMetadataCtrl',
                 controllerAs: 'vm'
-        }).state('uploadDataElements', {
+        }).state("dataelement",{
+                abstract : true,
+                url : "/dataelement",
+                template : "<ui-view>",
+                controller : "dataElementsController",
+                controllerAs : "vm"
+        }).state('dataelement.uploadDataElements', {
                 url: '/uploadDataElements',
-                templateUrl: 'app/main/dataElementsMapping.html',
-                controller: 'dataElementsController',
-                controllerAs: 'vm'
-        })/*.state('uploadDataElements', {
-                url: '/uploadDataElements',
-                templateUrl: 'app/main/uploadDataElements.html',
-                controller: 'uploadDataElementsController',
-                controllerAs: 'vm'
-        })*/.state('mapDataElements', {
+                templateUrl: 'app/main/dataElementsMapping.html',                
+                parent : "dataelement"
+        }).state('dataelement.mapDataElements', {
                 url: '/mapDataElements',
-                templateUrl: 'app/main/mapDataElements.html',
-                controller: 'mapDataElementsController',
-                controllerAs: 'vm'
-        }).state('mapOrgUnits', {
+                templateUrl: 'app/main/mapDataElements.html',                
+                parent : "dataelement"
+        }).state('dataelement.mapOrgUnits', {
                 url: '/mapOrgUnits',
-                templateUrl: 'app/main/mapOrgUnits.html',
-                controller: 'mapOrgUnitsController',
-                controllerAs: 'vm'
-        }).state('confirmMappedValues', {
+                templateUrl: 'app/main/mapOrgUnits.html',                
+                parent : "dataelement"
+        }).state('dataelement.confirmMappedValues', {
                 url: '/confirmMappedValues',
-                templateUrl: 'app/main/confirmMappedValues.html',
-                controller: 'mappedValuesController',
-                controllerAs: 'vm'
+                templateUrl: 'app/main/confirmMappedValues.html',                
+                parent : "dataelement"
         });
 
         $urlRouterProvider.otherwise('/');

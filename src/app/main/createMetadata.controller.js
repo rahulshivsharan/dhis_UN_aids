@@ -45,7 +45,7 @@
 		function navigateToUploadDataElements(){	
 			$timeout(function(){
 				console.log("Navigate to Upload Data elements");
-				$state.go("uploadDataElements");
+				$state.go("dataelement.uploadDataElements");
 			},1000);
 		} // end of 'navigateToUploadDataElements'
 

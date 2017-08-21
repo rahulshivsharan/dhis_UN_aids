@@ -8,14 +8,6 @@
 
 		var service = {};
 
-		// 'dataElementObject' object is used in 
-		// holding the values when data-elements from Dhis
-		// comma seperated files is uploaded
-		var dataElementObject = undefined;
-		var tableRowData = undefined; // contains row data i.e. and array of array [[],[]... ]    
-		var ou = undefined; // holds organisationUnit key-value,
-		var ouUpdatedValues = undefined; // holds key-value for organisation Units where 'key' is old value and 'value' is newly mapped value 
-
 		// public methods
 		service.getOrganisationUnits = getOrganisationUnits;
 		service.getDataElements = getDataElements; 
@@ -23,8 +15,7 @@
 		service.getBasicInfoOfCurrentUser = getBasicInfoOfCurrentUser;
 		service.getUserRoles = getUserRoles;
 		service.createOrganisationUnit = createOrganisationUnit;
-		service.setDataElementObject = setDataElementObject;	
-		service.getDataElementObject = getDataElementObject;
+		
 		service.getMetaDataFile = getMetaDataFile;
 		service.getCategoryOptionCombos = getCategoryOptionCombos;
 
@@ -33,14 +24,7 @@
 		service.getOrgUnitsTree = getOrgUnitsTree;
 		service.importDataElements = importDataElements;
 
-		service.setTableRowData = setTableRowData;
-		service.getTableRowData = getTableRowData;
-		service.setOU = setOU;
-		service.getOU = getOU;
-		service.setUpdatedOU = setUpdatedOU;
-		service.getUpdatedOU = getUpdatedOU;
-		service.resetValues = resetValues;
-		service.tableHeaders = undefined; // no getter-setters
+		
 
 
 		// private methods		
@@ -98,49 +82,6 @@
 		} // end of parseXmlResponse
 
 
-
-		// getters and setters for property 'tableRowData'
-		function setTableRowData(tData){
-			tableRowData = tData;
-		}
-
-		function getTableRowData(){
-			return tableRowData;
-		}
-
-		// getters and setters for property 'dataElementObject'
-		function setDataElementObject(obj){
-			dataElementObject = obj;
-		}
-
-		function getDataElementObject(){
-			return dataElementObject;
-		} 
-
-		// getters and setters for property 'OU'(Organisation Unit)
-		function setOU(obj){
-			ou = obj;
-		}
-
-		function getOU(){
-			return ou;
-		} 
-
-		// getters and setters for property 'ouUpdatedValues' (Organisation Unit)
-		function setUpdatedOU(obj){
-			ouUpdatedValues = obj;
-		}
-
-		function getUpdatedOU(){
-			return ouUpdatedValues;
-		}
-
-		function resetValues(){
-			dataElementObject = undefined;
-			tableRowData = undefined;
-			ou = undefined;
-		}
-
 		// get organisation Unit from server
 		function getOrganisationUnits(){
 			var url = DHIS_BACKEND + "/api/organisationUnits.json";
@@ -163,6 +104,7 @@
 				deferred.reject(jsonResponseObj);
 			} // end of errorFn
 		} // end of "getOrganisationUnits" 
+		
 
 		function createOrganisationUnit(id,name,shortName,openingDate){
 			var url = DHIS_BACKEND + "/api/organisationUnits.json";

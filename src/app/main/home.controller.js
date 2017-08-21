@@ -82,7 +82,7 @@
                     // upload Data elements page
                     if(dataElements[0]["id"] === "rhXstKVfvvj"){
                         vm.isLoading = false;
-                        $state.go("uploadDataElements");                        
+                        $state.go("dataelement.uploadDataElements");                        
                     }                    
                 }else{
 

@@ -1,14 +1,14 @@
-<table class="table table-stripped" ng-init="vm.init()" ng-cloak>
+<table class="table table-stripped" ng-init="vm.initMapDataElements()" ng-cloak>
 	<caption>Data Elements</caption>
 	<thead>
 		<tr>			
-			<th>Actual Values</th>
+			<th align="right"><span class="pull-right">Actual Values</span></th>
 			<th>Map To</th>
 		</tr>
 	</thead>
 	<tbody>		
 		<tr ng-repeat="(k,v) in vm.dataElementsMap track by $index">			
-			<td>{{v}}</td>
+			<td align="right">{{v}}</td>
 			<td>				
 				<select ng-model="vm.selectedValueList[$index]" class="form-control" ng-change="vm.disableDE_COC_Options($index,k)">		
 					<option value="">select</option>
@@ -20,26 +20,11 @@
 	</tbody>
 	<tfooter>
 		<tr>
-			<td colspan="2">
+			<td colspan="2" align="right">
+				<button class="btn btn-default" ng-click="vm.gotBackTo('dataelement.uploadDataElements')">Previous</button>
 				<button class="btn btn-primary" ng-click="vm.remapDataElements()">Next</button>
 			</td>
 		</tr>
 	</tfooter>	
 </table>
-<br/>
-<div class="container" ng-class="vm.isVisible">
-	<!--input type="button" class="btn btn-primary" value="Re-map" ng-click="vm.navigateToMapDataElements()"/>
-	<br/><br/ -->
-	<table class="table">
-		<thead>
-			<tr>
-				<th ng-repeat="header in vm.tableHeaders track by $index">{{header}}</th>
-			</tr>			
-		</thead>
-		<tbody>
-			<tr ng-repeat="rowDataSet in vm.tableRowData">
-				<td ng-repeat="r in rowDataSet track by $index">{{r}}</td>
-			</tr>
-		</tbody>
-	</table>	
-</div>
+

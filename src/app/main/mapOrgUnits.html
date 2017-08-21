@@ -1,4 +1,4 @@
-<div class="container" ng-init="vm.init()">
+<div class="container" ng-init="vm.initMapOrgUnits()">
 	<div class="row">
 		<div class="col-md-3 col-md-offset-6">
 			<p class="pull-right">Select Organisation Levels</p>
@@ -18,12 +18,12 @@
 				<caption>Organisation Units</caption>
 				<thead>
 					<tr>			
-						<th align="right">Actual Values</th>
+						<th align="right"><span class="pull-right">Actual Values</span></th>
 						<th>Map To</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="(key,value) in vm.oldOrgUnits track by $index">
+					<tr ng-repeat="(key,value) in vm.orgUnitMap track by $index">
 						<td align="right">{{key}}</td>
 						<td>
 							<input 	type="text" 

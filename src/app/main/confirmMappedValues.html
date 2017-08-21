@@ -1,4 +1,4 @@
-<div class="container" ng-init="vm.init()">
+<div class="container" ng-init="vm.initMappedValues()">
 	<div class="progress" ng-if="vm.isLoading === true">
 		<div 	class="progress-bar progress-bar-striped active" 
 		  		role="progressbar" 
@@ -10,8 +10,8 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-2 col-md-offset-10">
-			<button class="btn btn-primary" ng-click="vm.importData()">Import</button>
+		<div class="col-md-2">
+			<button class="btn btn-primary" ng-click="vm.importData()" ng-if="vm.isDataImported === false">Import</button>
 		</div>
 	</div>
 	<div class="row">
@@ -23,7 +23,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="rowDataSet in vm.tableRowData">
+					<tr ng-repeat="rowDataSet in vm.tRowData">
 						<td ng-repeat="r in rowDataSet track by $index">{{ ($index === 3) ? vm.mappedOrgUnits[r]["label"] : ($index === 4) ? r['label'] : r}}</td>
 					</tr>
 				</tbody>

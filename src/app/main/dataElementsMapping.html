@@ -1,5 +1,5 @@
 
-<form class="form-horizontal" ng-init="vm.init()">
+<form class="form-horizontal" ng-init="vm.initDataElements()">
 	<div class="form-group">
 		<label for="files" class="col-md-2 control-label">Select CSV File</label>
 		<div class="col-md-5">				
@@ -32,7 +32,7 @@
 			</tr>			
 		</thead>
 		<tbody>
-			<tr ng-repeat="rowDataSet in vm.tableRowData">
+			<tr ng-repeat="rowDataSet in vm.tRowData">
 				<td ng-repeat="r in rowDataSet track by $index">{{r}}</td>
 			</tr>
 		</tbody>
