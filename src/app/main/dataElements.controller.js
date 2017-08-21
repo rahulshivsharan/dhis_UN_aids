@@ -11,14 +11,14 @@
 		var vm = this;
         vm.data = [];
 		vm.isVisible = "gridHidden";		
-        vm.isLoading = "hideContent";
+        vm.isLoading = false;
         vm.tableHeaders = []; // contains table headers
         vm.tableRowData = []; // contains row data i.e. and array of array [[],[]... ]        
         vm.isEditTable = 1;
         vm.selectedDataElement = [];
 		vm.navigateToMapDataElements = navigateToMapDataElements;
         vm.init = init;
-
+        console.log("IsLoading ",vm.isLoading);
 		// private methods
         var handleFileSelect = handleFileSelect;
         var processFileContentForDisplay = processFileContentForDisplay;
@@ -50,7 +50,7 @@
             
             
             $scope.$apply(function(){                
-                vm.isLoading = "showContent";
+                vm.isLoading = true;
                 console.log("Display loading image ",vm.isLoading);
             }); 
 

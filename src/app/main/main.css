@@ -19,3 +19,8 @@
 .hideContent {
 	visibility: hidden;
 }
+
+.mainContainer{
+	margin: 0;
+	margin-left: 2%;
+}
