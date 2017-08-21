@@ -2,15 +2,15 @@
 	'use strict';
 
 	angular.module("DureDHIS").controller("createMetadataCtrl",createMetadataCtrl);
-	createMetadataCtrl.$inject = ["dhisService","$scope","$state","$timeout"]
+	createMetadataCtrl.$inject = ["dhisService","$scope","$state","$timeout","$q"]
 
-	function createMetadataCtrl(dhisService,$scope,$state,$timeout){
+	function createMetadataCtrl(dhisService,$scope,$state,$timeout,$q){
 		console.log("create metadata Controller is intialised");
 		var vm = this;
 
 		// private variables
 		var xmlMetadata = undefined;
-		var xmlData = undefined;
+		var xmlDataIndicators = undefined;
 
 		// public variables
 		vm.isAlert = {
@@ -30,17 +30,20 @@
 		function importDataElements(){
 			//console.log(" Import metadata ",xmlMetadata);
 			vm.isLoading = true;
-			var promise = dhisService.createMetadata(xmlData);
-			promise.then(function(response){ // success callback
+			var promise1 = dhisService.createMetadata(xmlMetadata);
+			var promise2 = dhisService.createMetadata(xmlDataIndicators);
+
+			$q.all([promise1,promise2]).then(function(responseArray){
 				vm.isAlert.visible = true;
 				vm.isAlert.success = true;
 				vm.isLoading = false;
 				navigateToUploadDataElements();
-			},function(response){ // error callback
+			},function(error){
 				vm.isAlert.visible = true;
 				vm.isAlert.danger = true;
 			});
-		}
+
+		} // end of importDataElements
 
 		function navigateToUploadDataElements(){	
 			$timeout(function(){
@@ -50,16 +53,17 @@
 		} // end of 'navigateToUploadDataElements'
 
 		function init(){
-			var promise = dhisService.getMetaDataFile();
-			promise.then(function(response){ // success
-								
-				//var parser = new DOMParser();
-				//xmlMetadata = parser.parseFromString(response["data"],"text/xml");
-				xmlData = response["data"];
-				//console.log(xmlData);
-			},function(response){ // error
-				console.log(response);
+			var promise1 = dhisService.getMetaDataFile();
+			var promise2 = dhisService.importIndicatorsFile();
+
+			$q.all([promise1,promise2]).then(function(responsArray){
+				xmlMetadata = responsArray[0]["data"];
+				xmlDataIndicators = responsArray[1]["data"];
+			},function(error){
+				console.log(error);
 			});
+
+			
 		} // end of init
 
 	}// end of createMetadataCtrl	

@@ -7,7 +7,7 @@
 
     function routeConfig($stateProvider, $urlRouterProvider) {
         $stateProvider.state('home', {
-                url: '/',
+                url: '/home',
                 templateUrl: "app/main/home.html",
                 controller: 'homeController',
                 controllerAs: 'vm'
@@ -40,7 +40,7 @@
                 parent : "dataelement"
         });
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/home');
     }
 
 })();

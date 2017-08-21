@@ -18,8 +18,8 @@
         
         
     	function init(){
-    	   vm.isLoading = true;
-
+    	   vm.isLoading = true;           
+           
            // check if the current user is 
            // admin user
            isCurrentUserAdmin().then(function(flag){
@@ -82,7 +82,8 @@
                     // upload Data elements page
                     if(dataElements[0]["id"] === "rhXstKVfvvj"){
                         vm.isLoading = false;
-                        $state.go("dataelement.uploadDataElements");                        
+                        $state.go("dataelement.uploadDataElements");
+                        //$state.go("importMetadata");                        
                     }                    
                 }else{
 

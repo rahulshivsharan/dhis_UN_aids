@@ -23,7 +23,7 @@
 		service.getAnOrgUnitLevel = getAnOrgUnitLevel;
 		service.getOrgUnitsTree = getOrgUnitsTree;
 		service.importDataElements = importDataElements;
-
+		service.importIndicatorsFile = importIndicatorsFile;
 		
 
 
@@ -191,13 +191,13 @@
 			return deferred.promise;
 
 			function successFn(response){
-				var jsonResponseObj = parseResponse(response);
-				deferred.resolve(jsonResponseObj);
+				//var jsonResponseObj = parseResponse(response);
+				deferred.resolve(response);
 			}// end of successFn
 
 			function errorFn(response){
-				var jsonResponseObj = parseResponse(response);
-				deferred.reject(jsonResponseObj);
+				//var jsonResponseObj = parseResponse(response);
+				deferred.reject(response);
 			}
 
 		} // end of 'createMetadata'
@@ -388,6 +388,28 @@
 				deferred.reject(jsonResponseObj);
 			} // end of errorFn
 		} // importDataElements
+
+
+		function importIndicatorsFile(){
+			var url = "https://raw.githubusercontent.com/duretech/hivpopdata_meta_xml/master/default/UNAIDS_Indicators_v003.xml";
+
+			var deferred = $q.defer();
+
+			$http({
+				"method" : "GET",
+				"url" : url
+			}).then(successFn,errorFn);
+
+			return deferred.promise;
+
+			function successFn(response){
+				deferred.resolve(response);
+			} // end of successFn
+
+			function errorFn(response){				
+				deferred.reject(response);
+			} // end of errorFn
+		}
 
 	} // end of dhisService
 
