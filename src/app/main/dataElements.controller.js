@@ -8,71 +8,34 @@
 	function dataElementsController($scope,dhisService,$state){
 		console.log("'dataElementsController' is initialised");
 
-		var vm = this;
-        vm.data = [];
+		var vm = this;        
+
+        // public variables
 		vm.isVisible = "gridHidden";		
-        vm.isLoading = false;
+        vm.isLoading = false; // flag to display loading image
         vm.tableHeaders = []; // contains table headers
         vm.tableRowData = []; // contains row data i.e. and array of array [[],[]... ]        
-        vm.isEditTable = 1;
-        vm.selectedDataElement = [];
-		vm.navigateToMapDataElements = navigateToMapDataElements;
-        vm.init = init;
-        console.log("IsLoading ",vm.isLoading);
-		// private methods
-        var handleFileSelect = handleFileSelect;
-        var processFileContentForDisplay = processFileContentForDisplay;
+        vm.selectedFile = undefined; // map to file Object for file uploader        
+
         
+		// private methods
+        var handleFileSelect = handleFileSelect;   
 
         // private variables
         var fileContent = undefined;
         var dataElementMap = undefined;
 		
-		// public methods and variables    	      
-        vm.editMapping = editMapping;
+		// public methods 
+        vm.navigateToMapDataElements = navigateToMapDataElements;
+        vm.init = init;
+        vm.uploadFiles = uploadFiles;
+        vm.processFileContentForDisplay = processFileContentForDisplay;
 
         function init(){
             dhisService.resetValues();
         }
 
-
-        var fileChooser = document.querySelectorAll('.file-chooser');
-  
-        if (fileChooser.length !== 1){
-            console.log('Found > 1 or < 1 file choosers within the menu item, error, cannot continue');
-        }else{   
-            fileChooser[0].addEventListener('change', handleFileSelect, false);   
-        }
-
-        function handleFileSelect(event){
-            var target = event.srcElement || event.target;
-            var reader = new FileReader();
-            
-            
-            $scope.$apply(function(){                
-                vm.isLoading = true;
-                console.log("Display loading image ",vm.isLoading);
-            }); 
-
-
-            if (target && target.files && target.files.length === 1) {                
-                var fileObject = target.files[0];                 
-            }// end of if
-
-            reader.onloadend = function(event){
-                fileContent = reader.result;
-                processFileContentForDisplay();                
-            }
-
-            reader.readAsText(fileObject);    
-        }; // end of 'handleFileSelect'
-
-
-        function editMapping(){
-            vm.isEditTable = 0;
-        } // end of editMapping
-
-        function processFileContentForDisplay(){               
+        function processFileContentForDisplay(){                       
             var statements = fileContent.split("\n");
             var rowData = undefined;
             var rowDataSet = undefined;
@@ -111,20 +74,35 @@
                 }                
             } // end of for
 
-            $scope.$apply(function(){
+            //$scope.$apply(function(){
                 vm.tableHeaders = tableHeaders;
                 vm.tableRowData = tableRowData;
-                vm.isLoading = "hideContent";
+                vm.isLoading = false;
                 vm.isVisible = "gridVisible";
                 dhisService.setDataElementObject(dataElementMap);
                 dhisService.setTableRowData(vm.tableRowData);
                 dhisService.setOU(orgUnits);
-            });
+            //});
         }// end of processFileContentForDisplay
 
         function navigateToMapDataElements(){
             $state.go("mapDataElements");
         }
 
+
+        function uploadFiles(file, errFiles){
+            vm.isLoading = true; // to display loading image                        
+            vm.selectedFile = file;
+            var reader = new FileReader();
+
+            reader.onloadend = function(event){
+                fileContent = reader.result;
+                //processFileContentForDisplay();                
+            }
+            if(vm.selectedFile){
+                //console.log(" File Upload Pluggin ",vm.selectedFile);
+                reader.readAsText(vm.selectedFile);
+            }
+        }
 	} // end of 'dataElementsController'
 })();

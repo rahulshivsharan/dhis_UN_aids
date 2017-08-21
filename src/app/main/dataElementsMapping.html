@@ -2,13 +2,16 @@
 <form class="form-horizontal" ng-init="vm.init()">
 	<div class="form-group">
 		<label for="files" class="col-md-2 control-label">Select CSV File</label>
-		<div class="col-md-5">
-			<input type="file" class="file-chooser form-control" id="files" name="files[]" />	
+		<div class="col-md-5">				
+			<input type="file" class="file-chooser form-control" ngf-select="vm.uploadFiles($file, $invalidFiles)"  />
+		</div>
+		<div class="col-md-1" style="padding-left: 0; padding-top: 1px;">
+			<button class="btn btn-sm btn-default" ng-click="vm.processFileContentForDisplay()">Upload</button>
 		</div>		
 	</div>	
 </form>
 
-<div class="progress" ng-if="vm.isLoading == true">
+<div class="progress" ng-if="vm.isLoading">
 	<div 	class="progress-bar progress-bar-striped active" 
 	  		role="progressbar" 
 	  		aria-valuenow="100" 
@@ -20,7 +23,7 @@
 </div>
 <br/>
 <div class="container" ng-class="vm.isVisible">
-	<input type="button" class="btn btn-primary" value="Re-map" ng-click="vm.navigateToMapDataElements()"/>
+	<input type="button" class="btn btn-primary" value="Associate Data Element" ng-click="vm.navigateToMapDataElements()"/>
 	<br/><br/>
 	<table class="table">
 		<thead>

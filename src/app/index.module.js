@@ -13,5 +13,6 @@
         						'ui.grid.importer',
         						'ui.grid.resizeColumns',
                                 'underscore',
-                                'angularMoment']);
+                                'angularMoment',
+                                'ngFileUpload']);
 })();
