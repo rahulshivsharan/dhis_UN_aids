@@ -28,7 +28,7 @@
                     // if are there any data elements present in system
                     checkIfDataElementsExists();
                 }else{
-                    $state.go("uploadDataElements");
+                    $state.go("dataelement.uploadDataElements");
                 } 
            },function(error){
                 // error

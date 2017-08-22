@@ -21,7 +21,7 @@
         vm.tRowData = undefined; // holds firt 20 dataElements row data of vm.tableRowData; its to be displayed on UI for fast rendering
         
 		// private methods
-        var handleFileSelect = handleFileSelect;   
+        var handleFileSelect = handleFileSelect;         
 
         // private variables
         var fileContent = undefined;
@@ -110,8 +110,10 @@
             vm.tableHeaders = []; // contains table headers
             vm.tableRowData = []; // contains row data i.e. and array of array [[],[]... ]    
             vm.tRowData = [];
-            vm.orgUnitMap = undefined;
+            vm.orgUnitMap = undefined;            
         }
+
+        
 
         function processFileContentForDisplay(){  
             vm.isLoading = true; // to display loading image

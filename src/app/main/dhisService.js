@@ -25,6 +25,7 @@
 		service.importDataElements = importDataElements;
 		service.importIndicatorsFile = importIndicatorsFile;
 		
+		
 
 
 		// private methods		
@@ -250,7 +251,8 @@
 
 
 		function getMetaDataFile(){
-			var url = "app/main/UNAIDS_metadata.xml";
+			// var url = "app/main/UNAIDS_metadata.xml";
+			var url = "https://raw.githubusercontent.com/duretech/hivpopdata_meta_xml/master/default/UNAIDS_DataElements_v003.xml";
 			var deferred = $q.defer();
 			var success = success, error = error;
 
@@ -409,7 +411,8 @@
 			function errorFn(response){				
 				deferred.reject(response);
 			} // end of errorFn
-		}
+		} // end of importIndicatorsFile
+
 
 	} // end of dhisService
 
