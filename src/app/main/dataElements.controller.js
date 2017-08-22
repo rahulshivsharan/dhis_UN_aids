@@ -82,6 +82,7 @@
         var fetchOrganisationUnitTree = fetchOrganisationUnitTree;
         var copyOU = copyOU;
         var clearSelectedOU = clearSelectedOU; 
+        var mapUnmappedOrgUnits = mapUnmappedOrgUnits;
 
         // private variables
         var mainOrgUnitsObj = undefined; // key-value pair of all OU, where key is ouId and value is OU object
@@ -393,11 +394,34 @@
             vm.mappedOrgUnits[key]["value"] = $item["id"];          
         }
 
+        // this method is responsible to map those organisationUnits 
+        // which are not been mapped to new values.
+        // Here it gets the value mapped to previous Organisation Unit and assigns 
+        // to the current one.
+        function mapUnmappedOrgUnits(){
+            var prevOuName = undefined, index = 0;
+            for(var ouName in vm.mappedOrgUnits){
+                
+                if(index > 0){
+
+                    if(vm.mappedOrgUnits[ouName]["label"] === "" || vm.mappedOrgUnits[ouName]["value"] === ""){
+                       vm.mappedOrgUnits[ouName]["label"] = vm.mappedOrgUnits[prevOuName]["label"];
+                       vm.mappedOrgUnits[ouName]["value"] = vm.mappedOrgUnits[prevOuName]["value"]; 
+                    } 
+
+                } // end of if
+
+                prevOuName = ouName;
+                index++;
+            } // end of for
+        } // end of mapUnmappedOrgUnits
+
         // this will be invoked on click of 'next' button,
         // navigate  to next page to display
         // the newly mapped dataelements and orgUnits
         function goToRemapData(){
-            //console.log("Navigate to next page");             
+            mapUnmappedOrgUnits();
+            //console.log("Navigate to next page "+JSON.stringify(vm.mappedOrgUnits));             
             $state.go("dataelement.confirmMappedValues");
         } // end of goToRemapData
 
@@ -463,7 +487,7 @@
                 }
                 
                 if(angular.isDefined(rowData[3])){
-                    orgUnitLabel = rowData[3];
+                    orgUnitLabel = rowData[3].trim();                    
                     dataValueObject["orgUnit"] = vm.mappedOrgUnits[orgUnitLabel]["value"];  
                 }
                 
