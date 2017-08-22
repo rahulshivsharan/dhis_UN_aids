@@ -202,10 +202,10 @@
                 vm.selectedValueList.push("");
             }
 
-            console.log("loading combos");
+            //console.log("loading combos");
             loadCategoryOptionCombos();
             
-        }
+        } // end of initMapDataElements
 
         function loadCategoryOptionCombos(){
             var promiseTwo = dhisService.getCategoryOptionCombos();
