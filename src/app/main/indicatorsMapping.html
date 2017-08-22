@@ -1,0 +1,35 @@
+<div class="row" ng-init="vm.init()">
+	<div class="col-md-12">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="selectedindicator" class="col-md-2 control-label">Indicator</label>
+				<div class="col-md-5">
+					<select class="form-control" id="selectedindicator" ng-model="vm.selectedIndicatorId" ng-change="vm.fetchIndicator()" 
+							ng-options="indicator.id as indicator.displayName for indicator in vm.indicatorList">
+						<option value="">Select</option>
+					</select>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Numerator</th>
+					<th>Data Elements</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{vm.selectedIndicatorObj.numerator}}</td>
+					<td>
+						<input type="text" class="form-control" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

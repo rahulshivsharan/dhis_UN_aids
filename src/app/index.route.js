@@ -38,6 +38,11 @@
                 url: '/confirmMappedValues',
                 templateUrl: 'app/main/confirmMappedValues.html',                
                 parent : "dataelement"
+        }).state('indicators', {
+                url: '/indicators',
+                templateUrl: 'app/main/indicatorsMapping.html',
+                controller: 'indicatorsController',
+                controllerAs: 'vm'
         });
 
         $urlRouterProvider.otherwise('/home');

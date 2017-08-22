@@ -25,7 +25,8 @@
 		service.importDataElements = importDataElements;
 		service.importIndicatorsFile = importIndicatorsFile;
 		
-		
+		service.getIndicators = getIndicators;
+		service.getAnIndicator = getAnIndicator;  
 
 
 		// private methods		
@@ -82,6 +83,55 @@
 			return 	responseObj;
 		} // end of parseXmlResponse
 
+
+		function getIndicators(){
+			var url = DHIS_BACKEND + "/api/indicators.json";
+
+			var deferred = $q.defer();
+			
+			$http({
+				"method" : "GET",
+				"url" : url
+			}).then(successFn,errorFn);
+
+			return deferred.promise;
+
+			function successFn(response){				
+				var jsonResponseObj = parseResponse(response);				
+				deferred.resolve(jsonResponseObj);
+			} // end of successFn
+
+			function errorFn(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
+			} // end of errorFn
+
+		} // end of getIndicators
+
+		function getAnIndicator(indicatorId){
+			//var url = DHIS_BACKEND + "/api/indicators/"+indicatorId+".json"; // for production
+			var url = DHIS_BACKEND + "/api/indicators?indicatorId="+indicatorId; // for development
+
+			var deferred = $q.defer();
+			
+			$http({
+				"method" : "GET",
+				"url" : url
+			}).then(successFn,errorFn);
+
+			return deferred.promise;
+
+			function successFn(response){				
+				var jsonResponseObj = parseResponse(response);				
+				deferred.resolve(jsonResponseObj);
+			} // end of successFn
+
+			function errorFn(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
+			} // end of errorFn
+
+		} // end of getAnIndicator
 
 		// get organisation Unit from server
 		function getOrganisationUnits(){

@@ -22,13 +22,39 @@
       		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     	<![endif]-->
 		
-    	<div class="container mainContainer">
-    		<div class="page-header">
-    			<!--h3>HIV Pop Data</h3 -->
+    	<div class="container mainContainer" ng-init="menuItem = ''">
+    		<div class="page-header" style="margin-top:2%">  
+            
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="javaScript:void(0)">
+                                HIV Pop Data
+                            </a>
+                        </div>
+                        <ul class="nav navbar-nav">                            
+                            <li ng-class="{'active' : (menuItem === 'de'), 'noactive' : (menuItem !== 'de') }" 
+                                ng-click="menuItem='de'">
+                                <a href="javaScript:void(0)" ui-sref="home">Data Elements</a>
+                            </li>
+                            <li ng-class="{'active' : (menuItem === 'ind'), 'noactive' : (menuItem !== 'ind') }" 
+                                ng-click="menuItem='ind'">
+                                <a href="javaScript:void(0)" ui-sref="indicators">Indicators</a>
+                            </li>                            
+                        </ul>                        
+                    </div>
+                </nav>
+
+            </div>
+            <!--div class="pull-right">
                 <a href="javaScript:void(0)" ui-sref="home">
                     <img src="/app/main/hiv-pop-data.jpg" style="width:10%">
-                </a>        
-    		</div>
+               </a>    
+            </div -->     
+
+                                    
+    		
+
     		<div class="row">
     			<div class="col-md-12">
     				<div ui-view></div>	
