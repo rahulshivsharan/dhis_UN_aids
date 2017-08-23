@@ -29,7 +29,7 @@
 							<input 	type="text" 
 									class="form-control" 
 									ng-model="vm.mappedOrgUnits[key]['label']"
-									uib-typeahead="ou.n as ou.n for ou in vm.filteredOuList" 
+									uib-typeahead="ou.n as ou.n for ou in vm.filteredOuList | filter:$viewValue | limitTo:50" 
 									typeahead-on-select="vm.mapOuId($item, $model, $label, $event,key)">
 						</td>
 					</tr>

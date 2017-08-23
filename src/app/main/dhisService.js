@@ -27,7 +27,8 @@
 		
 		service.getIndicators = getIndicators;
 		service.getAnIndicator = getAnIndicator;
-		service.getDataElementOperands = getDataElementOperands;  
+		service.getDataElementOperands = getDataElementOperands; 
+		service.editIndicator = editIndicator;
 
 
 		// private methods		
@@ -466,7 +467,7 @@
 
 
 		function getDataElementOperands(){
-			var url = DHIS_BACKEND + "/api/27/dataElementOperands.json?filter=dataElement.domainType:eq:AGGREGATE&fields=id,displayName&totals=true";
+			var url = DHIS_BACKEND + "/api/26/dataElementOperands.json?filter=dataElement.domainType:eq:AGGREGATE&fields=id,displayName&totals=true";
 			
 
 			var deferred = $q.defer();
@@ -489,7 +490,33 @@
 			} // end of errorFn
 		} // end of getDataElementOperands
 
+		function editIndicator(indicatorObj){
+			//console.log(JSON.stringify(indicatorObj));
+			
+			//var url = DHIS_BACKEND + "/api/indicators/"+ indicatorObj["id"] +".json"; // production
+			var url = DHIS_BACKEND + "/api/indicators?indicatorId="+ indicatorObj["id"]; // development
+			var deferred = $q.defer();
+			
+			$http({
+				"method" : "PUT",
+				"url" : url,
+				"data" : indicatorObj
+			}).then(successFn,errorFn);
 
+			return deferred.promise;
+
+			function successFn(response){				
+				var jsonResponseObj = parseResponse(response);				
+				deferred.resolve(jsonResponseObj);
+			} // end of successFn
+
+			function errorFn(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
+			} // end of errorFn
+			
+			
+		} // end of editIndicator 
 	} // end of dhisService
 
 })();

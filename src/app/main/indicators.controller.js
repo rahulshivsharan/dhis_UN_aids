@@ -11,6 +11,7 @@
 		vm.init = init;
 		vm.fetchIndicator = fetchIndicator;		
 		vm.onDataElementSelect = onDataElementSelect;
+		vm.submit = submit;
 
 		// public variables
 		vm.indicatorList = undefined;
@@ -22,6 +23,10 @@
 		vm.selectedDataElementOperand = {
 			"label" : "",
 			"id" : ""
+		};
+		vm.alert = {
+			"type" : "",
+			"msg" : ""
 		}
 
 		// private methods
@@ -48,6 +53,7 @@
 
 		function fetchIndicator(){
 			vm.isLoaded = false;
+			vm.isResponse = false;
 			var success = success, error = error;
 			
 			//console.log(vm.selectedIndicatorId);
@@ -110,6 +116,35 @@
 			vm.selectedDataElementOperand.id = $item["id"];	
 			vm.selectedIndicatorObj["numerator"] = "#{" + $item["id"] + "}";
 			//console.log(vm.selectedIndicatorObj);		
-		}
+		} // end of onDataElementSelect 
+
+		function submit(){
+			var error = error, success = success;
+			dhisService.editIndicator(vm.selectedIndicatorObj).then(success,error);
+
+			function success(response){
+				//console.log(response["status"]);
+				if(response["httpStatusCode"] === 200 || response["httpStatusCode"] === 201){
+					vm.alert.type = "success";
+					vm.alert.msg = "Indicator Updated";
+					vm.isLoaded = false;
+					vm.isResponse = true;
+					vm.selectedIndicatorId = "";
+					vm.selectedDataElementOperand = { "label" : "", "id" : "" };
+				}else{
+					vm.alert.type = "warning";
+					vm.alert.msg = "Error occurred";
+					vm.isLoaded = false;
+					vm.isResponse = true;
+				}
+			}
+
+			function error(response){
+				console.log(response);
+				vm.alert.type = "error";
+				vm.alert.msg = "Error occurred";
+			}
+		} // end of submit
+
 	} // end of indicatorsController
 })();
