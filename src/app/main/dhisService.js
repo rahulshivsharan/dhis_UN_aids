@@ -26,7 +26,8 @@
 		service.importIndicatorsFile = importIndicatorsFile;
 		
 		service.getIndicators = getIndicators;
-		service.getAnIndicator = getAnIndicator;  
+		service.getAnIndicator = getAnIndicator;
+		service.getDataElementOperands = getDataElementOperands;  
 
 
 		// private methods		
@@ -233,8 +234,8 @@
 			$http({
 				"method" : "POST",
 				"url" : url,
-				"header" : {
-					"Content-type" : "application/xml",
+				"headers" : {
+					"Content-Type" : "application/xml"
 				},
 				"data" : xmlData
 			}).then(successFn,errorFn);
@@ -395,8 +396,8 @@
 		} // end of getOrgUnitsTree
 
 		function getAnOrgUnitLevel(ouId){
-			//var url = DHIS_BACKEND + "/api/organisationUnitLevels/" + ouId +".json";
-			var url = DHIS_BACKEND + "/api/orgUnitLevel?ouId=" + ouId;
+			//var url = DHIS_BACKEND + "/api/organisationUnitLevels/" + ouId +".json"; // production
+			var url = DHIS_BACKEND + "/api/orgUnitLevel?ouId=" + ouId; // development
 			var deferred = $q.defer();
 
 			$http({
@@ -462,6 +463,31 @@
 				deferred.reject(response);
 			} // end of errorFn
 		} // end of importIndicatorsFile
+
+
+		function getDataElementOperands(){
+			var url = DHIS_BACKEND + "/api/27/dataElementOperands.json?filter=dataElement.domainType:eq:AGGREGATE&fields=id,displayName&totals=true";
+			
+
+			var deferred = $q.defer();
+			
+			$http({
+				"method" : "GET",
+				"url" : url
+			}).then(successFn,errorFn);
+
+			return deferred.promise;
+
+			function successFn(response){				
+				var jsonResponseObj = parseResponse(response);				
+				deferred.resolve(jsonResponseObj);
+			} // end of successFn
+
+			function errorFn(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
+			} // end of errorFn
+		} // end of getDataElementOperands
 
 
 	} // end of dhisService

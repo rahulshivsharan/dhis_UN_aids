@@ -13,20 +13,29 @@
 		</form>
 	</div>
 </div>
-<div class="row">
+<div class="row" ng-if="vm.isLoaded === true">
 	<div class="col-md-12">
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Numerator</th>
+					<th><span class="pull-right">Numerator</span></th>
 					<th>Data Elements</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>{{vm.selectedIndicatorObj.numerator}}</td>
+					<td align="right">{{(vm.selectedIndicatorName === undefined || vm.selectedIndicatorName === "") ? vm.selectedIndicatorObj.numerator : vm.selectedIndicatorName}}</td>
 					<td>
-						<input type="text" class="form-control" />
+						<input 	type="text" class="form-control" 
+								uib-typeahead="operand.displayName as operand.displayName for operand in vm.dataElementOperandList"
+								typeahead-on-select="vm.onDataElementSelect($item, $model, $label, $event)" 
+								placeholder="Type a dataElement name" 
+								ng-model="vm.selectedDataElementOperand.label" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="right">
+						<button class="btn btn-primary">Enter</button>
 					</td>
 				</tr>
 			</tbody>
