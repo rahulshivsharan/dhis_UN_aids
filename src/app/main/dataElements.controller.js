@@ -142,8 +142,13 @@
                 }else{
                     tableRowData.push(rowDataSet); // data to be shown in table row
                                         
-                    $key = rowDataSet[1];
-                    $value = rowDataSet[0];
+                    $key = rowDataSet[1]; // dataElementId
+                    $value = rowDataSet[0]; // dataElementName
+
+                    // the below condition is a quick fix if dataElementId is space than key id dataELementName
+                    if(angular.isDefined($key) && $key !== null && angular.isString($key) && $key.trim() === ""){
+                        $key = rowDataSet[0].trim();
+                    }
                     
                     if(angular.isDefined(rowDataSet[3])){
                         ou_Name = rowDataSet[3];
@@ -278,7 +283,14 @@
             
             angular.forEach(vm.tableRowData,function(rowData,index){
                 var oldDEId = rowData[1];
-                var new_de_coc_value = oldNew_DE_Map[oldDEId];
+                var new_de_coc_value = undefined;
+                
+                // the below condition is a quick fix if dataElementId is space than key id dataELementName
+                if(angular.isDefined(oldDEId) && oldDEId !== null && angular.isString(oldDEId) && oldDEId.trim() === ""){
+                    oldDEId = rowData[0].trim();
+                    new_de_coc_value = oldNew_DE_Map[oldDEId];
+                }
+                
                 var new_COC_ID = undefined;
                 rowData[0] = vm.mapDE_COC[new_de_coc_value];
 
@@ -420,7 +432,7 @@
         // navigate  to next page to display
         // the newly mapped dataelements and orgUnits
         function goToRemapData(){
-            mapUnmappedOrgUnits();
+            //mapUnmappedOrgUnits(); // copy previous dataElements
             //console.log("Navigate to next page "+JSON.stringify(vm.mappedOrgUnits));             
             $state.go("dataelement.confirmMappedValues");
         } // end of goToRemapData
