@@ -3,9 +3,9 @@
 
 	angular.module('DureDHIS').controller("dataElementsController",dataElementsController);
 
-	dataElementsController.$inject = ["$scope","dhisService","$state","$q","_"];
+	dataElementsController.$inject = ["$scope","dhisService","dataCache","$state","$q","_"];
 
-	function dataElementsController($scope,dhisService,$state,$q,_){
+	function dataElementsController($scope,dhisService,dataCache,$state,$q,_){
 		console.log("'dataElementsController' is initialised");
 
 		var vm = this;        
@@ -80,6 +80,7 @@
         vm.selectedOULevel = "";
         vm.filteredOuList = []; // this list is feed in typeAhead as options        
         vm.mappedOrgUnits = undefined; // old organisationUnits to mapped to new organisationUnits (key,value)
+        vm.isMappingTableForOrgUnitVisible = false; // this flag is used to display or hide the table for OrgUnit mapping's
 
         // private method
         var fetchSelectedOrgUnits = fetchSelectedOrgUnits; // fetch unique list of organisation Units to be replaced
@@ -114,17 +115,27 @@
         /////////////////////////////////////////////////////////////////////////////////////////
 
         function initDataElements(){
-            vm.tableHeaders = []; // contains table headers
-            vm.tableRowData = []; // contains row data i.e. and array of array [[],[]... ]    
-            vm.tRowData = [];
-            vm.orgUnitMap = undefined;            
+            
+            /*
+                the condition below is used to handle back button
+                navigating back from step 'map data element' to
+                step 'upload File' 
+            */
+            if(dataCache.getImportDataStep() !== "dataelement.uploadDataElements"){
+                vm.tableHeaders = []; // contains table headers
+                vm.tableRowData = []; // contains row data i.e. and array of array [[],[]... ]
+                vm.tRowData = [];   
+                vm.orgUnitMap = undefined;     
+            }    
+            
+                   
         }
 
         
 
         function processFileContentForDisplay(){  
             vm.isLoading = true; // to display loading image
-            console.log(" in processFileContentForDisplay ",vm.isLoading);                     
+            //console.log(" in processFileContentForDisplay ",vm.isLoading);                     
             var statements = fileContent.split("\n");
             var rowData = undefined;
             var rowDataSet = undefined;
@@ -178,7 +189,7 @@
             
         }// end of processFileContentForDisplay
 
-        function navigateToMapDataElements(){
+        function navigateToMapDataElements(){            
             $state.go("dataelement.mapDataElements");
         }
 
@@ -204,8 +215,11 @@
             vm.isDataElementsMappingDone = true;
         } //end of confirmDataElementsMapping
 
-        function initMapDataElements(){         
-            console.log("in init function");
+        function initMapDataElements(){
+
+            console.log("in init of 'mapDataElements' function");
+
+            vm.isDataElementsMappingDone = false;
 
             if(angular.isUndefined(vm.tableRowData) || _.isNull(vm.tableRowData) || (_.isArray(vm.tableRowData) && vm.tableRowData.length === 0)){
                 $state.go("home");    
@@ -403,10 +417,14 @@
 
         
 
-
+        // this method is invoked on change of select box of
+        // organisation levels in organisation Units mapping step
         function loadAnOuLevel(){
-            var success = success, error = error;
+            var success = success,
+                error = error;
             
+            vm.isMappingTableForOrgUnitVisible = (vm.selectedOULevel !== "" && !_.isNull(vm.selectedOULevel)) ? true : false;
+
             if(vm.selectedOULevel !== "" && !_.isNull(vm.selectedOULevel)){
                 clearSelectedOU(); // clear all selected OrganisationUnits
                 dhisService.getAnOrgUnitLevel(vm.selectedOULevel).then(success,error);  
@@ -417,19 +435,19 @@
                 selectedLevelNo = response["level"];
                 var filteredOuList = _.where(completelistOfOU,{ "l" : selectedLevelNo });
                 
-                console.log("filteredOuList ",filteredOuList);
-                console.log("currentUserOrgRoots ",currentUserOrgRoots);
+                //console.log("filteredOuList ",filteredOuList);
+                //console.log("currentUserOrgRoots ",currentUserOrgRoots);
 
-                /*
+                
 				var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
 					return _.contains(currentUserOrgRoots,obj.id);
 				});
 				console.log(filteredOuListByUser);
 				
                 vm.filteredOuList = filteredOuListByUser;
-                */
+                
 
-                vm.filteredOuList = filteredOuList; 
+                // vm.filteredOuList = filteredOuList; 
             } // end of success
 
             function error(response){
@@ -563,7 +581,8 @@
         ///////////////////////////////////////////////////////////////////////////////////
 
 
-        function gotBackTo(stateName){
+        function gotBackTo(stateName){   
+            dataCache.setImportDataStep(stateName);         
             $state.go(stateName);
         }
 	} // end of 'dataElementsController'

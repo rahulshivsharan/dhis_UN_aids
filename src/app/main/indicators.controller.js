@@ -138,6 +138,7 @@
 					vm.isResponse = true;
 					vm.selectedIndicatorId = "";
 					vm.selectedDataElementOperand = { "label" : "", "id" : "" };
+					vm.isMappingDone = false;
 				}else{
 					vm.alert.type = "warning";
 					vm.alert.msg = "Error occurred";
