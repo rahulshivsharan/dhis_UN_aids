@@ -1,0 +1,8 @@
+<h4 ng-show="!loading">Setup Dashboards and Documentation</h4>
+<a ng-show="!loading" on-confirm="loadItem()" mwl-confirm title="Import Indicators" message="Are you sure you want to import the spectrum dashboards ?" class="btn btn-primary">Load Dashboards</a>
+<div class="alert alert-danger" role="alert" ng-if="strategy.value != 'NEW'">
+    You have set this application to UPDATE mode.
+    Any previous local customisation of HIV/AIDS Spectrum data elements and indicators WILL BE LOST and may result in orphaned data.
+</div>
+<span us-spinner ng-show="loading"></span>
+<h5 ng-show="loading" class="text-center  loading-text"> Importing Dashboards </h5>

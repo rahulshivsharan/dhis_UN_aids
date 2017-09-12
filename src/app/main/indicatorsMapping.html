@@ -1,0 +1,60 @@
+<div class="row" ng-init="vm.init()">
+	<div class="col-md-12">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="selectedindicator" class="col-md-2 control-label">Indicator</label>
+				<div class="col-md-5">
+					<select class="form-control" id="selectedindicator" ng-model="vm.selectedIndicatorId" ng-change="vm.fetchIndicator()" 
+							ng-options="indicator.id as indicator.displayName for indicator in vm.indicatorList">
+						<option value="">Select</option>
+					</select>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="row" ng-if="vm.isLoaded === true">
+	<div class="col-md-12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th><span class="pull-right">Numerator</span></th>
+					<th>Data Elements</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td align="right">{{(vm.selectedIndicatorName === undefined || vm.selectedIndicatorName === "") ? vm.selectedIndicatorObj.numerator : vm.selectedIndicatorName}}</td>
+					<td>
+						<!--input 	type="text" class="form-control" 
+								uib-typeahead="operand.displayName as operand.displayName for operand in vm.dataElementOperandList | filter:$viewValue | limitTo:50"
+								typeahead-on-select="vm.onDataElementSelect($item, $model, $label, $event)" 
+								placeholder="Type a dataElement name" 
+								ng-model="vm.selectedDataElementOperand.label" / -->
+
+						<select ng-model="vm.selectedDataElementOperand.id" 
+								ng-options="operand.id as operand.displayName for operand in vm.dataElementOperandList"
+								class="form-control"
+								ng-change="vm.onChangeDataElement()"
+								ng-disabled="vm.isMappingDone === true">
+							<option value="">Select</option>	 		
+						</select>		
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="right">
+						
+					<button class="btn btn-primary" 
+							ng-click="vm.confirmIndicatorsMapping()" 
+							ng-if="vm.isMappingDone === false">Confirm</button>
+						<button class="btn btn-primary"
+								ng-if="vm.isMappingDone === true" 
+								ng-click="vm.submit()">Update Indicator</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div uib-alert ng-class="'alert-' + (vm.alert.type)" ng-if="vm.isResponse">{{vm.alert.msg}}</div>

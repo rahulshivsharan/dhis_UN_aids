@@ -1,0 +1,48 @@
+<div class="container" ng-init="vm.initMapOrgUnits()">
+	<div class="row">
+		<div class="col-md-3 col-md-offset-6">
+			<p class="pull-right">Select Organisation Levels</p>
+		</div>
+		<div class="col-md-3">			
+			<select ng-model="vm.selectedOULevel" 
+					class="form-control"
+					ng-change="vm.loadAnOuLevel()" 
+					ng-options="ouLevel.id as ouLevel.displayName for ouLevel in vm.ouLevelList">
+				<option value="">Select</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table">
+				<caption>Organisation Units</caption>
+				<thead>
+					<tr>			
+						<th align="right"><span class="pull-right">Actual Values</span></th>
+						<th>Map To</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(key,value) in vm.orgUnitMap track by $index">
+						<td align="right">{{key}}</td>
+						<td>
+							<input 	type="text" 
+									class="form-control" 
+									ng-model="vm.mappedOrgUnits[key]['label']"
+									uib-typeahead="ou.n as ou.n for ou in vm.filteredOuList | filter:$viewValue | limitTo:50" 
+									typeahead-on-select="vm.mapOuId($item, $model, $label, $event,key)">
+						</td>
+					</tr>
+				</tbody>
+				<tfooter>
+					<tr>
+						<td colspan="2" align="right">
+							<button class="btn btn-primary" ng-click="vm.goToRemapData()">Next</button>
+						</td>
+					</tr>
+				</tfooter>
+			</table>		
+		</div>
+	</div>
+	
+</div>

@@ -1,0 +1,9 @@
+<h4>Initial Configuration Done</h4>
+
+<div ng-show="documents.length">
+  <h5>Download the Guidelines</h5>
+  (To complete configuration of the data elements and indicators it is necessary to follow the instructions in the 'post initiation' guideline)
+  <ul>
+    <li ng-repeat="doc in documents"><a href="{{doc.url}}">{{doc.name}}</a></li>
+  </ul>
+</div>

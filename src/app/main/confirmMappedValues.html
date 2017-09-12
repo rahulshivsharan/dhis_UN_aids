@@ -1,0 +1,44 @@
+<div class="container" ng-init="vm.initMappedValues()">
+	<div class="progress" ng-if="vm.isLoading === true">
+		<div 	class="progress-bar progress-bar-danger progress-bar-striped active" 
+		  		role="progressbar" 
+		  		aria-valuenow="100" 
+		  		aria-valuemin="0" 
+		  		aria-valuemax="100" 
+		  		style="width: 100%">
+		    <span class="sr-only">100% Complete</span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			<button class="btn btn-primary" ng-click="vm.importData()" ng-if="vm.isDataImported === false">Import</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table" ng-if="vm.isDataImported === false">
+				<thead>
+					<tr>
+						<th ng-repeat="header in vm.tableHeaders track by $index">{{header}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="rowDataSet in vm.tRowData">
+						<td ng-repeat="r in rowDataSet track by $index">{{ ($index === 3) ? vm.mappedOrgUnits[r]["label"] : ($index === 4) ? r['label'] : r}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div ng-if="vm.isDataImported === true" uib-alert ng-class="'alert-' + (vm.responseObject.status.toLowerCase() || 'info')">
+				<ul>
+					<li ng-repeat="(key,value) in vm.responseObject.importCount">
+						<span>{{key}}</span> : <span>{{value}}</span>
+					</li>
+				</ul>
+				<ul ng-if="vm.responseObject.conflicts">
+					<b>Conflicts</b>
+					<li ng-repeat="conflict in vm.responseObject.conflicts">{{conflict.value}}</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

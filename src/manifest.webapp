@@ -1,0 +1,21 @@
+{
+    "name": "HIV POP DATA",
+    "description": "Application is designed to allow a HIS Manager to instantiate (bootstrap) a set of standard data elements and indicators in DHIS2 that can be used for importing and using Spectrum derived HIV/AIDS related estimates.",
+    "version": "1.0.1",
+    "icons": {
+        "48": "app/main/hiv-pop-data.JPG"
+    },
+    "developer": {
+        "name": "Dure Technologies",
+        "company": "Dure",
+        "email": "contact@duretechnologies.com"
+    },
+    "permissions": null,
+    "activities": {
+        "dhis": {
+            "href": "*"
+        }
+    },
+    "launch_path": "index.html",
+    "default_locale": "en"
+}

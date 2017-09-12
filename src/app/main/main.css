@@ -1,0 +1,26 @@
+.gridHidden {
+  width:100%;
+  visibility: hidden;
+}
+
+.gridVisible {
+  width:100%;
+  visibility: visible;
+}
+
+.form-error{
+	color:red;
+}
+
+.showContent {
+	visibility: visible;
+}
+
+.hideContent {
+	visibility: hidden;
+}
+
+.mainContainer{
+	margin: 0;
+	margin-left: 2%;
+}

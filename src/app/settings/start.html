@@ -1,0 +1,47 @@
+<div>
+<span us-spinner ng-show="loading"></span>
+  <form class="form" name="settingsForm">
+    <legend>Settings</legend>
+    <div class="form-group">
+      <label for="">1. Data Element Configuration File</label>
+      <input type="text" name="dataElement" ng-model="config.dataElementFile" required class="form-control">
+      <div class="alert alert-danger" ng-show="settingsForm.dataElement.$error.required && !settingsForm.dataElement.$pristine">
+        <span >This field is required.</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="">2. Indicator Configuration File</label>
+      <input type="text" name="indicator" ng-model="config.indicatorFile" required class="form-control">
+      <div class="alert alert-danger" ng-show="settingsForm.indicator.$error.required && !settingsForm.indicator.$pristine">
+        <span >This field is required.</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="">3. Dashboard Configuration File</label>
+      <input type="text" name="dashboard" ng-model="config.dashboardFile"  required class="form-control">
+      <div class="alert alert-danger" ng-show="settingsForm.dashboard.$error.required && !settingsForm.dashboard.$pristine">
+        <span >This field is required.</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="">4. Import Strategy</label>
+      <select class="form-control" ng-options="strategy as strategy.text  for strategy in strategies track by strategy.value" ng-model="config.strategy" name="strategy" required></select>
+      <div class="alert alert-danger" ng-show="settingsForm.strategy.$error.required && !settingsForm.strategy.$pristine">
+        <span >This field is required.</span>
+      </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary btn-md" ng-disabled="settingsForm.$invalid" value="Save Settings" ng-click="save(config)">
+    </div>
+
+
+    <legend>
+      Import State
+    </legend>
+
+    <a ng-click="resetState()" class="btn btn-danger">Reset Import State</a>
+
+
+    <a ng-click="resetConfig()" class="btn btn-danger">Reset Settings</a>
+  </form>
+</div>

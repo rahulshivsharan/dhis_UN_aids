@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="fuelux">
+            <div class="wizard" data-initialize="wizard" id="wizardIllustration">
+                <div class="steps-container">
+                    <ul class="steps" style="margin-left: 0">
+                        <li ng-class="{'active': page === 'dataElement','complete': page === 'complete' || page === 'dashboard' || page === 'indicator' }"><span class="badge badge-info">1</span>Data Elments<span class="chevron"></span></li>
+                        <li ng-class="{'active': page === 'indicator', 'complete': page === 'complete' || page === 'dashboard'}"><span class="badge">2</span>Indicators<span class="chevron"></span></li>
+                        <li data-name="template" ng-class="{'active': page === 'dashboard', 'complete': page === 'complete'}"><span class="badge">3</span>Dashboard<span class="chevron"></span></li>
+                        <li data-name="template" ng-class="{'active': page === 'complete', 'complete': page === 'complete'}"><span class="badge"></span>Done<span class="chevron"></span></li>
+                    </ul>
+                </div>
+                <div class="step-content">
+                    <div class="step-pane sample-pane alert active" data-step="{{step}}">
+                        <div ng-include="template"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-show="summaries.length">
+    <div class="col-md-12">
+        <div class="alert alert-info" ng-repeat="summary in summaries">
+          <h5>{{summary.name}} Import Summary</h5>
+          <ul>
+            <li>Created {{summary.data.created}}</li>
+            <li>Updated {{summary.data.updated}}</li>
+            <li>Ignored {{summary.data.ignored}}</li>
+            <li>Deleted {{summary.data.deleted}}</li>
+            <li>Total {{summary.data.total}}</li>
+          </ul>
+        </div>
+    </div>
+</div>
+<div class="row" ng-show="hasError">
+    <div class="col-md-12">
+        <div class="alert alert-danger" >
+            <h5>An error occured.</h5>
+            <h5>{{statusCode}}</h5> {{error}}
+        </div>
+    </div>
+</div>
