@@ -101,7 +101,7 @@
 
 
         function loadHome(){
-            var url = DHIS_BACKEND;
+            var url = DHIS_BACKEND + "/";
             //var url = "//localhost:8082";
             $window.location.href = url;
         }
