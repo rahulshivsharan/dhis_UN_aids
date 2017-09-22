@@ -145,6 +145,7 @@
             var $value = undefined;
             var orgUnits = {}; // create set of organisationUnits so that it holds unique organisationUnit names
             var ou_Name = "";
+            var date = new Date();
 
             vm.dataElementsMap = {};
             for(var index = 0; index < statements.length; index++){
@@ -161,7 +162,7 @@
                                         
                     $key = rowDataSet[1]; // dataElementId
                     $value = rowDataSet[0]; // dataElementName
-
+                    
                     // the below condition is a quick fix if dataElementId is space than key id dataELementName
                     if(angular.isDefined($key) && $key !== null && angular.isString($key) && $key.trim() === ""){
                         $key = rowDataSet[0].trim();
@@ -174,7 +175,16 @@
                     }
                     
                     if(angular.isDefined(rowDataSet[1]) && angular.isDefined(rowDataSet[0])){
-                        vm.dataElementsMap[$key] = $value;    
+
+                        // vm.dataElementsMap contains key-value pair
+                        // where key is dataElementId and value is dataElementName
+                        // the below condition checks if 'dataElementId' is already present
+                        // as key, if yes than append the reccurring key with Time string 
+                        // so that the key is different
+                        if($key in vm.dataElementsMap){
+                           $key = $key +"^"+ date.getTime();
+                        }
+                        vm.dataElementsMap[$key] = $value; 
                     }                    
                 }                
             } // end of for
@@ -304,7 +314,7 @@
         // this method is invoked on change event of selection box
         // present in mapDataElements.html
         function disableDE_COC_Options(idx,oldDataElementId){
-            //console.log("Selected Value ",vm.selectedValueList[idx]);
+            //console.log("Selected Value ",vm.selectedValueList[idx]," map to ",oldDataElementId);
             var selectedValue = vm.selectedValueList[idx], 
                 index = 0,
                 key = undefined,
@@ -332,6 +342,8 @@
                 // the below condition is a quick fix if dataElementId is space than key id dataELementName
                 if(angular.isDefined(oldDEId) && oldDEId !== null && angular.isString(oldDEId) && oldDEId.trim() === ""){
                     oldDEId = rowData[0].trim();
+                    new_de_coc_value = oldNew_DE_Map[oldDEId];
+                }else{
                     new_de_coc_value = oldNew_DE_Map[oldDEId];
                 }
                 
@@ -439,15 +451,15 @@
                 //console.log("currentUserOrgRoots ",currentUserOrgRoots);
 
                 
-				var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
-					return _.contains(currentUserOrgRoots,obj.id);
-				});
-				console.log(filteredOuListByUser);
+				// var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
+				// 	return _.contains(currentUserOrgRoots,obj.id);
+				// });
+				// console.log(filteredOuListByUser);
 				
-                vm.filteredOuList = filteredOuListByUser;
+    //             vm.filteredOuList = filteredOuListByUser;
                 
 
-                // vm.filteredOuList = filteredOuList; 
+                vm.filteredOuList = filteredOuList; 
             } // end of success
 
             function error(response){
