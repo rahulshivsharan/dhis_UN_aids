@@ -178,10 +178,11 @@
 
                         // vm.dataElementsMap contains key-value pair
                         // where key is dataElementId and value is dataElementName
-                        // the below condition checks if 'dataElementId' is already present
+                        // the below condition checks if dataElementId 
+                        // which is not blank space and is already present
                         // as key, if yes than append the reccurring key with Time string 
                         // so that the key is different
-                        if($key in vm.dataElementsMap){
+                        if(angular.isDefined(rowDataSet[1]) && (rowDataSet[1].trim() !== "") && ($key in vm.dataElementsMap)){
                            $key = $key +"^"+ date.getTime();
                         }
                         vm.dataElementsMap[$key] = $value; 
