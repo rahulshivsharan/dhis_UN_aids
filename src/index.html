@@ -22,8 +22,8 @@
       		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     	<![endif]-->
 		
-    	<div class="container mainContainer" ng-init="menuItem = ''">
-    		<div class="page-header" style="margin-top:2%">  
+
+        <div class="page-header" style="margin-top:2%">  
             
                 <nav class="navbar navbar-default">
                     <div class="container-fluid">
@@ -42,15 +42,19 @@
                                 <a href="javaScript:void(0)" ui-sref="indicators">Update Indicators</a>
                             </li>                            
                         </ul>
-						<div class="navbar-header pull-right" ng-controller="homeController as vm">
+                        <div class="navbar-header pull-right" ng-controller="homeController as vm">
                             <a class="navbar-brand" href="javaScript:void(0)" alt="HOME" ng-click="vm.loadHome()">
                                <img alt="home" src="/app/main/home.png" />
                             </a>
-                        </div>	
+                        </div>  
                     </div>
                 </nav>
 
             </div>
+
+
+    	<div class="container mainContainer" ng-init="menuItem = ''">
+    		
             <!--div class="pull-right">
                 <a href="javaScript:void(0)" ui-sref="home">
                     <img src="/app/main/hiv-pop-data.jpg" style="width:10%">
