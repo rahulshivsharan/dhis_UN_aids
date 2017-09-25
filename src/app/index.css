@@ -37,3 +37,13 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
+
+.navbar-default{
+  background-color: #f3f5fa;
+  border-color: #8698aa; 
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus{
+  background-color: #337ab7;
+  color : #ffffff;
+}
