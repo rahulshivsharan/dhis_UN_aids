@@ -111,8 +111,8 @@
 		} // end of getIndicators
 
 		function getAnIndicator(indicatorId){
-			var url = DHIS_BACKEND + "/api/indicators/"+indicatorId+".json"; // for production
-			//var url = DHIS_BACKEND + "/api/indicators?indicatorId="+indicatorId; // for development
+			//var url = DHIS_BACKEND + "/api/indicators/"+indicatorId+".json"; // for production
+			var url = DHIS_BACKEND + "/api/indicators?indicatorId="+indicatorId; // for development
 
 			var deferred = $q.defer();
 			
@@ -397,8 +397,8 @@
 		} // end of getOrgUnitsTree
 
 		function getAnOrgUnitLevel(ouId){
-			var url = DHIS_BACKEND + "/api/organisationUnitLevels/" + ouId +".json"; // production
-			//var url = DHIS_BACKEND + "/api/orgUnitLevel?ouId=" + ouId; // development
+			//var url = DHIS_BACKEND + "/api/organisationUnitLevels/" + ouId +".json"; // production
+			var url = DHIS_BACKEND + "/api/orgUnitLevel?ouId=" + ouId; // development
 			var deferred = $q.defer();
 
 			$http({
@@ -493,8 +493,8 @@
 		function editIndicator(indicatorObj){
 			//console.log(JSON.stringify(indicatorObj));
 			
-			var url = DHIS_BACKEND + "/api/indicators/"+ indicatorObj["id"] +".json"; // production
-			//var url = DHIS_BACKEND + "/api/indicators?indicatorId="+ indicatorObj["id"]; // development
+			//var url = DHIS_BACKEND + "/api/indicators/"+ indicatorObj["id"] +".json"; // production
+			var url = DHIS_BACKEND + "/api/indicators?indicatorId="+ indicatorObj["id"]; // development
 			var deferred = $q.defer();
 			
 			$http({

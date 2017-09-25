@@ -18,12 +18,14 @@
 		<table class="table">
 			<thead>
 				<tr>
+					<th><span class="pull-right">Indicator</span></th>
 					<th><span class="pull-right">Numerator</span></th>
 					<th>Data Elements</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr ng-repeat="indicator in vm.indicatorList">
+					<td align="right">{{indicator.displayName}}</td>
 					<td align="right">{{(vm.selectedIndicatorName === undefined || vm.selectedIndicatorName === "") ? vm.selectedIndicatorObj.numerator : vm.selectedIndicatorName}}</td>
 					<td>
 						<!--input 	type="text" class="form-control" 
@@ -42,7 +44,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="right">
+					<td colspan="3" align="right">
 						
 					<button class="btn btn-primary" 
 							ng-click="vm.confirmIndicatorsMapping()" 

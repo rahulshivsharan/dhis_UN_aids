@@ -47,3 +47,8 @@
   background-color: #337ab7;
   color : #ffffff;
 }
+
+.pg-header{
+  margin-top:2%;
+  border-bottom: 0;
+}
