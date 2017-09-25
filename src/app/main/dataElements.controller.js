@@ -19,6 +19,7 @@
         vm.dataElementsMap = undefined;
         vm.orgUnitMap = undefined;
         vm.tRowData = undefined; // holds firt 20 dataElements row data of vm.tableRowData; its to be displayed on UI for fast rendering
+        vm.showError = false;  
         
 		// private methods
         var handleFileSelect = handleFileSelect;         
@@ -115,6 +116,7 @@
         /////////////////////////////////////////////////////////////////////////////////////////
 
         function initDataElements(){
+            vm.showError = false;
             
             /*
                 the condition below is used to handle back button
@@ -135,8 +137,17 @@
 
         function processFileContentForDisplay(){  
             vm.isLoading = true; // to display loading image
-            //console.log(" in processFileContentForDisplay ",vm.isLoading);                     
-            var statements = fileContent.split("\n");
+            //console.log(" in processFileContentForDisplay ",vm.isLoading);    
+            var statements = undefined;    
+            
+            try{
+                statements = fileContent.split("\n");
+                vm.showError = false;
+            }catch(e){
+                vm.showError = true;
+                vm.isLoading = false;
+            }                 
+            
             var rowData = undefined;
             var rowDataSet = undefined;
             var tableHeaders = [];
@@ -146,6 +157,7 @@
             var orgUnits = {}; // create set of organisationUnits so that it holds unique organisationUnit names
             var ou_Name = "";
             var date = new Date();
+
 
             vm.dataElementsMap = {};
             for(var index = 0; index < statements.length; index++){

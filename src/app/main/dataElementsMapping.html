@@ -24,6 +24,7 @@
 		<label for="files" class="col-md-2 control-label">Select CSV File</label>
 		<div class="col-md-5">				
 			<input type="file" class="file-chooser form-control" ngf-select="vm.uploadFiles($file, $invalidFiles)"  />
+			<span style="color:red" ng-if="vm.showError">Please select a csv file for upload</span>
 		</div>
 		<div class="col-md-1" style="padding-left: 0; padding-top: 1px;">
 			<button class="btn btn-sm btn-default" ng-click="vm.processFileContentForDisplay()">Upload</button>
