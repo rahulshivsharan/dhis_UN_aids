@@ -55,13 +55,13 @@
   background-color: #ffffff;
 }
 #cssmenu ul li.active {
-  background-color: #357dfd;
+  background-color: #337ab7; /* #357dfd */
 }
 #cssmenu ul li.active a {
   color: #ffffff;
 }
 #cssmenu ul li.active a:before {
-  background-color: #357dfd;
+  background-color: #337ab7; /* #357dfd */
 }
 #cssmenu ul li a {
   position: relative;
