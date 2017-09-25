@@ -3,9 +3,9 @@
 
 	angular.module('DureDHIS').controller("dataElementsController",dataElementsController);
 
-	dataElementsController.$inject = ["$scope","dhisService","dataCache","$state","$q","_"];
+	dataElementsController.$inject = ["$scope","dhisService","dataCache","$state","$q","$uibModal","_"];
 
-	function dataElementsController($scope,dhisService,dataCache,$state,$q,_){
+	function dataElementsController($scope,dhisService,dataCache,$state,$q,$uibModal,_){
 		console.log("'dataElementsController' is initialised");
 
 		var vm = this;        
@@ -235,7 +235,22 @@
         ////////////////////////////////////////// mapDataElements //////////////////////////////////
 
         function confirmDataElementsMapping(){
-            vm.isDataElementsMappingDone = true;
+            vm.isDataElementsMappingDone = false;
+            var modalInstance = $uibModal.open({
+                animation : true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'app/main/modalConfirmDataElementsMapping.html',
+                controller: 'modalConfirmDataElementsMappingController',
+                controllerAs : 'vm'                
+            });
+
+            modalInstance.result.then(function (flag) {
+                vm.isDataElementsMappingDone = flag;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+            
         } //end of confirmDataElementsMapping
 
         function initMapDataElements(){
