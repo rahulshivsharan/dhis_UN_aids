@@ -479,15 +479,15 @@
                 //console.log("currentUserOrgRoots ",currentUserOrgRoots);
 
                 
-				// var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
-				// 	return _.contains(currentUserOrgRoots,obj.id);
-				// });
-				// console.log(filteredOuListByUser);
+				var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
+					return _.contains(currentUserOrgRoots,obj.id);
+				});
+				//console.log(filteredOuListByUser);
 				
-    //             vm.filteredOuList = filteredOuListByUser;
+                vm.filteredOuList = filteredOuListByUser;
                 
 
-                vm.filteredOuList = filteredOuList; 
+                //vm.filteredOuList = filteredOuList; 
             } // end of success
 
             function error(response){
