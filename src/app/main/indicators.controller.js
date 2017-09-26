@@ -125,7 +125,28 @@
 
 			// fetch dataelement for selected indicator's numerator value
 			var dataElementPromise = promise.then(function(){
-				var parameter = "filter=id:eq:" + vm.selectedIndicatorObj["numerator"];
+				var numeratorInfo = vm.selectedIndicatorObj["numerator"];
+				var parameter = undefined;
+				var numeratorId = undefined;
+
+				/*
+					the below two if conditions are added for
+					from selected indicator's numberator value 
+					we are able to get DataElements.  
+					If Numerator value contains "." than split
+					and take the first array value
+					and fetch dataElement for that split value.
+				*/
+				if(angular.isDefined(numeratorInfo) && angular.isString(numeratorInfo)){
+					numeratorId = numeratorInfo.split(".");
+				}
+				
+				if(angular.isDefined(numeratorId) && angular.isArray(numeratorId) && numeratorId.length > 0){
+					parameter = "filter=id:eq:" + numeratorId[0];	
+				}else{
+					parameter = "filter=id:eq:" + vm.selectedIndicatorObj["numerator"];	
+				}
+				
 				var promiseObj = dhisService.getDataElements(parameter); // fetch dataelements for perticular numerator 
 				return promiseObj;
 			});

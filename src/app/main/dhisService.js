@@ -111,8 +111,8 @@
 		} // end of getIndicators
 
 		function getAnIndicator(indicatorId){
-			//var url = DHIS_BACKEND + "/api/indicators/"+indicatorId+".json"; // for production
-			var url = DHIS_BACKEND + "/api/indicators?indicatorId="+indicatorId; // for development
+			var url = DHIS_BACKEND + "/api/indicators/"+indicatorId+".json"; // for production
+			//var url = DHIS_BACKEND + "/api/indicators?indicatorId="+indicatorId; // for development
 
 			var deferred = $q.defer();
 			
@@ -202,7 +202,7 @@
 
 
 		function getDataElements(queryParameters){
-			var url = DHIS_BACKEND + "/api/24/dataElements.json";
+			var url = DHIS_BACKEND + "/api/dataElements.json";
 
 			if(angular.isDefined(queryParameters) && queryParameters !== null && queryParameters.trim() !== ""){
 				url += "?" + queryParameters; // Example /api/24/dataElements.json?filter=id:eq:rhXstKVfvvj
@@ -397,8 +397,9 @@
 		} // end of getOrgUnitsTree
 
 		function getAnOrgUnitLevel(ouId){
-			//var url = DHIS_BACKEND + "/api/organisationUnitLevels/" + ouId +".json"; // production
-			var url = DHIS_BACKEND + "/api/orgUnitLevel?ouId=" + ouId; // development
+			var url = DHIS_BACKEND + "/api/organisationUnitLevels/" + ouId +".json"; // production
+			//var url = DHIS_BACKEND + "/api/orgUnitLevel?ouId=" + ouId; // development
+
 			var deferred = $q.defer();
 
 			$http({
@@ -421,7 +422,7 @@
 		} // end of getAnOrgUnitLevel
 
 		function importDataElements(dataObj){
-			var url = DHIS_BACKEND + "/api/24/dataValueSets?importStrategy=CREATE_AND_UPDATE";
+			var url = DHIS_BACKEND + "/api/dataValueSets?importStrategy=CREATE_AND_UPDATE";
 			var deferred = $q.defer();
 
 			$http({
@@ -467,7 +468,7 @@
 
 
 		function getDataElementOperands(){
-			var url = DHIS_BACKEND + "/api/26/dataElementOperands.json?filter=dataElement.domainType:eq:AGGREGATE&filter=name:ilike:HIV%20Num&fields=id,displayName&totals=true";
+			var url = DHIS_BACKEND + "/api/dataElementOperands.json?filter=dataElement.domainType:eq:AGGREGATE&filter=name:ilike:HIV%20Num&fields=id,displayName&totals=true";
 			
 
 			var deferred = $q.defer();
@@ -493,8 +494,9 @@
 		function editIndicator(indicatorObj){
 			//console.log(JSON.stringify(indicatorObj));
 			
-			//var url = DHIS_BACKEND + "/api/indicators/"+ indicatorObj["id"] +".json"; // production
-			var url = DHIS_BACKEND + "/api/indicators?indicatorId="+ indicatorObj["id"]; // development
+			var url = DHIS_BACKEND + "/api/indicators/"+ indicatorObj["id"] +".json"; // production
+			//var url = DHIS_BACKEND + "/api/indicators?indicatorId="+ indicatorObj["id"]; // development
+
 			var deferred = $q.defer();
 			
 			$http({

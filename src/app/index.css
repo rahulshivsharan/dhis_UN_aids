@@ -53,6 +53,14 @@
   border-bottom: 0;
 }
 
-#indicatorTbl tr td:last-child{
+#indicatorTbl tr td:first-child{
+    width : 300px;
+}
+
+#indicatorTbl tr td:nth-child(2){
     width : 200px;
+}
+
+#indicatorTbl tr td:last-child{
+    width : 300px;
 }
