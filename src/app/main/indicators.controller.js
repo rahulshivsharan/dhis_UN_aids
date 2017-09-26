@@ -10,7 +10,7 @@
 		// public methods
 		vm.init = init;
 		vm.fetchIndicator = fetchIndicator;		
-		vm.onDataElementSelect = onDataElementSelect;
+		
 		vm.submit = submit;
 		vm.onChangeDataElement = onChangeDataElement;
 		vm.confirmIndicatorsMapping = confirmIndicatorsMapping;
@@ -19,58 +19,114 @@
 		vm.indicatorList = undefined;
 		vm.selectedIndicatorId = "";
 		vm.selectedIndicatorObj = undefined;
-		vm.isLoaded = false;
+		vm.isLoaded = true;
 		vm.selectedIndicatorName = undefined;
 		vm.dataElementOperandList = [];
-		vm.selectedDataElementOperand = {
-			"label" : "",
-			"id" : ""
-		};
+		
+		// this variable holds value 
+		// as 
+		// {
+		// 	indicatorid : {
+		// 		id : operandId,
+		// 		label : operandName
+		// 	}
+		// }
+		// i.e. key-value were key as indicatorId
+		// and value as operand object
+		vm.selectedDataElementOperand = {};
+		
 		vm.alert = {
 			"type" : "",
 			"msg" : ""
 		}
 
+		// maintains an key-value pair
+		// of indicator id as key and value 
+		// as indicator object
+		vm.indicatorMap = {};
+
 		vm.isMappingDone = false; // used to confirm button
+		vm.indicatorsChanged = []; // maintains list of changed indicator for final save 
+		
+		
 
 		// private methods
 		var fetchAllIndicators = fetchAllIndicators;
 		var fetchDataElementOperands = fetchDataElementOperands;
 
 		function init(){
-			fetchAllIndicators();
+			vm.isLoaded = true; // to display loading image
+			vm.isMappingDone = false; // used to confirm button
+			vm.isResponse = false; // used to display final response success message alert
+
+			vm.indicatorsChanged = []; // maintains list of changed indicator for final save 
+			
+			var promise = fetchAllIndicators(); // fetch all indicators
+			
+			// the below block of code is for 
+			// fetching all indicator objects 
+			// from already fetch indicator Id's			
+			$q.when(promise).then(function(){
+				var promiseArray = [];
+				angular.forEach(vm.indicatorList,function(indicatorObj,index){
+					//console.log(indicatorObj["id"]);
+					var indicatorId = indicatorObj["id"];
+					vm.indicatorMap[indicatorId] = {}; // put key as indicatorId in map
+					var p = fetchIndicator(indicatorId);
+					promiseArray.push(p); 
+				});
+
+				$q.all(promiseArray).then(function(){
+					vm.isLoaded = false;
+				});
+			},function(error){
+				console.log(error);
+			});
+
 			fetchDataElementOperands();
+
+
 		}// end of init
 
 		function fetchAllIndicators(){
-			var success = success, error = error; 
+
+			var success = success, error = error, deferred = $q.defer(); 
 			dhisService.getIndicators().then(success,error);
 
+			return deferred.promise;
+
 			function success(response){
-				vm.indicatorList = response["indicators"];
+				vm.indicatorList = response["indicators"];				
+				deferred.resolve("success");
 			}
 
 			function error(response){
 				console.log(response);
+				deferred.reject(response);
 			}
 		} // end of fetchAllIndicators
 
-		function fetchIndicator(){
-			vm.isLoaded = false;
+		// fetch Indicator object
+		// for a perticular indicator Id
+		function fetchIndicator(indicatorId){
+			//vm.isLoaded = false;
 			vm.isResponse = false;
-			var success = success, error = error;
-			vm.selectedDataElementOperand = {
+			var success = success, error = error, mainDeferred = $q.defer();
+			
+			// maintains a key-value were key is indicatorId
+			// and value is operandId and operand display Name 
+			vm.selectedDataElementOperand[indicatorId] = {
 				"label" : "",
 				"id" : ""
 			};
 			//console.log(vm.selectedIndicatorId);
 
-			var promise = dhisService.getAnIndicator(vm.selectedIndicatorId).then(success,error);
+			var promise = dhisService.getAnIndicator(indicatorId).then(success,error);// fetch an indicator info
 
 			// fetch dataelement for selected indicator's numerator value
 			var dataElementPromise = promise.then(function(){
 				var parameter = "filter=id:eq:" + vm.selectedIndicatorObj["numerator"];
-				var promiseObj = dhisService.getDataElements(parameter);
+				var promiseObj = dhisService.getDataElements(parameter); // fetch dataelements for perticular numerator 
 				return promiseObj;
 			});
 
@@ -81,7 +137,7 @@
 				
 				var numerator = vm.selectedIndicatorObj["numerator"].replace(/[{}#]/g,"");					
 				vm.selectedIndicatorObj["numerator"] = numerator;
-				
+				vm.indicatorMap[indicatorId] = vm.selectedIndicatorObj;
 			} // end of success
 
 			function error(response){
@@ -92,16 +148,26 @@
 			dataElementPromise.then(function(response){ // success
 				//console.log(response);
 				var dataElementList = response["dataElements"];
+
+				// if dataElement for numerator for perticular indicator is present
+				// then set it as value of indicatorName
+				// else indicatorName is space.
 				if(angular.isArray(dataElementList) && dataElementList.length > 0){
-					vm.selectedIndicatorName = dataElementList[0]["displayName"];	
+					vm.selectedIndicatorName = dataElementList[0]["displayName"];
+					vm.indicatorMap[indicatorId]["indicatorName"] = vm.selectedIndicatorName; 	
 				}else{
 					vm.selectedIndicatorName = "";
+					vm.indicatorMap[indicatorId]["indicatorName"] = vm.selectedIndicatorName;
 				}
 				
 				vm.isLoaded = true;
+				mainDeferred.resolve();
 			},function(response){ // error
 				console.log(response);
+				mainDeferred.reject();
 			});
+
+			return mainDeferred.promise;
 		} // end of fetchIndicator
 
 		// fetch all dataelement operand
@@ -119,52 +185,56 @@
 			}
 		} // end of fetchDataElementOperands
 
-		function onDataElementSelect($item, $model, $label, $event){
-			vm.selectedDataElementOperand.id = $item["id"];	
-			vm.selectedIndicatorObj["numerator"] = "#{" + $item["id"] + "}";
-			//console.log(vm.selectedIndicatorObj);		
-		} // end of onDataElementSelect 
+		 
 
 		function submit(){
-			var error = error, success = success;
-			dhisService.editIndicator(vm.selectedIndicatorObj).then(success,error);
+			var error = error, success = success, promiseArray = [];
+			vm.isLoaded = true;
+			angular.forEach(vm.indicatorsChanged,function(indicatorId,index){
+				var selectedIndicatorObj = vm.indicatorMap[indicatorId];
+				var promise = dhisService.editIndicator(selectedIndicatorObj);
+				promiseArray.push(promise);
+			});// end of forEach
 
-			function success(response){
-				//console.log(response["status"]);
-				if(response["httpStatusCode"] === 200 || response["httpStatusCode"] === 201){
-					vm.alert.type = "success";
-					vm.alert.msg = "Indicator Updated";
-					vm.isLoaded = false;
-					vm.isResponse = true;
-					vm.selectedIndicatorId = "";
-					vm.selectedDataElementOperand = { "label" : "", "id" : "" };
-					vm.isMappingDone = false;
-				}else{
-					vm.alert.type = "warning";
-					vm.alert.msg = "Error occurred";
-					vm.isLoaded = false;
-					vm.isResponse = true;
-				}
-			}
+			$q.all(promiseArray).then(function(responseArray){
+				var response = undefined;
+				vm.isLoaded = false;
+				for(var i = 0; i < responseArray.length; i++){
+					response = responseArray[i]
+					if(response["httpStatusCode"] === 200 || response["httpStatusCode"] === 201){
+						vm.alert.type = "success";
+						vm.alert.msg = "Indicator Updated";
+						vm.isLoaded = false;
+						vm.isResponse = true;
+						vm.selectedIndicatorId = "";
+						vm.selectedDataElementOperand = {};
+						vm.isMappingDone = false;
+					}else{
+						vm.alert.type = "warning";
+						vm.alert.msg = "Error occurred";
+						vm.isLoaded = false;
+						vm.isResponse = true;
+					}
 
-			function error(response){
-				console.log(response);
-				vm.alert.type = "error";
-				vm.alert.msg = "Error occurred";
-			}
+				} // end of if
+
+			});
+			
 		} // end of submit
 
-		function onChangeDataElement(){
+		function onChangeDataElement(indicatorId){
 			
 			var operandObj = _.find(vm.dataElementOperandList,function(selectedOperand){
-				return selectedOperand["id"] === vm.selectedDataElementOperand["id"];
+				return selectedOperand["id"] === vm.selectedDataElementOperand[indicatorId]["id"];
 			});
 
-			vm.selectedDataElementOperand["label"] = operandObj["displayName"];
+			vm.selectedDataElementOperand[indicatorId]["label"] = operandObj["displayName"];
 			
 			// console.log(vm.selectedDataElementOperand); 
 			
-			vm.selectedIndicatorObj["numerator"] = "#{" + vm.selectedDataElementOperand["id"] + "}";
+			vm.selectedIndicatorObj["numerator"] = "#{" + vm.selectedDataElementOperand[indicatorId]["id"] + "}";
+			vm.indicatorMap[indicatorId]["numerator"] = "#{" + vm.selectedDataElementOperand[indicatorId]["id"] + "}";
+			vm.indicatorsChanged.push(indicatorId);
 		} // end of onChangeDataElement
 
 
