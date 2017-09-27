@@ -487,7 +487,7 @@
                 vm.filteredOuList = filteredOuListByUser;
                 
 
-                //vm.filteredOuList = filteredOuList; 
+                // vm.filteredOuList = filteredOuList; 
             } // end of success
 
             function error(response){
