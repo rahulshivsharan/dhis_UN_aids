@@ -75,13 +75,13 @@
         vm.mapOuId = mapOuId; // this method is invoked on typeAhead select
         vm.goToRemapData = goToRemapData;
 
-        // public variables
-             
+        // public variables             
         vm.ouLevelList = undefined; // list displayed in OU level select box
         vm.selectedOULevel = "";
         vm.filteredOuList = []; // this list is feed in typeAhead as options        
         vm.mappedOrgUnits = undefined; // old organisationUnits to mapped to new organisationUnits (key,value)
         vm.isMappingTableForOrgUnitVisible = false; // this flag is used to display or hide the table for OrgUnit mapping's
+
 
         // private method
         var fetchSelectedOrgUnits = fetchSelectedOrgUnits; // fetch unique list of organisation Units to be replaced
@@ -96,6 +96,7 @@
         var completelistOfOU = undefined; // array of all organisationUnits
         var currentUserOrgRoots = undefined; 		
         var selectedLevelNo = undefined;
+        var orgUnitLevelIdToLevelListMap = undefined;
 
         /////////////////////////////////////////////////////////////////////////////////////
         // public methods
@@ -190,12 +191,10 @@
 
                         // vm.dataElementsMap contains key-value pair
                         // where key is dataElementId and value is dataElementName
-                        // the below condition checks if dataElementId 
-                        // which is not blank space and is already present
-                        // as key, if yes than append the reccurring key with Time string 
-                        // so that the key is different
-                        if(angular.isDefined(rowDataSet[1]) && (rowDataSet[1].trim() !== "") && ($key in vm.dataElementsMap)){
-                           $key = $key +"^"+ date.getTime();
+                        // sometimes for same key there can be different dataElementName,
+                        // so to solve this problem the below condition is written
+                        if(angular.isDefined(rowDataSet[1]) && (rowDataSet[1].trim() !== "") && ($key in vm.dataElementsMap) && $value !== vm.dataElementsMap[$key]){
+                           $key = date.getTime();
                         }
                         vm.dataElementsMap[$key] = $value; 
                     }                    
@@ -408,10 +407,57 @@
                 $state.go("home");    
             }
 
-            fetchSelectedOrgUnits();            
-            fetchOrganisationLevels();
-            fetchOrganisationUnitTree();            
+            fetchSelectedOrgUnits();
+            fetchOrganisationUnitTree();
+
+            /*
+                the below block works such that
+                first fetch all organisation Unit Levels.
+                Now in the above fetched list you get organisationUnitLevel Id and displayName,
+                but you want level number i.e. 1 or 2 or 3 etc.
+                Hence after the above list is fetched, get an organisationUnitLevel object for each organisationUnitLevelId.
+                Now get the levelNo and attach to each organisationUnitLevelObject present in ouLevelList.
+                Also once you get the levelNo, find for ou from completeList of ou which we fetched from method 'fetchOrganisationUnitTree' for
+                that perticular level and arrange in map.
+            */
+            fetchOrganisationLevels().then(function(resp){ // success callback
+                var promiseArray = [];
+                angular.forEach(vm.ouLevelList,function(value,index){
+                    var orgUnitLevelId = value.id;
+                    var promise = dhisService.getAnOrgUnitLevel(orgUnitLevelId);
+                    promiseArray.push(promise);
+                });
+
+                $q.all(promiseArray).then(function(responseArray){
+                    var filteredOuList = undefined;
+                    orgUnitLevelIdToLevelListMap = {};
+                    
+                    angular.forEach(responseArray,function(response,index){
+                        selectedLevelNo = response["level"];
+                        filteredOuList = _.where(completelistOfOU,{ "l" : selectedLevelNo });
+                        orgUnitLevelIdToLevelListMap[selectedLevelNo] = filteredOuList;
+
+                        for(var x = 0; x < vm.ouLevelList.length; x++){
+                            if(vm.ouLevelList[x]["id"] === response["id"]){
+                               vm.ouLevelList[x]["level"] = parseInt(selectedLevelNo); 
+                            }
+                        }// end of for
+
+                    }); // end of for-each
+
+                },function(error){
+                    console.log(error);
+                }).finally(function(){
+                    var theList = angular.copy(vm.ouLevelList);
+                    vm.ouLevelList = _.sortBy(theList,"level");
+                });
+
+            },function(error){
+                console.log(error);
+            });           
+                        
         }// end of init
+        
         
         // fetch unique list of organisation Units to be replaced
         function fetchSelectedOrgUnits(){            
@@ -426,16 +472,20 @@
         } // end of fetchSelectedOrgUnits
 
         function fetchOrganisationLevels(){
-            var success = success, error = error;
+            var success = success, error = error, deferred = $q.defer();
             dhisService.getOrgUnitLevels().then(success,error);
+
+            return deferred.promise;
 
             function success(response){
                 vm.ouLevelList = response["organisationUnitLevels"];
+                deferred.resolve("success");
                 //console.log(response["organisationUnitLevels"]);
             }
 
             function error(response){
-                console.log(response);
+                //console.log(response);
+                deferred.reject(response);
             }
         } // fetchSelectedOrgUnits
 
@@ -462,37 +512,30 @@
         function loadAnOuLevel(){
             var success = success,
                 error = error;
-            
+            var filteredOuList = undefined, ouObj = undefined;
+
             vm.isMappingTableForOrgUnitVisible = (vm.selectedOULevel !== "" && !_.isNull(vm.selectedOULevel)) ? true : false;
 
             if(vm.selectedOULevel !== "" && !_.isNull(vm.selectedOULevel)){
                 clearSelectedOU(); // clear all selected OrganisationUnits
-                dhisService.getAnOrgUnitLevel(vm.selectedOULevel).then(success,error);  
-            }
+                
+                 
+                ouObj = _.find(vm.ouLevelList,function(obj){
+                    return (obj.id === vm.selectedOULevel);
+                });
+
+                filteredOuList = orgUnitLevelIdToLevelListMap[ouObj.level.toString()];
+
+                var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
+                 return _.contains(currentUserOrgRoots,obj.id);
+                });
+                console.log(filteredOuListByUser);
+                
+                vm.filteredOuList = filteredOuListByUser; 
+
+                // vm.filteredOuList = filteredOuList;  // development
+            }// end of if            
             
-
-            function success(response){
-                selectedLevelNo = response["level"];
-                var filteredOuList = _.where(completelistOfOU,{ "l" : selectedLevelNo });
-                
-                //console.log("filteredOuList ",filteredOuList);
-                //console.log("currentUserOrgRoots ",currentUserOrgRoots);
-
-                
-				var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
-					return _.contains(currentUserOrgRoots,obj.id);
-				});
-				console.log(filteredOuListByUser);
-				
-                vm.filteredOuList = filteredOuListByUser;
-                
-
-                // vm.filteredOuList = filteredOuList; 
-            } // end of success
-
-            function error(response){
-                console.log(response);
-            }
         } // end of loadAnOuLevel
 
         function clearSelectedOU(){
