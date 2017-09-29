@@ -51,10 +51,12 @@
             return deferred.promise;
 
             function successFn(response){  
-                             
-                if(response["code"] === "admin"){
+                console.log("isAdmin ",response["userCredentials"]);             
+                
+                if(angular.isDefined(response["userCredentials"]["code"]) && response["userCredentials"]["code"] === "admin"){
                     flag = true;
                 }
+                
                 deferred.resolve(flag);                
             }; // end of successFn
 

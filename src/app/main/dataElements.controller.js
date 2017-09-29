@@ -287,7 +287,18 @@
                 var categoryOptionComboList = values[1]["categoryOptionCombos"];
 
                 //console.log("dataElementsList ",dataElementsList);
-                //console.log("categoryOptionComboList ",categoryOptionComboList);
+                console.log("categoryOptionComboList ",categoryOptionComboList);
+                categoryOptionComboList = _.map(categoryOptionComboList,function(cocObj){
+                    var cocString = cocObj["displayName"];
+                    
+                    while(cocString.includes("_")){
+                        cocString = cocString.replace("_","");
+                    }
+                    cocObj["displayName"] = cocString;
+                    return cocObj;
+                });
+                console.log("categoryOptionComboList ",categoryOptionComboList);
+
                 createDE_COC_Map(dataElementsList,categoryOptionComboList);
 
                 //console.log("vm.mapDE_COC ",vm.mapDE_COC);
@@ -319,7 +330,7 @@
 						cocDisplayName = "Male+Female";
 					}
 					
-					value = de["displayName"] + "_" + cocDisplayName;
+					value = de["displayName"] + " " + cocDisplayName;
 					if(key == "PjLBZcVwRnr_LwoUpOaVGnN")
 					{
 							value = de["displayName"];
@@ -525,17 +536,19 @@
                     return (obj.id === vm.selectedOULevel);
                 });
 
+                console.log(orgUnitLevelIdToLevelListMap);
                 filteredOuList = orgUnitLevelIdToLevelListMap[ouObj.level.toString()];
-
-                
+                console.log(filteredOuList);    
+                /*
                 var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
                  return _.contains(currentUserOrgRoots,obj.id);
                 });
                 console.log(filteredOuListByUser);
                 
                 vm.filteredOuList = filteredOuListByUser; 
+                */
 
-                // vm.filteredOuList = filteredOuList;  // development
+                vm.filteredOuList = filteredOuList;  // development
             }// end of if            
             
         } // end of loadAnOuLevel

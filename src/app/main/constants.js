@@ -2,7 +2,7 @@
 	'use strict'
 	angular.module("DureDHIS").value("DHIS_BACKEND","http://localhost:8187"); // development
 	
-	/*
+	
 	angular.module("DureDHIS").config(function($provide){
 		$provide.decorator("DHIS_BACKEND",function($delegate,$window){
 			
@@ -29,6 +29,6 @@
 
 			return contextPath;
 		});
-	});*/
-		
+	});
+
 })();
