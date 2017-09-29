@@ -87,7 +87,7 @@
 
 
 		function getIndicators(){
-			var url = DHIS_BACKEND + "/api/indicators.json";
+			var url = DHIS_BACKEND + "/api/indicators.json?filter=name:ilike:HIV%20Ind";
 
 			var deferred = $q.defer();
 			

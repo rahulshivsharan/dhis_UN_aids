@@ -26,7 +26,7 @@
 
         // private variables
         var fileContent = undefined;
-        
+        var uniqueDataElementSet = {}; 
 		
 		// public methods 
         vm.gotBackTo = gotBackTo; 
@@ -162,6 +162,7 @@
 
 
             vm.dataElementsMap = {};
+            uniqueDataElementSet = {};
             for(var index = 0; index < statements.length; index++){
                 rowData = statements[index];    
                 rowDataSet = rowData.split(",");
@@ -171,16 +172,18 @@
                         tableHeaders.push(value); // data to be shown in table header
                     });
                     dhisService.tableHeaders = tableHeaders; // set table headers in controller
-                }else{
-                    tableRowData.push(rowDataSet); // data to be shown in table row
-                                        
-                    $key = rowDataSet[1]; // dataElementId
-                    $value = rowDataSet[0]; // dataElementName
+                }else{                    
                     
-                    // the below condition is a quick fix if dataElementId is space than key id dataELementName
-                    if(angular.isDefined($key) && $key !== null && angular.isString($key) && $key.trim() === ""){
-                        $key = rowDataSet[0].trim();
+                    $value = rowDataSet[0].trim(); // dataElementName
+                    
+                    /*
+                        Create unique dataElement name set,
+                        where key is dataElementName and value is random number
+                    */
+                    if($value !== "" && !($value in uniqueDataElementSet)){                        
+                        uniqueDataElementSet[$value] = parseInt(Math.random() * 1000000);                            
                     }
+                    $key = uniqueDataElementSet[$value]; // set key as the random number being mapped to dataElement name 
                     
                     if(angular.isDefined(rowDataSet[3])){
                         ou_Name = rowDataSet[3];
@@ -188,18 +191,14 @@
                         orgUnits[ou_Name] = ou_Name;    
                     }
                     
-                    if(angular.isDefined(rowDataSet[1]) && angular.isDefined(rowDataSet[0])){
-
-                        // vm.dataElementsMap contains key-value pair
-                        // where key is dataElementId and value is dataElementName
-                        // sometimes for same key there can be different dataElementName,
-                        // so to solve this problem the below condition is written
-                        if(angular.isDefined(rowDataSet[1]) && (rowDataSet[1].trim() !== "") && ($key in vm.dataElementsMap) && $value !== vm.dataElementsMap[$key]){
-                           $key = date.getTime();
-                        }
-                        vm.dataElementsMap[$key] = $value; 
-                    }                    
-                }                
+                    if(angular.isDefined($value) && $value !== ""){
+                        vm.dataElementsMap[$key] = $value;    
+                    }
+                    
+                    rowDataSet[1] = $key;
+                    rowDataSet[0] = $value;
+                    tableRowData.push(rowDataSet);                    
+                } // end of else                
             } // end of for
 
             
@@ -254,8 +253,9 @@
         } //end of confirmDataElementsMapping
 
         function initMapDataElements(){
-
-            console.log("in init of 'mapDataElements' function");
+            console.log("in init of 'mapDataElements'");
+            //console.log("in init of 'mapDataElements' function",JSON.stringify(vm.dataElementsMap));
+            console.log(JSON.stringify(uniqueDataElementSet));
 
             vm.isDataElementsMappingDone = false;
 
@@ -527,6 +527,7 @@
 
                 filteredOuList = orgUnitLevelIdToLevelListMap[ouObj.level.toString()];
 
+                
                 var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
                  return _.contains(currentUserOrgRoots,obj.id);
                 });
