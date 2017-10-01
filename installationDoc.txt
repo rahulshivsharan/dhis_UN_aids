@@ -1,0 +1,29 @@
+
+
+Pre-requisit 
+
+Node should be installed
+
+
+
+1. npm install
+
+For Bower installation on windows
+
+"npm bower install" doesn't work
+hence followed the below link
+and fired the command
+
+"npm install node-gyp@latest"
+
+npm install -g bower
+
+bower install 
+
+https://stackoverflow.com/questions/21658832/npm-install-error-msb3428-could-not-load-the-visual-c-component-vcbuild-ex
+
+
+
+
+
+	

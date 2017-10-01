@@ -255,7 +255,7 @@
         function initMapDataElements(){
             console.log("in init of 'mapDataElements'");
             //console.log("in init of 'mapDataElements' function",JSON.stringify(vm.dataElementsMap));
-            console.log(JSON.stringify(uniqueDataElementSet));
+            //console.log(JSON.stringify(uniqueDataElementSet));
 
             vm.isDataElementsMappingDone = false;
 
@@ -287,7 +287,7 @@
                 var categoryOptionComboList = values[1]["categoryOptionCombos"];
 
                 //console.log("dataElementsList ",dataElementsList);
-                console.log("categoryOptionComboList ",categoryOptionComboList);
+                //console.log("categoryOptionComboList ",categoryOptionComboList);
                 categoryOptionComboList = _.map(categoryOptionComboList,function(cocObj){
                     var cocString = cocObj["displayName"];
                     
@@ -297,7 +297,7 @@
                     cocObj["displayName"] = cocString;
                     return cocObj;
                 });
-                console.log("categoryOptionComboList ",categoryOptionComboList);
+                //console.log("categoryOptionComboList ",categoryOptionComboList);
 
                 createDE_COC_Map(dataElementsList,categoryOptionComboList);
 
@@ -419,8 +419,9 @@
                 $state.go("home");    
             }
 
+            var orgUnitTreePromise = fetchOrganisationUnitTree();
             fetchSelectedOrgUnits();
-            fetchOrganisationUnitTree();
+            
 
             /*
                 the below block works such that
@@ -444,19 +445,23 @@
                     var filteredOuList = undefined;
                     orgUnitLevelIdToLevelListMap = {};
                     
-                    angular.forEach(responseArray,function(response,index){
-                        selectedLevelNo = response["level"];
-                        filteredOuList = _.where(completelistOfOU,{ "l" : selectedLevelNo });
-                        orgUnitLevelIdToLevelListMap[selectedLevelNo] = filteredOuList;
+                    orgUnitTreePromise.then(function(){
+                    
+                        angular.forEach(responseArray,function(responseObject,index){
+                            selectedLevelNo = responseObject["level"];                                                            
+                            filteredOuList = _.where(completelistOfOU,{ "l" : selectedLevelNo });                                
+                            orgUnitLevelIdToLevelListMap[selectedLevelNo] = filteredOuList;
 
-                        for(var x = 0; x < vm.ouLevelList.length; x++){
-                            if(vm.ouLevelList[x]["id"] === response["id"]){
-                               vm.ouLevelList[x]["level"] = parseInt(selectedLevelNo); 
-                            }
-                        }// end of for
+                            for(var x = 0; x < vm.ouLevelList.length; x++){
+                                if(vm.ouLevelList[x]["id"] === responseObject["id"]){
+                                   vm.ouLevelList[x]["level"] = parseInt(selectedLevelNo); 
+                                }
+                            }// end of for
 
-                    }); // end of for-each
-
+                        }); // end of for-each
+                    },function(error){ // error 
+                        console.log(" Error while fetching organisation Unit tree ");
+                    });   
                 },function(error){
                     console.log(error);
                 }).finally(function(){
@@ -502,18 +507,22 @@
         } // fetchSelectedOrgUnits
 
         function fetchOrganisationUnitTree(){
-            var success = success, error = error;
+            var success = success, error = error, deferred = $q.defer();
             
             dhisService.getOrgUnitsTree().then(success,error);
 
+            return deferred.promise;
+
             function success(response){
                 mainOrgUnitsObj = response["organisationUnits"];
-                completelistOfOU = _.values(mainOrgUnitsObj);  
-				currentUserOrgRoots	= response["roots"];			
+                completelistOfOU = _.values(mainOrgUnitsObj);
+				currentUserOrgRoots	= response["roots"];
+                deferred.resolve();			
             }
 
             function error(response){
                 console.log(response);
+                deferred.reject("error");
             }
         } // end of fetchOrganisationUnitTree
 
@@ -525,7 +534,7 @@
             var success = success,
                 error = error;
             var filteredOuList = undefined, ouObj = undefined;
-
+            //console.log("orgUnitLevelIdToLevelListMap ",orgUnitLevelIdToLevelListMap);
             vm.isMappingTableForOrgUnitVisible = (vm.selectedOULevel !== "" && !_.isNull(vm.selectedOULevel)) ? true : false;
 
             if(vm.selectedOULevel !== "" && !_.isNull(vm.selectedOULevel)){
@@ -536,19 +545,18 @@
                     return (obj.id === vm.selectedOULevel);
                 });
 
-                console.log(orgUnitLevelIdToLevelListMap);
+                //console.log(orgUnitLevelIdToLevelListMap);
                 filteredOuList = orgUnitLevelIdToLevelListMap[ouObj.level.toString()];
-                console.log(filteredOuList);    
-                /*
+                
                 var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
                  return _.contains(currentUserOrgRoots,obj.id);
                 });
-                console.log(filteredOuListByUser);
+                //console.log(filteredOuListByUser);
                 
                 vm.filteredOuList = filteredOuListByUser; 
-                */
+                
 
-                vm.filteredOuList = filteredOuList;  // development
+                //vm.filteredOuList = filteredOuList;  // development
             }// end of if            
             
         } // end of loadAnOuLevel
