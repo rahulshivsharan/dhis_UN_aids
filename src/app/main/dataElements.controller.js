@@ -346,8 +346,8 @@
 						vm.mapDE_COC[key] = value;
 						vm.mapSelectionFlag[key] = false; 
 					}
-                }
-            } 
+                } // end of for
+            }// end of for 
         } // end of createDE_COC_Map
 
         // this method is invoked on change event of selection box
@@ -548,15 +548,16 @@
                 //console.log(orgUnitLevelIdToLevelListMap);
                 filteredOuList = orgUnitLevelIdToLevelListMap[ouObj.level.toString()];
                 
+                /*
                 var filteredOuListByUser = _.filter(filteredOuList, function (obj) {
                  return _.contains(currentUserOrgRoots,obj.id);
                 });
                 //console.log(filteredOuListByUser);
                 
                 vm.filteredOuList = filteredOuListByUser; 
-                
+                */
 
-                //vm.filteredOuList = filteredOuList;  // development
+                vm.filteredOuList = filteredOuList;  // development
             }// end of if            
             
         } // end of loadAnOuLevel
