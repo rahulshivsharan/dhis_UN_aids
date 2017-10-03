@@ -10,7 +10,8 @@
 
 		// public methods
 		service.getOrganisationUnits = getOrganisationUnits;
-		service.getDataElements = getDataElements; 
+		service.getDataElements = getDataElements;
+		service.getAnDataElement = getAnDataElement; 
 		service.createMetadata = createMetadata;
 		service.getBasicInfoOfCurrentUser = getBasicInfoOfCurrentUser;
 		service.getUserRoles = getUserRoles;
@@ -29,6 +30,7 @@
 		service.getAnIndicator = getAnIndicator;
 		service.getDataElementOperands = getDataElementOperands; 
 		service.editIndicator = editIndicator;
+		service.getCategoryCombo = getCategoryCombo;
 
 
 		// private methods		
@@ -200,6 +202,28 @@
 			} // end of errorFn
 		}// end of createOrganisationUnit
 
+		function getAnDataElement(dataElementId){
+			var url = DHIS_BACKEND + "/api/dataElements/" +dataElementId+ ".json";
+			var deferred = $q.defer();
+
+			$http({
+				"method" : "GET",
+				"url" : url
+			}).then(successFn,errorFn);
+
+			return deferred.promise;
+
+			function successFn(response){
+				var jsonResponseObj = parseResponse(response);				
+				deferred.resolve(jsonResponseObj);			
+			} // end of successFn
+
+			function errorFn(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
+			} // end of errorFn
+
+		} // end of getAnDataElement
 
 		function getDataElements(queryParameters){
 			var url = DHIS_BACKEND + "/api/dataElements.json";
@@ -519,6 +543,30 @@
 			
 			
 		} // end of editIndicator 
+
+		function getCategoryCombo(categoryComboId){
+			var url = DHIS_BACKEND + "/api/categoryCombos/"+ categoryComboId +".json"; // production
+
+			var deferred = $q.defer();
+
+			$http({
+				"method" : "GET",
+				"url" : url
+			}).then(successFn,errorFn);
+
+			return deferred.promise;
+
+			function successFn(response){
+				var jsonResponseObj = parseResponse(response);				
+				deferred.resolve(jsonResponseObj);			
+			} // end of successFn
+
+			function errorFn(response){
+				var jsonResponseObj = parseResponse(response);
+				deferred.reject(jsonResponseObj);
+			} // end of errorFn
+
+		} // end of getCategoryCombo
 	} // end of dhisService
 
 })();

@@ -60,6 +60,7 @@
         // private methods
         var loadCategoryOptionCombos = loadCategoryOptionCombos;
         var createDE_COC_Map = createDE_COC_Map;
+        var loadCategoryComboDetails = loadCategoryComboDetails;
 
         // private variables
         var oldNew_DE_Map = {};
@@ -274,10 +275,83 @@
             
         } // end of initMapDataElements
 
+        function loadCategoryComboDetails(dataElementsList){
+
+            var dataElementPromise = [], deferred = $q.defer();
+            
+            /*
+                iterate through dataElement List, and for each dataElementId
+                fetch complete dataElement Object.
+            */
+            angular.forEach(dataElementsList,function(deObject,index){
+                var dataElementId = deObject["id"];
+                var promise = dhisService.getAnDataElement(dataElementId);
+                dataElementPromise.push(promise);
+            });
+
+            /*
+                after fetching all dataElement's, 
+                fetch categoryCombo object by using categoryComboId present
+                in each dataElementObject.
+                The fetched categoryCombo objects has property displayName which can be used further
+                for filtering on "Gender CC"
+            */
+            $q.all(dataElementPromise).then(function(res){ // success block
+                var dataElementArray = res;
+                var categoryComboPromiseArray = [];
+
+                // get categoryComboId's from all dataElement's
+                var categoryComboIdArray = _.map(dataElementArray,function(dataElementObj){
+                        for(var i = 0; i < dataElementsList.length; i++){
+                                if(dataElementsList[i]["id"] === dataElementObj["id"]){
+                                    dataElementsList[i]["categoryCombo"] =  dataElementObj["categoryCombo"];
+                                    break;
+                                }
+                        }                
+                    return angular.isDefined(dataElementObj["categoryCombo"]) ? dataElementObj["categoryCombo"]["id"] : undefined;
+                });
+
+                // fetch categoryCombo objects for
+                // each categoryComboId's
+                angular.forEach(categoryComboIdArray,function(categoryComboId,index){
+                    var promise = dhisService.getCategoryCombo(categoryComboId);
+                    categoryComboPromiseArray.push(promise);
+                });
+
+                $q.all(categoryComboPromiseArray).then(function(categoryComboArray){ // success
+                    
+                    angular.forEach(categoryComboArray,function(categoryCombo,index){
+                        
+                        for(var i = 0; i < dataElementsList.length; i++){
+
+                            if(dataElementsList[i]["categoryCombo"]["id"] === categoryCombo["id"]){                               
+                               dataElementsList[i]["categoryCombo"]["displayName"] = categoryCombo["displayName"];                                
+                            }
+                        }// end of for
+                    });
+
+                    deferred.resolve(dataElementsList);
+                },function(error){ // error
+                    //console.log(error);
+                    deferred.reject(error);
+                });
+
+                
+            },function(error){ // error block
+                console.log(error);
+            });
+
+            return deferred.promise;
+        }; // loadCategoryComboDetails
+
         function loadCategoryOptionCombos(){
-            var promiseTwo = dhisService.getCategoryOptionCombos();
             var promiseOne = dhisService.getDataElements('filter=name:ilike:HIV%20Den');
+
+            var promiseTwo = dhisService.getCategoryOptionCombos();            
             var success = success, error = error;
+
+
+
 
             $q.all([promiseOne,promiseTwo]).then(success,error);
 
@@ -285,6 +359,8 @@
                 
                 var dataElementsList = values[0]["dataElements"];
                 var categoryOptionComboList = values[1]["categoryOptionCombos"];
+                
+
 
                 //console.log("dataElementsList ",dataElementsList);
                 //console.log("categoryOptionComboList ",categoryOptionComboList);
@@ -299,7 +375,14 @@
                 });
                 //console.log("categoryOptionComboList ",categoryOptionComboList);
 
-                createDE_COC_Map(dataElementsList,categoryOptionComboList);
+                // once you have categoryCombo information
+                // for each dataElement object do the mapping
+                loadCategoryComboDetails(dataElementsList).then(function(dataElementsList){ // success
+                    createDE_COC_Map(dataElementsList,categoryOptionComboList);    
+                },function(error){ // error
+                    console.log(error);
+                });
+                
 
                 //console.log("vm.mapDE_COC ",vm.mapDE_COC);
             } // end of success
@@ -319,34 +402,37 @@
             vm.mapSelectionFlag = {};
             
             for(index1 = 0; index1 < deList.length; index1++){
-                for(index2 = 0; index2 < cocList.length; index2++){
-                    de = deList[index1];
-                    coc = cocList[index2];
-                    key = de["id"] + "_" + coc["id"];
-					var cocDisplayName = "";
-					cocDisplayName = coc["displayName"];
-					if(cocDisplayName == "default")
-					{
-						cocDisplayName = "Male+Female";
-					}
-					
-					value = de["displayName"] + " " + cocDisplayName;
-					if(key == "PjLBZcVwRnr_LwoUpOaVGnN")
-					{
-							value = de["displayName"];
-					}					
-					if(key == "PjLBZcVwRnr_OmL59ldRIVV" || key == "PjLBZcVwRnr_HllvX50cXC0")
-					{
-						// Do nothing
-						//PjLBZcVwRnr_OmL59ldRIVV
-					}
-					else
-					{
-						
-						vm.mapDE_COC[key] = value;
-						vm.mapSelectionFlag[key] = false; 
-					}
-                } // end of for
+                if(deList[index1]["categoryCombo"]["displayName"] === "Gender CC"){
+                    for(index2 = 0; index2 < cocList.length; index2++){
+                        de = deList[index1];
+                        coc = cocList[index2];
+                        key = de["id"] + "_" + coc["id"];
+                        var cocDisplayName = "";
+                        cocDisplayName = coc["displayName"];
+                        if(cocDisplayName == "default")
+                        {
+                            cocDisplayName = "Male+Female";
+                        }
+                        
+                        value = de["displayName"] + " " + cocDisplayName;
+                        if(key == "PjLBZcVwRnr_LwoUpOaVGnN")
+                        {
+                                value = de["displayName"];
+                        }                   
+                        if(key == "PjLBZcVwRnr_OmL59ldRIVV" || key == "PjLBZcVwRnr_HllvX50cXC0")
+                        {
+                            // Do nothing
+                            //PjLBZcVwRnr_OmL59ldRIVV
+                        }
+                        else
+                        {
+                            
+                            vm.mapDE_COC[key] = value;
+                            vm.mapSelectionFlag[key] = false; 
+                        }
+                    } // end of for
+                }// end of if
+                
             }// end of for 
         } // end of createDE_COC_Map
 
