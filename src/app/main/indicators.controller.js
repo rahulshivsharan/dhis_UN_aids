@@ -12,8 +12,9 @@
 		vm.fetchIndicator = fetchIndicator;		
 		
 		vm.submit = submit;
-		vm.onChangeDataElement = onChangeDataElement;
+		vm.onSelectDataElementOperand = onSelectDataElementOperand;
 		vm.confirmIndicatorsMapping = confirmIndicatorsMapping;
+		vm.fetchDataElementOperands = fetchDataElementOperands;
 
 		// public variables
 		vm.indicatorList = undefined;
@@ -22,6 +23,7 @@
 		vm.isLoaded = true;
 		vm.selectedIndicatorName = undefined;
 		vm.dataElementOperandList = [];
+		
 		
 		// this variable holds value 
 		// as 
@@ -52,7 +54,7 @@
 
 		// private methods
 		var fetchAllIndicators = fetchAllIndicators;
-		var fetchDataElementOperands = fetchDataElementOperands;
+		
 
 		function init(){
 			vm.isLoaded = true; // to display loading image
@@ -191,18 +193,36 @@
 			return mainDeferred.promise;
 		} // end of fetchIndicator
 
-		// fetch all dataelement operand
-		function fetchDataElementOperands(){
-			var success = success, error = error;
-			dhisService.getDataElementOperands().then(success,error);
+		// fetch  dataelement operand for feeding type-ahead
+		function fetchDataElementOperands(searchParam){
+			var success = success, 
+				error = error, 
+				deferred = $q.defer();
 			
+			// below condition is for use of type-ahead, only and only if 
+			// searchString is more than or equal to 3 limit
+			if(angular.isDefined(searchParam) && angular.isString(searchParam) && searchParam.length < 3){
+				deferred.resolve([]);					
+			}else{
+				dhisService.getDataElementOperands(searchParam).then(success,error);	
+			}
+			
+			return deferred.promise;
 			function success(response){
 				//console.log(response);
-				vm.dataElementOperandList = response["dataElementOperands"];				
+				var operandList = response["dataElementOperands"];
+				
+				
+				vm.dataElementOperandList = _.filter(operandList,function(deOperandObj){
+					return (deOperandObj["displayName"].includes("HIV Den") === false);
+				});
+				
+				deferred.resolve(vm.dataElementOperandList); 								
 			}
 
 			function error(response){
 				console.log(response);
+				deferred.reject(response);
 			}
 		} // end of fetchDataElementOperands
 
@@ -243,15 +263,13 @@
 			
 		} // end of submit
 
-		function onChangeDataElement(indicatorId){
+		// below method is invoked on selection of specific 
+		// dataElementOperand from type-ahead
+		function onSelectDataElementOperand($item, $model, $label, $event, indicatorId){
 			
-			var operandObj = _.find(vm.dataElementOperandList,function(selectedOperand){
-				return selectedOperand["id"] === vm.selectedDataElementOperand[indicatorId]["id"];
-			});
-
-			vm.selectedDataElementOperand[indicatorId]["label"] = operandObj["displayName"];
-			
-			// console.log(vm.selectedDataElementOperand); 
+			vm.selectedDataElementOperand[indicatorId]["id"] = $item["id"];
+			//console.log(vm.selectedDataElementOperand);
+			 
 			
 			vm.selectedIndicatorObj["numerator"] = "#{" + vm.selectedDataElementOperand[indicatorId]["id"] + "}";
 			vm.indicatorMap[indicatorId]["numerator"] = "#{" + vm.selectedDataElementOperand[indicatorId]["id"] + "}";
@@ -259,7 +277,7 @@
 		} // end of onChangeDataElement
 
 
-		function confirmIndicatorsMapping(){
+		function confirmIndicatorsMapping(){			
 			vm.isMappingDone = true;
 		}
 	} // end of indicatorsController

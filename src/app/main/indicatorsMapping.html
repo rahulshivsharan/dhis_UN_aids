@@ -15,6 +15,7 @@
 	</div>
 	<div class="col-md-12" style="width:120%" ng-if="!vm.isLoaded && !vm.isResponse">
 		<table class="table table-bordered" id="indicatorTbl">
+			<caption><span class="pull-right">Note: Type minimum 3 characters to search data-elements</span></caption>
 			<thead>
 				<tr>
 					<th><span class="pull-right">Indicator</span></th>
@@ -23,27 +24,30 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="indicator in vm.indicatorList">
+				<tr ng-repeat="indicator in vm.indicatorList track by $index">
 					<td align="right">{{indicator.displayName}}</td>
 					<td align="right">{{( vm.indicatorMap[indicator.id]['indicatorName'] === undefined || vm.indicatorMap[indicator.id]['indicatorName'] === "") ? vm.indicatorMap[indicator.id]['indicatorName'].numerator : vm.indicatorMap[indicator.id]['indicatorName']}}</td>
-					<td>
-						
+					<td>						
+						<input 	type="text" 
+								class="form-control" 
+								ng-model="vm.selectedDataElementOperand[indicator.id]['label']" 
+								uib-typeahead="operand.displayName as operand.displayName for operand in vm.fetchDataElementOperands($viewValue)"
+								typeahead-on-select="vm.onSelectDataElementOperand($item, $model, $label, $event,indicator.id)"
+								typeahead-loading="loadingLocations" 
+								typeahead-no-results="noResults"
+								ng-disabled="vm.isMappingDone === true" />
 
-						<select ng-model="vm.selectedDataElementOperand[indicator.id]['id']" 
-								ng-options="operand.id as operand.displayName for operand in vm.dataElementOperandList"
-								class="form-control"
-								ng-change="vm.onChangeDataElement(indicator.id)"
-								ng-disabled="vm.isMappingDone === true">
-							<option value="">Select</option>
-						</select>		
+						<i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+					    <div ng-show="noResults">
+					      <i class="glyphicon glyphicon-remove"></i> No Results Found
+					    </div>							
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3" align="right">
-						
-					<button class="btn btn-primary" 
-							ng-click="vm.confirmIndicatorsMapping()" 
-							ng-if="vm.isMappingDone === false">Apply</button>
+					<td colspan="3" align="right">						
+						<button class="btn btn-primary" 
+								ng-click="vm.confirmIndicatorsMapping()" 
+								ng-if="vm.isMappingDone === false">Apply</button>
 						<button class="btn btn-primary"
 								ng-if="vm.isMappingDone === true" 
 								ng-click="vm.submit()">Update Indicator</button>

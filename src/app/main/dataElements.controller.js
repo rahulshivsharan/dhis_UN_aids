@@ -403,34 +403,48 @@
             
             for(index1 = 0; index1 < deList.length; index1++){
                 if(deList[index1]["categoryCombo"]["displayName"] === "Gender CC"){
+                    
                     for(index2 = 0; index2 < cocList.length; index2++){
-                        de = deList[index1];
-                        coc = cocList[index2];
-                        key = de["id"] + "_" + coc["id"];
-                        var cocDisplayName = "";
-                        cocDisplayName = coc["displayName"];
-                        if(cocDisplayName == "default")
-                        {
-                            cocDisplayName = "Male+Female";
-                        }
                         
-                        value = de["displayName"] + " " + cocDisplayName;
-                        if(key == "PjLBZcVwRnr_LwoUpOaVGnN")
-                        {
-                                value = de["displayName"];
-                        }                   
-                        if(key == "PjLBZcVwRnr_OmL59ldRIVV" || key == "PjLBZcVwRnr_HllvX50cXC0")
-                        {
-                            // Do nothing
-                            //PjLBZcVwRnr_OmL59ldRIVV
-                        }
-                        else
-                        {
+                        
+                            de = deList[index1];
+                            coc = cocList[index2];
+                            key = de["id"] + "_" + coc["id"];
+
+                            var cocDisplayName = "";
+                            cocDisplayName = coc["displayName"];
                             
-                            vm.mapDE_COC[key] = value;
-                            vm.mapSelectionFlag[key] = false; 
-                        }
+                            if(cocDisplayName == "default")
+                            {
+                                cocDisplayName = "Male+Female";
+                            }
+                            
+                            value = de["displayName"] + " " + cocDisplayName;
+                            if(key == "PjLBZcVwRnr_LwoUpOaVGnN")
+                            {
+                                    value = de["displayName"];
+                            }                   
+                            if(key == "PjLBZcVwRnr_OmL59ldRIVV" || key == "PjLBZcVwRnr_HllvX50cXC0")
+                            {
+                                // Do nothing
+                                //PjLBZcVwRnr_OmL59ldRIVV
+                            }
+                            else
+                            {                            
+                                vm.mapDE_COC[key] = value;
+                                vm.mapSelectionFlag[key] = false; 
+                            }
+                                           
+
+
                     } // end of for
+                }else{
+                    de = deList[index1];
+                    value = de["displayName"];                    
+                    key = de["id"];
+
+                    vm.mapDE_COC[key] = value;
+                    vm.mapSelectionFlag[key] = false;
                 }// end of if
                 
             }// end of for 
