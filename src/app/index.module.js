@@ -14,5 +14,6 @@
         						'ui.grid.resizeColumns',
                                 'underscore',
                                 'angularMoment',
-                                'ngFileUpload']);
+                                'ngFileUpload',
+                                'jm.i18next']);
 })();

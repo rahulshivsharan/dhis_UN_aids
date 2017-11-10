@@ -66,8 +66,11 @@
         var oldNew_DE_Map = {};
 
         ////////////////////////////////////////////////////////////////////////////////////
-
-
+        /*
+        $scope.$on("change_locale",function(event,args){
+            $i18next.changeLanguage(args.locale);
+        });
+        */
         ////////////////////////////////// mapOrgUnits //////////////////////////////////////
 
         // public methods

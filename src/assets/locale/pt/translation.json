@@ -1,0 +1,13 @@
+{	
+	"menu" : {
+		"import_data" : "Importar dados",
+		"update_indicators" : "Atualizar indicadores"	
+	},
+	"breadcrumbs" : {
+		"setup_metadata" : "Criar metadados",
+		"upload_data_file" : "Carregar arquivo de dados",
+		"associate_data_elements" : "Associar elementos dos dados",
+		"associate_organisation_units" : "Associar unidades de organização",
+		"import_data" : "Importar dados"
+	}
+}
