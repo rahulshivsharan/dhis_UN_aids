@@ -2,9 +2,9 @@
 	'use strict'
 	angular.module("DureDHIS").factory("dhisService",dhisService);	
 
-	dhisService.$inject = ["DHIS_BACKEND","$http","$q"];
+	dhisService.$inject = ["DHIS_BACKEND","$http","$q","$i18next"];
 
-	function dhisService(DHIS_BACKEND,$http,$q){
+	function dhisService(DHIS_BACKEND,$http,$q,$i18next){
 		console.log("DHIS_BACKEND ",DHIS_BACKEND);
 		var service = {};
 
@@ -31,6 +31,7 @@
 		service.getDataElementOperands = getDataElementOperands; 
 		service.editIndicator = editIndicator;
 		service.getCategoryCombo = getCategoryCombo;
+		
 
 
 		// private methods		
@@ -38,6 +39,8 @@
 		var parseXmlResponse = parseXmlResponse; // utility method to parse string to XML;
 
 		return service;
+
+		 
 
 		function parseResponse(response){
 				var jsonString = undefined,
@@ -203,7 +206,15 @@
 		}// end of createOrganisationUnit
 
 		function getAnDataElement(dataElementId){
-			var url = DHIS_BACKEND + "/api/dataElements/" +dataElementId+ ".json";
+			
+			var url = DHIS_BACKEND + "/api/dataElements/" +dataElementId+ ".json"; // production
+
+			// development
+			if(angular.isDefined(dataElementId) && dataElementId !== null && dataElementId.trim() !== ""){
+				url = DHIS_BACKEND + "/api/dataElements.json?singleDE="+dataElementId; 
+			}
+			// development
+
 			var deferred = $q.defer();
 
 			$http({
@@ -547,6 +558,8 @@
 
 		function getCategoryCombo(categoryComboId){
 			var url = DHIS_BACKEND + "/api/categoryCombos/"+ categoryComboId +".json"; // production
+
+			var url = DHIS_BACKEND + "/api/categoryCombos.json?categoryComboId="+ categoryComboId; // development
 
 			var deferred = $q.defer();
 

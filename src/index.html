@@ -17,7 +17,7 @@
     <!-- endinject -->
     <!-- endbuild -->
 	</head>
-	<body ng-cloak class="ng-cloak" ng-controller="mainController">
+	<body ng-cloak class="ng-cloak" ng-controller="mainController as vm" ng-init="vm.init()">
 		<!--[if lt IE 10]>
       		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     	<![endif]-->
@@ -25,7 +25,9 @@
         <div class="row">
             <div class="col-md-1 col-md-offset-9"><span class="pull-right">Language : </span></div>
             <div class="col-md-2">
-                    <a href="javaScript:void(0)" ng-click="changeLang('en')">English</a>&nbsp;<a href="javaScript:void(0)" ng-click="changeLang('es')">Spanish</a>&nbsp;<a href="javaScript:void(0)" ng-click="changeLang('fr')">French</a>&nbsp;<a href="javaScript:void(0)" ng-click="changeLang('pt')">Portuguese</a>       
+                    <a  href="javaScript:void(0)" 
+                        ng-click="vm.changeLang('en')">English</a>&nbsp;<a href="javaScript:void(0)" ng-click="vm.changeLang('es')">Spanish</a>&nbsp;
+                        <a href="javaScript:void(0)" ng-click="vm.changeLang('fr')">French</a>&nbsp;<a href="javaScript:void(0)" ng-click="vm.changeLang('pt')">Portuguese</a>       
             </div>
         </div>
         <div class="page-header pg-header" ng-init="menuItem = 'de'">                
@@ -37,11 +39,11 @@
                         <ul class="nav navbar-nav">                            
                             <li ng-class="{'active' : (menuItem === 'de'), 'noactive' : (menuItem !== 'de') }" 
                                 ng-click="menuItem='de'">
-                                <a href="javaScript:void(0)" ui-sref="home">{{'menu.import_data' | i18next}}</a>
+                                <a href="javaScript:void(0)" ui-sref="home">{{"Import Data" | i18next}}</a>
                             </li>
                             <li ng-class="{'active' : (menuItem === 'ind'), 'noactive' : (menuItem !== 'ind') }" 
                                 ng-click="menuItem='ind'">
-                                <a href="javaScript:void(0)" ui-sref="indicators">{{'menu.update_indicators' |  i18next}}</a>
+                                <a href="javaScript:void(0)" ui-sref="indicators">{{"Update indicators" |  i18next}}</a>
                             </li>                            
                         </ul>
                         

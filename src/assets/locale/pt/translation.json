@@ -1,13 +1,9 @@
-{	
-	"menu" : {
-		"import_data" : "Importar dados",
-		"update_indicators" : "Atualizar indicadores"	
-	},
-	"breadcrumbs" : {
-		"setup_metadata" : "Criar metadados",
-		"upload_data_file" : "Carregar arquivo de dados",
-		"associate_data_elements" : "Associar elementos dos dados",
-		"associate_organisation_units" : "Associar unidades de organização",
-		"import_data" : "Importar dados"
-	}
+{
+
+	"Import Data" : "Importar dados",
+	"Update indicators" : "Atualizar indicadores",
+	"Setup Metadata" : "Criar metadados",
+	"Upload Data File" : "Carregar arquivo de dados",
+	"Associate Data Elements" : "Associar elementos dos dados",
+	"Associate Organisation Units" "Associar unidades de organização" 
 }

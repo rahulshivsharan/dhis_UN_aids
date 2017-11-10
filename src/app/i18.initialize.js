@@ -8,8 +8,8 @@
 		
 		window.i18next.init({
 			debug: true,
-			lng: 'fr', 
-			fallbackLng: 'fr', 			
+			lng: 'en', 
+			fallbackLng: 'en', 			
 			backend: {
 				loadPath: '/assets/locale/{{lng}}/{{ns}}.json'
 			},
@@ -17,10 +17,7 @@
 			useLocalStorage: false
 		}, function (err, t) {
 			console.log('resources loaded');
-		});	
+		});
+			
 	} // end of if
-
-	
-
-
 })();

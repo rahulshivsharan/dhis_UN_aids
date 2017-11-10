@@ -381,7 +381,8 @@
                 // once you have categoryCombo information
                 // for each dataElement object do the mapping
                 loadCategoryComboDetails(dataElementsList).then(function(dataElementsList){ // success
-                    createDE_COC_Map(dataElementsList,categoryOptionComboList);    
+                    createDE_COC_Map(dataElementsList,categoryOptionComboList);  
+                    console.log(" mapDE_COC ",vm.mapDE_COC);  
                 },function(error){ // error
                     console.log(error);
                 });
@@ -456,7 +457,8 @@
         // this method is invoked on change event of selection box
         // present in mapDataElements.html
         function disableDE_COC_Options(idx,oldDataElementId){
-            //console.log("Selected Value ",vm.selectedValueList[idx]," map to ",oldDataElementId);
+            console.log("Selected Value ",vm.selectedValueList[idx]," map to ",oldDataElementId);
+            console.log("vm.selectedValueList ",vm.selectedValueList);
             var selectedValue = vm.selectedValueList[idx], 
                 index = 0,
                 key = undefined,

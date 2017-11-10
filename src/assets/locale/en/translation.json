@@ -1,13 +1,8 @@
-{
-	"menu" : {
-		"import_data" : "Import Data",
-		"update_indicators" : "Update indicators"	
-	},
-	"breadcrumbs" : {
-		"setup_metadata" : "Setup Metadata",
-		"upload_data_file" : "Upload Data File",
-		"associate_data_elements" : "Associate Data Elements",
-		"associate_organisation_units" : "Associate Organisation Units",
-		"import_data" : "Import Data"
-	}	
+{	
+	"Import Data" : "Import Data",
+	"Update indicators" : "Update indicators",
+	"Setup Metadata" : "Setup Metadata",
+	"Upload Data File" : "Upload Data File",
+	"Associate Data Elements" : "Associate Data Elements",
+	"Associate Organisation Units" : "Associate Organisation Units"
 }
