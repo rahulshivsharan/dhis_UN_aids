@@ -26,8 +26,8 @@
 		<caption>Data Elements</caption>
 		<thead>
 			<tr>			
-				<th align="right"><span class="pull-right">Date elements in the csv file</span></th>
-				<th>Map To</th>
+				<th align="right"><span class="pull-right">{{"Date elements in the csv file" | i18next}}</span></th>
+				<th>{{"Map To" | i18next}}</th>
 			</tr>
 		</thead>
 		<tbody>		
@@ -53,12 +53,12 @@
 		<tfooter>
 			<tr>
 				<td colspan="2" align="right">
-					<button class="btn btn-default" ng-click="vm.gotBackTo('dataelement.uploadDataElements')">Previous</button>
-					<button class="btn btn-default" ng-click="vm.initMapDataElements()" type="button">Reset</button>
+					<button class="btn btn-default" ng-click="vm.gotBackTo('dataelement.uploadDataElements')">{{"Previous" | i18next}}</button>
+					<button class="btn btn-default" ng-click="vm.initMapDataElements()" type="button">{{"Reset" | i18next}}</button>
 					<button class="btn btn-primary" 
 							type="button" 
-							ng-if="vm.isDataElementsMappingDone === false" ng-click="vm.confirmDataElementsMapping()">Apply</button>
-					<button class="btn btn-primary" type="submit" ng-if="vm.isDataElementsMappingDone === true">Next</button>
+							ng-if="vm.isDataElementsMappingDone === false" ng-click="vm.confirmDataElementsMapping()">{{"Apply" | i18next}}</button>
+					<button class="btn btn-primary" type="submit" ng-if="vm.isDataElementsMappingDone === true">{{"Next" | i18next}}</button>
 				</td>
 			</tr>
 		</tfooter>	

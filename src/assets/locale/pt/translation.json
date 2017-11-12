@@ -1,9 +1,22 @@
 {
-
 	"Import Data" : "Importar dados",
 	"Update indicators" : "Atualizar indicadores",
 	"Setup Metadata" : "Criar metadados",
 	"Upload Data File" : "Carregar arquivo de dados",
 	"Associate Data Elements" : "Associar elementos dos dados",
-	"Associate Organisation Units" "Associar unidades de organização" 
+	"Associate Organisation Units" : "Associar unidades de organização",
+	"Select CSV File" : "Selecionar arquivo CSV",
+	"Choose File" : "Selecionar arquivo",
+	"Upload" : "Carregar",
+	"Associate Data Element" : "Associar elementos dos dados",
+	"Date elements in the csv file" : "Elementos dos dados no arquivo CVS",
+	"Map To" : "Associar a",
+	"Previous" : "Precedente",
+	"Reset" : "Iniciar novamente",
+	"Apply" : "Aplicar",
+	"Next" : "Próximo",
+	"Please confirm data element have been mapped correctly before importing data." : "Por favor, confirme se os elementos dos dados foram mapeados corretamente antes de importar os dados.",
+	"Import Data ?" : "Importar os dados ?",
+	"OK" : "Ok",
+	"Cancel" : "Cancelar" 
 }

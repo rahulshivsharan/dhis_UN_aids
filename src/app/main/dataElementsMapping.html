@@ -21,13 +21,13 @@
 <br/>
 <form class="form-horizontal" ng-init="vm.initDataElements()">
 	<div class="form-group">
-		<label for="files" class="col-md-2 control-label">Select CSV File</label>
+		<label for="files" class="col-md-2 control-label">{{'Select CSV File' | i18next}}</label>
 		<div class="col-md-5">				
 			<input type="file" class="file-chooser form-control" ngf-select="vm.uploadFiles($file, $invalidFiles)"  />
 			<span style="color:red" ng-if="vm.showError">Please select a csv file for upload</span>
 		</div>
 		<div class="col-md-1" style="padding-left: 0; padding-top: 1px;">
-			<button class="btn btn-sm btn-default" ng-click="vm.processFileContentForDisplay()">Upload</button>
+			<button class="btn btn-sm btn-default" ng-click="vm.processFileContentForDisplay()">{{"Upload" | i18next}}</button>
 		</div>		
 	</div>	
 </form>
@@ -44,7 +44,7 @@
 </div>
 <br/>
 <div class="container" ng-class="vm.isVisible">
-	<button type="button" class="btn btn-primary" ng-click="vm.navigateToMapDataElements()">Associate Data Element</button>
+	<button type="button" class="btn btn-primary" ng-click="vm.navigateToMapDataElements()">{{"Associate Data Element" | i18next}}</button>
 	<br/><br/>
 	<table class="table">
 		<thead>

@@ -4,5 +4,19 @@
 	"Setup Metadata" : "Créer métadonnées",
 	"Upload Data File" : "Charger fichier données",
 	"Associate Data Elements" : "Associer élément de données",
-	"Associate Organisation Units" : "Associer unités d'Organisation"
+	"Associate Organisation Units" : "Associer unités d'Organisation",
+	"Select CSV File" : "Sélectionner fichier CSV",
+	"Choose File" : "Sélectionner fichier",
+	"Upload" : "Charger",
+	"Associate Data Element" : "Associer élément de données",
+	"Date elements in the csv file" : "Eléments de données fichier CSV",
+	"Map To" : "Associer à",
+	"Previous" : "Précèdent",
+	"Reset" : "Réinitialiser",
+	"Apply" : "Appliquer",
+	"Next" : "Suivant",
+	"Please confirm data element have been mapped correctly before importing data." : "Prière de confirmer que l'élément de données a été correctement associé avant d'importer des données.",
+	"Import Data ?" : "Importez les données ?",
+	"OK" : "Ok",
+	"Cancel" : "Annuler"
 }

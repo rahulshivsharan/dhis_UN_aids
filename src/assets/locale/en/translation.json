@@ -4,5 +4,19 @@
 	"Setup Metadata" : "Setup Metadata",
 	"Upload Data File" : "Upload Data File",
 	"Associate Data Elements" : "Associate Data Elements",
-	"Associate Organisation Units" : "Associate Organisation Units"
+	"Associate Organisation Units" : "Associate Organisation Units",
+	"Select CSV File" : "Select CSV File",
+	"Choose File" : "Choose File",
+	"Upload" : "Upload",
+	"Associate Data Element" : "Associate Data Element",
+	"Date elements in the csv file" : "Date elements in the csv file",
+	"Map To" : "Map To",
+	"Previous" : "Previous",
+	"Reset" : "Reset",
+	"Apply" : "Apply",
+	"Next" : "Next",
+	"Please confirm data element have been mapped correctly before importing data." : "Please confirm data element have been mapped correctly before importing data.",
+	"Import Data ?" : "Import Data ?",
+	"OK" : "OK",
+	"Cancel" : "Cancel" 
 }
