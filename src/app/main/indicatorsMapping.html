@@ -15,17 +15,17 @@
 	</div>
 	<div class="col-md-12" style="width:120%" ng-if="!vm.isLoaded && !vm.isResponse">
 		<table class="table table-bordered" id="indicatorTbl">
-			<caption><span class="pull-right">Note: Type minimum 3 characters to search data-elements</span></caption>
+			<caption><span class="pull-right">{{"Note" | i18next}}: {{"Type minimum 3 characters to search data-elements" | i18next}}</span></caption>
 			<thead>
 				<tr>
-					<th><span class="pull-right">Indicator</span></th>
-					<th><span class="pull-right">Numerator</span></th>
-					<th>Data Elements</th>
+					<th><span class="pull-right">{{"Indicator" | i18next}}</span></th>
+					<th><span class="pull-right">{{"Numerator" | i18next}}</span></th>
+					<th>{{"Data Elements" | i18next}}</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="indicator in vm.indicatorList track by $index">
-					<td align="right">{{indicator.displayName}}</td>
+					<td align="right">{{indicator.displayName | handleSpecialCharaterOnTranslation}}</td>
 					<td align="right">{{( vm.indicatorMap[indicator.id]['indicatorName'] === undefined || vm.indicatorMap[indicator.id]['indicatorName'] === "") ? vm.indicatorMap[indicator.id]['indicatorName'].numerator : vm.indicatorMap[indicator.id]['indicatorName']}}</td>
 					<td>						
 						<input 	type="text" 
@@ -47,10 +47,10 @@
 					<td colspan="3" align="right">						
 						<button class="btn btn-primary" 
 								ng-click="vm.confirmIndicatorsMapping()" 
-								ng-if="vm.isMappingDone === false">Apply</button>
+								ng-if="vm.isMappingDone === false">{{"Apply" | i18next}}</button>
 						<button class="btn btn-primary"
 								ng-if="vm.isMappingDone === true" 
-								ng-click="vm.submit()">Update Indicator</button>
+								ng-click="vm.submit()">{{"Update Indicator" | i18next}}</button>
 					</td>
 				</tr>
 			</tbody>

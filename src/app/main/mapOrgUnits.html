@@ -23,7 +23,7 @@
 <div class="container" ng-init="vm.initMapOrgUnits()">
 	<div class="row">
 		<div class="col-md-3 col-md-offset-6">
-			<p class="pull-right">Select Organisation Levels</p>
+			<p class="pull-right">{{"Select Organisation Levels" | i18next}}</p>
 		</div>
 		<div class="col-md-3">			
 			<select ng-model="vm.selectedOULevel" 
@@ -37,11 +37,11 @@
 	<div class="row" ng-if="vm.isMappingTableForOrgUnitVisible === true">
 		<div class="col-md-12">
 			<table class="table">
-				<caption>Organisation Units</caption>
+				<caption>{{"Organisation Units" | i18next}}</caption>
 				<thead>
 					<tr>			
-						<th align="right"><span class="pull-right">Actual Values</span></th>
-						<th>Map To</th>
+						<th align="right"><span class="pull-right">{{"Actual Values" | i18next}}</span></th>
+						<th>{{"Map To" | i18next}}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -59,7 +59,7 @@
 				<tfooter>
 					<tr>
 						<td colspan="2" align="right">
-							<button class="btn btn-primary" ng-click="vm.goToRemapData()">Next</button>
+							<button class="btn btn-primary" ng-click="vm.goToRemapData()">{{"Next" | i18next}}</button>
 						</td>
 					</tr>
 				</tfooter>

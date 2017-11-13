@@ -382,7 +382,7 @@
                 // for each dataElement object do the mapping
                 loadCategoryComboDetails(dataElementsList).then(function(dataElementsList){ // success
                     createDE_COC_Map(dataElementsList,categoryOptionComboList);  
-                    console.log(" mapDE_COC ",vm.mapDE_COC);  
+                    //console.log(" mapDE_COC ",vm.mapDE_COC);  
                 },function(error){ // error
                     console.log(error);
                 });
