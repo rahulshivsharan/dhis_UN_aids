@@ -11,8 +11,59 @@
 
 
 		function changeLang(lng){
+			var setupMetadataList = "160px",
+				setupMetadataAnchor = "160px",
+				UploadDataFileList = "205px",
+				UploadDataFileAnchor = "188px",
+				AssociateDataElementList = "250px",
+				AssociateDataElementAnchor = "230px",
+				AssociateOrgUnitsList = "256px",
+				AssociateOrgUnitsAnchor = "240px",
+				ImportDataList = "200px",
+				ImportDataAnchor = "165px";
+
 			console.log("Selected Language ",lng);
-			$i18next.changeLanguage(lng);			
+			$i18next.changeLanguage(lng);
+
+			if(lng === "en"){
+				setupMetadataList = "160px";
+				setupMetadataAnchor = "160px";
+				UploadDataFileList = "205px";
+				UploadDataFileAnchor = "188px";
+				AssociateDataElementList = "250px";
+				AssociateDataElementAnchor = "230px";
+				AssociateOrgUnitsList = "256px";
+				AssociateOrgUnitsAnchor = "240px";
+				ImportDataList = "200px";
+				ImportDataAnchor = "165px";
+			}
+
+			else if(lng === "es"){
+				setupMetadataList = "160px";
+				setupMetadataAnchor = "162px";
+				UploadDataFileList = "230px";
+				UploadDataFileAnchor = "214px";
+				AssociateDataElementList = "250px";
+				AssociateDataElementAnchor = "230px";
+				AssociateOrgUnitsList = "292px";
+				AssociateOrgUnitsAnchor = "275px";
+				ImportDataList = "265px";
+				ImportDataAnchor = "230px";
+			}
+
+
+			less.modifyVars({
+				"setupMetadataList" : setupMetadataList,
+				"setupMetadataAnchor" : setupMetadataAnchor,
+				"UploadDataFileList" : UploadDataFileList,
+				"UploadDataFileAnchor" : UploadDataFileAnchor,
+				"AssociateDataElementList" : AssociateDataElementList,
+				"AssociateDataElementAnchor" : AssociateDataElementAnchor,
+				"AssociateOrgUnitsList" : AssociateOrgUnitsList,
+				"AssociateOrgUnitsAnchor" : AssociateOrgUnitsAnchor,
+				"ImportDataList" : ImportDataList,
+				"ImportDataAnchor" : ImportDataAnchor
+			});			
 		}
 
 		/*

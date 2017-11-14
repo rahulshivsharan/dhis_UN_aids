@@ -32,6 +32,6 @@
 			}
 
 			return translatedString;
-		}
-	}
+		} // end of filter function
+	} // handleSpecialCharaterOnTranslation
 })();
