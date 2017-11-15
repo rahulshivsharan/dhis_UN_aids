@@ -23,6 +23,13 @@ bower install
 https://stackoverflow.com/questions/21658832/npm-install-error-msb3428-could-not-load-the-visual-c-component-vcbuild-ex
 
 
+Note : There is an issue.
+When we do "gulp build", all user created scripts are merged and compressed to "app-someRandomString.js" and all the js libraries are merged and compressed to
+"vendor-someRandomString.js", these generated scripts gets referred in index.html on the fly. Sometimes "gulp build" command generates multiple scripts
+and out of which only few gets referred in index.html, hence the build version of our application fails when build is deployed on server.
+Hence to avoid this, after doing "gulp build" please refer that all the scripts are getting referred in index.html, if not, include those manually.  
+
+
 
 
 

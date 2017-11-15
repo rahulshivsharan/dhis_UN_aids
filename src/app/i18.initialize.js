@@ -11,7 +11,7 @@
 			lng: 'en', 
 			fallbackLng: 'en', 			
 			backend: {
-				loadPath: '/assets/locale/{{lng}}/{{ns}}.json'
+				loadPath: 'assets/locale/{{lng}}/{{ns}}.json'
 			},
 			useCookie: false,
 			useLocalStorage: false

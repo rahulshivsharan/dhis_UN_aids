@@ -40,6 +40,11 @@
         "dist/js/bootstrap.min.js"
       ]
     },
+	"ng-i18next":{
+		"main": [
+			"dist/ng-i18next.js"
+		]
+	},
     "fuelux": {
       "main": [
         "dist/css/fuelux.min.css"
